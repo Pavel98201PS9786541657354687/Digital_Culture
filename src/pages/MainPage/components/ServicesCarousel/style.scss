@@ -1,0 +1,15 @@
+.carousel-container {
+  display: flex;
+  flex-direction: column; /* Вертикальная ориентация блоков */
+  height: 100vh; /* Высота на весь экран */
+}
+
+.carousel-item {
+  flex: 0 0 100vh; /* Каждому блоку выделяем всю высоту экрана */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  background-color: lightblue; /* Цвет фона для каждого блока */
+  border: 1px solid #ccc; /* Граница для визуализации */
+}
