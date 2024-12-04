@@ -7,9 +7,9 @@ import eyeLogoFrame from "../../assets/eyeLogoFrame.png";
 import "./style.scss";
 import { toArray } from "gsap/gsap-core";
 import { ServicesCarousel } from "./components";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
-gsap.registerPlugin(MotionPathPlugin);
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
 const MainPage = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -115,14 +115,38 @@ const MainPage = () => {
               <button className="banner-action-button">ЗАКАЗАТЬ РЕКЛАМУ</button>
           </div>
           <div className="grid">
-              <div className="tile">1</div>
-              <div className="tile">2</div>
-              <div className="tile">3</div>
-              <div className="tile">4</div>
-              <div className="tile">5</div>
-              <div className="tile">6</div>
+              {Array.from({ length: 5 }).map((_, index) => {
+                  const isDouble = Math.random() < 0.4;
+                  const doubleIndex = isDouble && Math.floor(Math.random() * 2);
+                  console.log(doubleIndex);
+
+                  return (
+                    <>
+                        <div
+                          key={index * 3}
+                          className={`tile ${doubleIndex === 0 ? "double" : ""}`}
+                        >
+                            {index * 3}
+                        </div>
+                        <div
+                          key={index * 3 + 1}
+                          className={`tile ${doubleIndex === 1 ? "double" : ""}`}
+                        >
+                            {index * 3 + 1}
+                        </div>
+                        {!doubleIndex && (
+                          <div
+                            key={index * 3 + 2}
+                            className="tile"
+                          >
+                              {index * 3 + 2}
+                          </div>
+                        )}
+                    </>
+                  )
+              })}
           </div>
-          <ServicesCarousel />
+          {/*<ServicesCarousel />*/}
       </div>
     )
 }
