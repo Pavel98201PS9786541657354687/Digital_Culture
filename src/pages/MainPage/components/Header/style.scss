@@ -1,6 +1,7 @@
 @media (max-width: 500px) {
   .header-container {
     position: fixed;
+    top: 0;
     z-index: 999;
 
     .header {
@@ -30,7 +31,7 @@
 
         .eye-path {
           position: absolute;
-          bottom: 16px;
+          bottom: 32px;
         }
     }
 

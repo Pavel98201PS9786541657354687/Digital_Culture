@@ -1,15 +1,16 @@
 import eyeLogoFrame from "../../../../assets/eyeLogoFrame.png";
 import eyeLogo from "../../../../assets/eyeLogo.png";
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./style.scss";
+import { useGSAP } from "@gsap/react";
 
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     gsap.to(".eye-logo", {
       duration: 1,
       motionPath: {
@@ -22,7 +23,7 @@ export const Header = () => {
       repeatDelay: 1.5, // Задержка перед следующим повторением
       ease: "power3.in" // Плавность анимации
     });
-  }, []);
+  });
 
   const handleToggleMenu = () => {
     if (menuOpen) {
