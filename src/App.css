@@ -1,7 +1,11 @@
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    margin:0;
-    padding:0;
-    width:100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
     height:100%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -13,4 +17,47 @@ body {
     src: url("src/assets/fonts/Druk Wide Cy Web Bold Regular.ttf") format("truetype");
     font-weight: bold;
     font-style: normal;
+}
+
+@font-face {
+    font-family: "YandexSansDisplay-Thin";
+    src: url("src/assets/fonts/YandexSansDisplay-Thin.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "MADE Outer Sans";
+    src: url("src/assets/fonts/MADEOuterSans/MADE Outer Sans Alt Black PERSONAL USE.otf") format("opentype");
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: "MADE Outer Sans";
+    src: url("src/assets/fonts/MADEOuterSans/MADE Outer Sans Bold PERSONAL USE.otf") format("opentype");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "MADE Outer Sans";
+    src: url("src/assets/fonts/MADEOuterSans/MADE Outer Sans Medium PERSONAL USE.otf") format("opentype");
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "MADE Outer Sans";
+    src: url("src/assets/fonts/MADEOuterSans/MADE Outer Sans Regular PERSONAL USE.otf") format("opentype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "MADE Outer Sans";
+    src: url("src/assets/fonts/MADEOuterSans/MADE Outer Sans Light PERSONAL USE.otf") format("opentype");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "MADE Outer Sans";
+    src: url("src/assets/fonts/MADEOuterSans/MADE Outer Sans Thin PERSONAL USE.otf") format("opentype");
+    font-weight: 300;
 }

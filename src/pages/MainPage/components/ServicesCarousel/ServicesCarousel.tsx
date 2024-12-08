@@ -22,9 +22,6 @@ export const ServicesCarousel = () => {
           duration: {min: 0.1, max: 0.1}
         },
         end: () =>  "+=" + (panelsContainer?.offsetWidth - innerWidth),
-        onEnter: () => {
-          console.log("Element entered the viewport!");
-        },
       },
     });
   })
