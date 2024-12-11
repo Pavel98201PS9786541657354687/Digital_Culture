@@ -5,12 +5,44 @@ import "./style.scss";
 import { Header, PortfolioGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
+import bonePng from "@/assets/bone.png";
+import eyeShot from "@/assets/eye_shot.jpg";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
 const MainPage = () => {
+  useGSAP(() => {
+    gsap.to("#bg-bone-image", {
+      y: "-200%", // Перемещение фона вверх
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#bg-bone-image", // Элемент, который будет триггером
+        start: "top top", // Начало анимации
+        end: "max", // Конец анимации
+        scrub: 1, // Скорость анимации относительно скролла
+      },
+    });
+
+    gsap.to("#eye-container", {
+      y: "-250px", // Перемещение фона вверх
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#eye-container", // Элемент, который будет триггером
+        start: 200, // Начало анимации
+        end: 1400, // Конец анимации
+        scrub: 1, // Скорость анимации относительно скролла
+      },
+    });
+  });
+
   return (
     <div className="container">
+      <div id="eye-container">
+        <div className="image-container">
+          <img id="eye-video" src={eyeShot} alt="Eye video shot" />
+        </div>
+      </div>
+      <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
       <Header />
       <div className="banner">
         <div className="slogan-container">

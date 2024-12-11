@@ -2,69 +2,64 @@ import { useGSAP } from "@gsap/react";
 import { toArray } from "gsap/gsap-core";
 import { gsap } from "gsap";
 import "./style.scss";
+import { videoPaths } from "@/pages/MainPage/components/PortfolioGrid/constants";
+import { chunkArrayRandomSize } from "@/pages/MainPage/components/PortfolioGrid/utils";
 
 export const PortfolioGrid = () => {
   useGSAP(() => {
-    const portfolioGrid = document.getElementById("portfolio-grid");
-    const tiles = toArray(".tile");
+    const lines = document.querySelectorAll(".portfolio-line");
 
-    // gsap.to(portfolioGrid, {
-    //   scrollTrigger: {
-    //     trigger: "#portfolio-grid",
-    //     start: "top bottom",
-    //     onEnter: () => {
-    //       console.log("Grid entered the viewport!");
-    //       gsap.to("#portfolio-grid", { opacity: 1, duration: 0.5 }); // Появление грида
-    //       tiles.forEach((tile, index) => {
-    //         gsap.to(tile, {
-    //           y: 0,
-    //           opacity: 1,
-    //           duration: 0.5,
-    //           delay: index * 0.1, // Задержка для каждого элемента
-    //         });
-    //       });
-    //     },
-    //   }
-    // });
+    lines.forEach((line) => {
+      const tiles = line.querySelectorAll(".tile");
 
-    // TODO: можно сделать не грид, а каждую строку отдельным блоком и на каждый такой блок анимацию при скролле до него!
-    tiles.forEach((tile, index) => {
-      gsap.to(tile, {
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-        delay: index * 0.1,
-        scrollTrigger: {
-          start: "top bottom",
-        }
-      });
+      gsap.fromTo(
+        tiles,
+        {
+          y: 500,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          ease: "power1.out",
+          stagger: 0.2, // Задержка между анимациями
+          scrollTrigger: {
+            trigger: line,
+            start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
+            once: true,
+            onEnter: () => {
+              console.log("onEnter");
+            },
+          },
+        },
+      );
     });
   });
 
+  const lineGroups = chunkArrayRandomSize(videoPaths);
+
   return (
-    <div id="portfolio-grid" className="grid">
-      {Array.from({ length: 5 }).map((_, index) => {
-        const isDouble = Math.random() < 0.4;
-        const doubleIndex = isDouble && Math.floor(Math.random() * 2);
+    <div id="portfolio-section">
+      {lineGroups?.map((lineGroup, index) => {
+        const indexOfDoubleElement =
+          lineGroup?.length === 2 ? Math.floor(Math.random() * 2) : -1;
 
         return (
-          <>
-            <div
-              key={index * 3}
-              className={`tile ${doubleIndex === 0 ? "double" : ""}`}>
-              {index * 3}
-            </div>
-            <div
-              key={index * 3 + 1}
-              className={`tile ${doubleIndex === 1 ? "double" : ""}`}>
-              {index * 3 + 1}
-            </div>
-            {!doubleIndex && (
-              <div key={index * 3 + 2} className="tile">
-                {index * 3 + 2}
+          <div className="portfolio-line">
+            {lineGroup.map((fileName, videoRowIndex) => (
+              <div
+                key={index}
+                className={`tile ${indexOfDoubleElement === videoRowIndex ? "double" : ""} ${lineGroup?.length === 1 ? "full" : ""}`}>
+                <video autoPlay muted loop>
+                  <source
+                    src={`src/assets/video/${fileName}`}
+                    type="video/mp4"
+                  />
+                  Ваш браузер не поддерживает видео.
+                </video>
               </div>
-            )}
-          </>
+            ))}
+          </div>
         );
       })}
     </div>

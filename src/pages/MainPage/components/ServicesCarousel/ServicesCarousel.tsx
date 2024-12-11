@@ -2,6 +2,7 @@ import "./style.scss";
 import { gsap } from "gsap";
 import { toArray } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
+import { serviceTilesContent } from "@/pages/MainPage/components/ServicesCarousel/constants";
 
 export const ServicesCarousel = () => {
   useGSAP(() => {
@@ -15,7 +16,7 @@ export const ServicesCarousel = () => {
         trigger: "#panels-container",
         pin: true,
         start: "top top",
-        scrub: 1,
+        scrub: 2,
         snap: {
           snapTo: 1 / (panels.length - 1),
           inertia: false,
@@ -30,14 +31,21 @@ export const ServicesCarousel = () => {
     <div id="page" className="site">
       <section id="panels" style={{ overflow: "hidden" }}>
         <div id="panels-container" style={{ width: "500%" }}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <article key={index} id={`panel-${index + 1}`} className="panel full-screen gradient-green">
-              <h2>Panel {index + 1}</h2>
-            </article>
+          {serviceTilesContent.map((tileContent, index) => (
+            <div
+              key={index}
+              id={`panel-${index + 1}`}
+              className="panel full-screen gradient-green">
+              <div className="service-tile">
+                <div className="service-tile--title">{tileContent.title}:</div>
+                <div className="service-tile--description">{tileContent.description}</div>
+                <button className="service-tile--action">ЗАКАЗАТЬ</button>
+              </div>
+            </div>
           ))}
         </div>
       </section>
       <section id="map" className="full-screen"></section>
     </div>
-);
+  );
 };
