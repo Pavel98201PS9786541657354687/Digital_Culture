@@ -6,14 +6,16 @@ import { Header, PortfolioGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
+import porsche from "@/assets/porsche.jpg";
 import eyeShot from "@/assets/eye_shot.jpg";
+import { FlutedGlass } from "@/components";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
 const MainPage = () => {
   useGSAP(() => {
     gsap.to("#bg-bone-image", {
-      y: "-200%", // Перемещение фона вверх
+      y: "-150%", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#bg-bone-image", // Элемент, который будет триггером
@@ -57,6 +59,19 @@ const MainPage = () => {
       </div>
       <PortfolioGrid />
       <ServicesCarousel />
+      {/*<div style={{ position: "relative", color: "initial" }}>*/}
+      {/*  <FlutedGlass*/}
+      {/*    image={porsche}*/}
+      {/*    numOfPanes={60}*/}
+      {/*    paneSize={100}*/}
+      {/*    blurAmount={2}*/}
+      {/*    stretchPercentage={75}*/}
+      {/*    paneJustify="start"*/}
+      {/*  >*/}
+      {/*    <div className="example-content">*/}
+      {/*    </div>*/}
+      {/*  </FlutedGlass>*/}
+      {/*</div>*/}
     </div>
   );
 };

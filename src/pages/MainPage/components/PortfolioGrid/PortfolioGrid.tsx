@@ -1,9 +1,9 @@
 import { useGSAP } from "@gsap/react";
-import { toArray } from "gsap/gsap-core";
 import { gsap } from "gsap";
 import "./style.scss";
 import { videoPaths } from "@/pages/MainPage/components/PortfolioGrid/constants";
 import { chunkArrayRandomSize } from "@/pages/MainPage/components/PortfolioGrid/utils";
+import downArrow from "@/assets/arrow-down.png";
 
 export const PortfolioGrid = () => {
   useGSAP(() => {
@@ -39,29 +39,35 @@ export const PortfolioGrid = () => {
   const lineGroups = chunkArrayRandomSize(videoPaths);
 
   return (
-    <div id="portfolio-section">
-      {lineGroups?.map((lineGroup, index) => {
-        const indexOfDoubleElement =
-          lineGroup?.length === 2 ? Math.floor(Math.random() * 2) : -1;
+    <>
+      <div id="portfolio-section">
+        {lineGroups?.map((lineGroup, index) => {
+          const indexOfDoubleElement =
+            lineGroup?.length === 2 ? Math.floor(Math.random() * 2) : -1;
 
-        return (
-          <div className="portfolio-line">
-            {lineGroup.map((fileName, videoRowIndex) => (
-              <div
-                key={index}
-                className={`tile ${indexOfDoubleElement === videoRowIndex ? "double" : ""} ${lineGroup?.length === 1 ? "full" : ""}`}>
-                <video autoPlay muted loop>
-                  <source
-                    src={`src/assets/video/${fileName}`}
-                    type="video/mp4"
-                  />
-                  Ваш браузер не поддерживает видео.
-                </video>
-              </div>
-            ))}
-          </div>
-        );
-      })}
-    </div>
+          return (
+            <div className="portfolio-line" key={`portfolio-line-${index}`}>
+              {lineGroup.map((fileName, videoRowIndex) => (
+                <div
+                  key={`line-grid-${index}-${videoRowIndex}`}
+                  className={`tile ${indexOfDoubleElement === videoRowIndex ? "double" : ""} ${lineGroup?.length === 1 ? "full" : ""}`}>
+                  <video autoPlay muted loop>
+                    <source
+                      src={`src/assets/video/${fileName}`}
+                      type="video/mp4"
+                    />
+                    Не удалось воспроизвести видео
+                  </video>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+      <div className="show-more-button">
+        <div>ПОСМОТРЕТЬ ЕЩЕ</div>
+        <img src={downArrow} alt="" />
+      </div>
+    </>
   );
 };

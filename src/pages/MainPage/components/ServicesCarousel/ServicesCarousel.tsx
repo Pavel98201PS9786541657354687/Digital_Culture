@@ -45,7 +45,6 @@ export const ServicesCarousel = () => {
           ))}
         </div>
       </section>
-      <section id="map" className="full-screen"></section>
     </div>
   );
 };
