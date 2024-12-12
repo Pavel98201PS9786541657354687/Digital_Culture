@@ -13,8 +13,6 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.renderers import TemplateHTMLRenderer
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from drf_excel.mixins import XLSXFileMixin
-from drf_excel.renderers import XLSXRenderer
 
 class getVideoListAPIView(generics.ListAPIView):
     queryset = models.moviesModel.objects.all()
