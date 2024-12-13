@@ -9,14 +9,17 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from .models import *
 from django.apps import AppConfig
+from adminsortable2.admin import SortableAdminMixin
+
 
 # admin.site.register(moviesModel)
 @admin.register(moviesModel)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Meta:
         model = moviesModel
         
-    list_display = ('title', 'description', 'fileName', 'formatVideo', 'dateCreated', 'dateUpdate', 'weight')
+    list_display = ('weight','title', 'description', 'fileName', 
+                    'formatVideo', 'dateCreated', 'dateUpdate')
     search_fields = ('title', 'description', 'fileName', 'formatVideo', 'weight')
     list_filter = ('title', 'description', 'fileName', 'formatVideo', 'weight')
     ordring= ('weight',)

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'djoser',
     'django_filters',
     'corsheaders',
+    'adminsortable2',
 ]
 
 MIDDLEWARE = [

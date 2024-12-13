@@ -2,8 +2,13 @@ from django.db import models
 
 class moviesModel(models.Model):
     id = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=255, verbose_name=u"Заголовок")
-    description = models.TextField(verbose_name=u"Описание")
+    title = models.CharField(max_length=255, 
+                             verbose_name=u"Заголовок", 
+                             blank=False,
+                             null=False,)
+    description = models.TextField(verbose_name=u"Описание",
+                                   blank=False,
+                             null=False,)
     fileName = models.FileField(verbose_name=u"Файл")
     formatVideo_CHICES = [
         ("horizontal", "Горизонтальное"),
@@ -11,10 +16,16 @@ class moviesModel(models.Model):
     ]
     
     formatVideo = models.CharField(max_length=50, choices=formatVideo_CHICES, 
-    default="URL в млг не найден", verbose_name=u"Формат видео")
-    dateCreated = models.DateTimeField(auto_now_add=True, verbose_name=u"Дата создания")
-    dateUpdate = models.DateTimeField(auto_now=True, verbose_name=u"Дата обновления")
-    weight = models.PositiveIntegerField(verbose_name=u"Сортировка")
+    default="URL в млг не найден", verbose_name=u"Формат видео",
+                            blank=False,
+                             null=False,)
+    dateCreated = models.DateTimeField(auto_now_add=True, 
+                                       verbose_name=u"Дата создания")
+    dateUpdate = models.DateTimeField(auto_now=True, 
+                                      verbose_name=u"Дата обновления")
+    weight = models.PositiveIntegerField(verbose_name=u"Сортировка",
+                                         blank=False,
+                                        null=False,)
 
     class Meta:
         verbose_name = 'Видео'
@@ -23,8 +34,12 @@ class moviesModel(models.Model):
 
 class photoModel(models.Model):
     id = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=255, verbose_name=u"Заголовок")
-    description = models.TextField(verbose_name=u"Описание")
+    title = models.CharField(max_length=255, verbose_name=u"Заголовок",
+                             blank=False,
+                             null=False,)
+    description = models.TextField(verbose_name=u"Описание",
+                                   blank=False,
+                             null=False,)
     fileName = models.FileField(verbose_name=u"Файл")
     formatPhoto_CHICES = [
         ("horizontal", "Горизонтальное"),
@@ -35,9 +50,13 @@ class photoModel(models.Model):
         choices=formatPhoto_CHICES, 
         default="URL в млг не найден"
         , verbose_name=u"Формат фото")
-    dateCreated = models.DateTimeField(auto_now_add=True, verbose_name=u"Дата создания")
-    dateUpdate = models.DateTimeField(auto_now=True, verbose_name=u"Дата обновления")
-    weight = models.PositiveIntegerField(verbose_name=u"Сортировка")
+    dateCreated = models.DateTimeField(auto_now_add=True, 
+                                       verbose_name=u"Дата создания")
+    dateUpdate = models.DateTimeField(auto_now=True, 
+                                      verbose_name=u"Дата обновления")
+    weight = models.PositiveIntegerField(verbose_name=u"Сортировка",
+                                         blank=False,
+                                        null=False,)
 
     class Meta:
         verbose_name = 'Фото'
