@@ -42,3 +42,4 @@ django-ckeditor-5
 drf-excel
 gunicorn
 gevent 
+traceback

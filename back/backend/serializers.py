@@ -11,8 +11,8 @@ class getVideoSerializer(serializers.ModelSerializer):
         fields = ('title', 'description', 'fileName', 
                   'formatVideo', 'weight')
 
-# Метод для тестирования
-# class getPhotoSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = photoModel
-#         fields = '__all__'
+# Метод для отправки формы заявок
+class applicationsPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = applications
+        fields = '__all__'
