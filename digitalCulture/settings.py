@@ -14,7 +14,14 @@ SECRET_KEY = 'django-insecure-q%y001#4h^hnox)1eyoh!e3l$gup#rh^_^pw!!+&c7)svff*(t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['91.222.239.188', '127.0.0.1']
+ALLOWED_HOSTS = [
+                '91.222.239.188', 
+                '127.0.0.1',
+                'http://localhost:8000',
+                'http://127.0.0.1:8000',
+                'http://localhost:3000',
+                'http://127.0.0.1:3000'
+                ]
 # CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:8000',
 #     'http://127.0.0.1:8000',
@@ -40,7 +47,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

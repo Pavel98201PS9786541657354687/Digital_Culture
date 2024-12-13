@@ -18,6 +18,6 @@ class getVideoListAPIView(generics.ListAPIView):
     queryset = models.moviesModel.objects.all()
     serializer_class = serializers.getVideoSerializer
 
-class getPhotoListAPIView(generics.ListAPIView):
-    queryset = models.photoModel.objects.all()
-    serializer_class = serializers.getPhotoSerializer
+# class getPhotoListAPIView(generics.ListAPIView):
+#     queryset = models.photoModel.objects.all()
+#     serializer_class = serializers.getPhotoSerializer

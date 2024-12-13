@@ -4,7 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
 from django.http import JsonResponse, HttpResponseBadRequest
 
-# Метод для тестирования
+# Метод для получения файлов
 class getVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = moviesModel
@@ -12,7 +12,7 @@ class getVideoSerializer(serializers.ModelSerializer):
                   'formatVideo', 'weight')
 
 # Метод для тестирования
-class getPhotoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = photoModel
-        fields = '__all__'
+# class getPhotoSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = photoModel
+#         fields = '__all__'

@@ -24,4 +24,24 @@ class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_filter = ('title', 'description', 'fileName', 'formatVideo', 'weight')
     ordring= ('weight',)
 
-admin.site.register(photoModel)
+# admin.site.register(photoModel)
+# @admin.register(photoModel)
+# class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
+#     class Meta:
+#         model = photoModel
+        
+#     list_display = ('weight','title', 'description', 'fileName', 
+#                     'formatPhoto', 'dateCreated', 'dateUpdate')
+#     search_fields = ('title', 'description', 'fileName', 'formatPhoto', 'weight')
+#     list_filter = ('title', 'description', 'fileName', 'formatPhoto', 'weight')
+#     ordring= ('weight',)
+
+@admin.register(applications)
+class UserAdmin(admin.ModelAdmin):
+    class Meta:
+        model = moviesModel
+        
+    list_display = ('initials','phone_number', 'email', 'comments','dateCreated')
+    search_fields = ('initials','phone_number', 'email', 'comments','dateCreated')
+    list_filter = ('initials','phone_number', 'email', 'comments','dateCreated')
+    ordring= ('initials',)

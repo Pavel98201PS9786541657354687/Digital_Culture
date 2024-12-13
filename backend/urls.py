@@ -18,5 +18,5 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('api/', include(router.urls)),
     path('getListVideo', api.getVideoListAPIView.as_view(), name='getMovies'),
-    path('getListPhoto', api.getPhotoListAPIView.as_view(), name='getPhoto'),
+    # path('getListPhoto', api.getPhotoListAPIView.as_view(), name='getPhoto'),
 ]
