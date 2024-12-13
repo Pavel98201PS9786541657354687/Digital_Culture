@@ -76,10 +76,9 @@ class applications(models.Model):
                                verbose_name=u"ФИО",
                              blank=False, null=False)
     phone_number = models.CharField(max_length=16, 
-                                    validators=[phone_validator], 
-                                    unique=True,
+                                    validators=[phone_validator],
                                     verbose_name=u"Телефон")
-    email = models.EmailField(max_length=100, unique=True,
+    email = models.EmailField(max_length=100,
                               verbose_name=u"E-mail")
     comments = models.TextField(verbose_name=u"Комментарии",
                                    blank=False, null=False)
@@ -88,4 +87,4 @@ class applications(models.Model):
     class Meta:
         verbose_name = 'Заявки'
         verbose_name_plural = 'Заявки'
-        ordering = ('initials',)
+        ordering = ('application_id',)

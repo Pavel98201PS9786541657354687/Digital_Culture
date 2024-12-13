@@ -43,3 +43,5 @@ drf-excel
 gunicorn
 gevent 
 traceback
+django-admin-sortable2
+telegram

@@ -44,4 +44,4 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('initials','phone_number', 'email', 'comments','dateCreated')
     search_fields = ('initials','phone_number', 'email', 'comments','dateCreated')
     list_filter = ('initials','phone_number', 'email', 'comments','dateCreated')
-    ordring= ('initials',)
+    ordring= ('application_id',)
