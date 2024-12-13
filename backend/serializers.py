@@ -8,7 +8,8 @@ from django.http import JsonResponse, HttpResponseBadRequest
 class getVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = moviesModel
-        fields = '__all__'
+        fields = ('title', 'description', 'fileName', 
+                  'formatVideo', 'weight')
 
 # Метод для тестирования
 class getPhotoSerializer(serializers.ModelSerializer):
