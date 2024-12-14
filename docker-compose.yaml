@@ -4,9 +4,12 @@ services:
   frontend:
     build: ./front/
     ports:
-      - "3000:3000"
+      - "4173:4173"
     volumes:
       - ./front:/front/
+      - node_modules:/front/node_modules
+    networks:
+      - vite-network
       
   backend:
     build: ./back
@@ -15,3 +18,10 @@ services:
       - ./back:/back/
     ports:
       - "8001:8001"
+
+networks:
+  vite-network:
+    driver: bridge
+
+volumes:
+  node_modules: {}
