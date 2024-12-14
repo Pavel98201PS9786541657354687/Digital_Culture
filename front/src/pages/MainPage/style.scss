@@ -1,0 +1,138 @@
+@media (max-width: 500px) {
+  #bg-bone-image {
+    position: fixed;
+    left: -140px;
+    top: 120vh;
+    scale: 130%;
+    z-index: -1;
+  }
+
+  #eye-container {
+    position: fixed;
+    top: 140px;
+    scale: 250%;
+    z-index: -1;
+    opacity: 90%;
+
+    .image-container {
+      //overflow: hidden;
+      position: relative;
+      display: inline-block;
+
+      //&::after {
+      //  content: "";
+      //  position: absolute;
+      //  bottom: -35px;
+      //  left: 0;
+      //  right: 0;
+      //  height: 35%; /* Высота области размытия и прозрачности */
+      //  opacity: 100%;
+      //  background: #808180;
+      //  filter: blur(10px); /* Настройте уровень размытия */
+      //  pointer-events: none; /* Чтобы не мешать взаимодействию с изображением */
+      //}
+
+      /* Псевдоэлемент для создания тени */
+      &::before {
+        content: ""; /* Обязательно указываем content для псевдоэлемента */
+        position: absolute; /* Абсолютное позиционирование */
+        top: 0; /* Начинаем от верхней границы контейнера */
+        left: 0; /* Начинаем от левой границы контейнера */
+        right: 0; /* Растягиваем до правой границы контейнера */
+        bottom: -1px; /* Растягиваем до нижней границы контейнера */
+        box-shadow: -1px -80px 73px -6px rgba(128, 129, 128, 1) inset; /* Ваша тень */
+        pointer-events: none; /* Чтобы клик по тени не блокировал взаимодействие с изображением */
+      }
+
+      #eye-video {
+        width: 100%;
+        height: auto;
+        display: block; /* Убираем пробелы под изображением */
+      }
+    }
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+
+    .example-content {
+      width: 300px;
+      height: 300px;
+    }
+  }
+
+  .banner {
+    height: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+    position: relative;
+
+    .slogan-container {
+      margin-top: 320px;
+
+      .slogan-big {
+        font-size: 38px;
+        line-height: 40px;
+      }
+
+      .slogan-small {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        column-gap: 30px;
+      }
+    }
+
+    &-action-button {
+      margin-top: 120px;
+      background-color: #191a19;
+      border-radius: 6px;
+      height: 40px;
+      font-size: 12px;
+      padding-inline: 10px;
+      color: #ffffff;
+      border: none;
+    }
+  }
+
+  .ribbed-blur {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden; /* Скрываем лишнее */
+    backdrop-filter: blur(5px); /* Общее размытие фона */
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background: repeating-linear-gradient(
+                      45deg,
+                      rgba(255, 255, 255, 0.2),
+                      rgba(255, 255, 255, 0.2) 10px,
+                      rgba(255, 255, 255, 0.1) 10px,
+                      rgba(255, 255, 255, 0.1) 20px
+      );
+
+      filter: blur(5px); /* Размытие для создания ребристого эффекта */
+      z-index: 1; /* Под содержимым */
+    }
+
+    h1 {
+      position: relative; /* Содержимое должно быть выше псевдоэлемента */
+      z-index: 2; /* Устанавливаем выше эффекта */
+    }
+  }
+}

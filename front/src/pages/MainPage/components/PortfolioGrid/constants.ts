@@ -1,0 +1,18 @@
+export const videoPaths = [
+  "16 этажка.mp4",
+  "300к Буогеров.mp4",
+  "BACKTOSCHOOL.mp4",
+  "Cardskultura.mp4",
+  "clan 2402.mp4",
+  "Drift kultura.mp4",
+  "Drift фатьянова.mp4",
+  "GNO2.mp4",
+  "GNO4.mp4",
+  "GNO9.mp4",
+  "GNO11.mp4",
+  "GNO12.mp4",
+  "GUSTO3.mp4",
+  "Halloween Mac.mp4",
+  "Halloween Культура 2024.mp4",
+  "hookah battle.mp4",
+]
