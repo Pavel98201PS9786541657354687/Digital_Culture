@@ -1,0 +1,184 @@
+@media (max-width: 500px) {
+  .header-container {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+
+    .header {
+      position: relative;
+      width: 100vw;
+      height: 90px;
+      display: flex;
+      justify-content: space-between;
+      padding: 32px 24px 8px 16px;
+      background: #191a19;
+      z-index: 100;
+
+      &-left {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 3px;
+      }
+
+      .logo-container {
+        position: relative;
+        width: 50px;
+        height: 50px;
+
+        .eye-logo {
+          position: absolute;
+          width: 27px;
+        }
+
+        .eye-logo-frame {
+          position: absolute;
+          width: 50px;
+        }
+
+        .eye-path {
+          position: absolute;
+          bottom: 32px;
+        }
+
+        &--literal {
+          position: relative;
+          height: 100%;
+
+          #kultura-logo {
+            position: absolute;
+            width: 77px;
+            bottom: -10px;
+            left: -7px;
+          }
+        }
+      }
+
+      .letters-digital-container {
+        display: flex;
+        font-size: 36px;
+        margin-top: -2px;
+
+        .letter {
+          color: #ffffff;
+          font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+          font-weight: 800;
+          font-size: 36px;
+          line-height: 29px;
+        }
+      }
+
+      #menu-button {
+        width: 30px;
+        height: 25px;
+        position: relative;
+        transform: rotate(0deg);
+        transition: 0.5s ease-in-out;
+        cursor: pointer;
+
+        span {
+          display: block;
+          position: absolute;
+          height: 4px;
+          width: 100%;
+          background: #ffffff;
+          opacity: 1;
+          left: 0;
+          transform: rotate(0deg);
+          transition: 0.25s ease-in-out;
+
+          &:nth-child(1) {
+            top: 0;
+          }
+
+          &:nth-child(2),
+          &:nth-child(3) {
+            top: 10px;
+          }
+
+          &:nth-child(4) {
+            top: 20px;
+          }
+        }
+      }
+
+      &.menu-open {
+        #menu-button span {
+          &:nth-child(1) {
+            top: 18px;
+            width: 0;
+            left: 50%;
+          }
+
+          &:nth-child(2) {
+            transform: rotate(45deg);
+          }
+
+          &:nth-child(3) {
+            transform: rotate(-45deg);
+          }
+
+          &:nth-child(4) {
+            top: 18px;
+            width: 0;
+            left: 50%;
+          }
+        }
+      }
+    }
+
+    .menu-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      transform: translateY(-600px);
+      background-color: #181918;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      transition: opacity 0.2s ease;
+      -webkit-box-shadow: 0 35px 28px -11px rgba(0, 0, 0, 1) inset;
+      -moz-box-shadow: 0 35px 28px -11px rgba(0, 0, 0, 1) inset;
+      box-shadow: 0 35px 28px -11px rgba(0, 0, 0, 1) inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #ffffff;
+      z-index: 10;
+
+      .lang-choice {
+        font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+        font-size: 10px;
+        margin-top: 48px;
+      }
+
+      ul {
+        font-family: "YandexSansDisplay-Thin", sans-serif;
+        list-style: none;
+        margin-top: 110px;
+        padding: 0;
+        text-align: center;
+
+        li {
+          margin-top: 16px;
+        }
+
+        #about-menu-item {
+          margin-top: 48px;
+        }
+      }
+
+      button {
+        margin-block: 28px;
+        border: 1px solid #ffffff;
+        background: transparent;
+        color: #ffffff;
+        font-family: "YandexSansDisplay-Thin", sans-serif;
+        border-radius: 8px;
+        padding: 6px;
+        line-height: 14px;
+        cursor: pointer;
+      }
+    }
+  }
+}
