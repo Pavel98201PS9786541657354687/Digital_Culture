@@ -11,6 +11,7 @@
     grid-template-columns: repeat(3, 1fr);
 
     .tile {
+      cursor: pointer;
       color: white;
       display: flex;
       justify-content: center;

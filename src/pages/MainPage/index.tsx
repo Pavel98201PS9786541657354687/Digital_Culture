@@ -6,9 +6,9 @@ import { Header, PortfolioGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
-import porsche from "@/assets/porsche.jpg";
-import eyeShot from "@/assets/eye_shot.jpg";
-import { FlutedGlass } from "@/components";
+// import porsche from "@/assets/porsche.jpg";
+import liveEye from "@/assets/live-eye.gif";
+// import { FlutedGlass } from "@/components";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
@@ -41,7 +41,7 @@ const MainPage = () => {
     <div className="container">
       <div id="eye-container">
         <div className="image-container">
-          <img id="eye-video" src={eyeShot} alt="Eye video shot" />
+          <img id="eye-video" src={liveEye} alt="Eye video shot" />
         </div>
       </div>
       <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />

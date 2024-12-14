@@ -9,29 +9,44 @@
 
   #eye-container {
     position: fixed;
-    top: 130px;
+    top: 140px;
     scale: 250%;
     z-index: -1;
-    opacity: 80%;
+    opacity: 90%;
 
     .image-container {
-      overflow: hidden; /* Скрываем лишнее */
+      //overflow: hidden;
       position: relative;
+      display: inline-block;
 
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: -35px;
-        left: 0;
-        right: 0;
-        height: 35%; /* Высота области размытия и прозрачности */
-        opacity: 100%;
-        background: #808180;
-        filter: blur(10px); /* Настройте уровень размытия */
-        pointer-events: none; /* Чтобы не мешать взаимодействию с изображением */
+      //&::after {
+      //  content: "";
+      //  position: absolute;
+      //  bottom: -35px;
+      //  left: 0;
+      //  right: 0;
+      //  height: 35%; /* Высота области размытия и прозрачности */
+      //  opacity: 100%;
+      //  background: #808180;
+      //  filter: blur(10px); /* Настройте уровень размытия */
+      //  pointer-events: none; /* Чтобы не мешать взаимодействию с изображением */
+      //}
+
+      /* Псевдоэлемент для создания тени */
+      &::before {
+        content: ""; /* Обязательно указываем content для псевдоэлемента */
+        position: absolute; /* Абсолютное позиционирование */
+        top: 0; /* Начинаем от верхней границы контейнера */
+        left: 0; /* Начинаем от левой границы контейнера */
+        right: 0; /* Растягиваем до правой границы контейнера */
+        bottom: -1px; /* Растягиваем до нижней границы контейнера */
+        box-shadow: -1px -80px 73px -6px rgba(128, 129, 128, 1) inset; /* Ваша тень */
+        pointer-events: none; /* Чтобы клик по тени не блокировал взаимодействие с изображением */
       }
 
       #eye-video {
+        width: 100%;
+        height: auto;
         display: block; /* Убираем пробелы под изображением */
       }
     }

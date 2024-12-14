@@ -18,6 +18,15 @@ export default ({ mode }) => {
     resolve: {
       alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
     },
+    server: {
+      proxy: {
+        "/api": {
+          target: "http://91.222.239.188:8000",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(`/^/api /`, ""),
+        },
+      },
+    },
     define: processEnvValues,
   });
 };

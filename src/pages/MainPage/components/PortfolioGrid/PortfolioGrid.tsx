@@ -4,8 +4,19 @@ import "./style.scss";
 import { videoPaths } from "@/pages/MainPage/components/PortfolioGrid/constants";
 import { chunkArrayRandomSize } from "@/pages/MainPage/components/PortfolioGrid/utils";
 import downArrow from "@/assets/arrow-down.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 export const PortfolioGrid = () => {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const limit = 10;
+  const [offset, setOffset] = useState(0);
+
+  const navigate = useNavigate();
+
   useGSAP(() => {
     const lines = document.querySelectorAll(".portfolio-line");
 
@@ -36,7 +47,41 @@ export const PortfolioGrid = () => {
     });
   });
 
+  const fetchVideos = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const response = await axios.get('/api/getListVideo?', {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          limit,
+          offset,
+        }
+      });
+      const videoList = response.data?.results;
+      setVideos([...videos, ...videoList]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   fetchVideos();
+  // }, [offset]);
+
+  console.log("offset", offset);
+
+  console.log("videos", videos);
+
   const lineGroups = chunkArrayRandomSize(videoPaths);
+
+  if (loading) {
+    return
+  }
 
   return (
     <>
@@ -47,13 +92,15 @@ export const PortfolioGrid = () => {
 
           return (
             <div className="portfolio-line" key={`portfolio-line-${index}`}>
-              {lineGroup.map((fileName, videoRowIndex) => (
+              {lineGroup.map((videoData, videoRowIndex) => (
                 <div
                   key={`line-grid-${index}-${videoRowIndex}`}
-                  className={`tile ${indexOfDoubleElement === videoRowIndex ? "double" : ""} ${lineGroup?.length === 1 ? "full" : ""}`}>
+                  className={`tile ${indexOfDoubleElement === videoRowIndex ? "double" : ""} ${lineGroup?.length === 1 ? "full" : ""}`}
+                onClick={() => navigate(`/projects/${videoData}`)}>
                   <video autoPlay muted loop>
                     <source
-                      src={`src/assets/video/${fileName}`}
+                      // src={videoData?.fileName}
+                      src={`src/assets/video/${videoData}`}
                       type="video/mp4"
                     />
                     Не удалось воспроизвести видео
@@ -64,7 +111,7 @@ export const PortfolioGrid = () => {
           );
         })}
       </div>
-      <div className="show-more-button">
+      <div className="show-more-button" onClick={() => setOffset(offset + 1)}>
         <div>ПОСМОТРЕТЬ ЕЩЕ</div>
         <img src={downArrow} alt="" />
       </div>
