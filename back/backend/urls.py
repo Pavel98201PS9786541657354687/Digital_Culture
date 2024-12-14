@@ -11,7 +11,9 @@ from .views import *
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    path('', index, name="index"),
     path('api/', include(router.urls)),
     path('getListVideo', api.getVideoListAPIView.as_view(), name='getMovies'),
     path('postApplications', api.applicationsPostCreateListAPIView.as_view(), name='postApplications'),
+    path('blocks', api.blocksListAPIView.as_view(), name='postApplications'),
 ]

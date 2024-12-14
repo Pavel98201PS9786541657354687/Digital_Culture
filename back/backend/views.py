@@ -30,3 +30,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import NotFound
 from django.forms.models import model_to_dict
+
+def index(request):
+    return  render(request, 'index.html', {})

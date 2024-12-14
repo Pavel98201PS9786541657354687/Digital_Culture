@@ -61,3 +61,8 @@ class applicationsPostCreateListAPIView(generics.ListCreateAPIView):
         except:
             return Response({"ответ": "Ошибка", "Подробнее": serializer_class.errors,
                              "Ошибка от django": str(traceback.format_exc())})
+        
+# Метод для блоков
+class blocksListAPIView(generics.ListAPIView):
+    serializer_class = serializers.blocksSerializer
+    queryset = models.blocks.objects.all()                           

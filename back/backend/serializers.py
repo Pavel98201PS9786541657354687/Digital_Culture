@@ -16,3 +16,9 @@ class applicationsPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = applications
         fields = '__all__'
+
+# Метод для блоков
+class blocksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = blocks
+        fields = '__all__'
