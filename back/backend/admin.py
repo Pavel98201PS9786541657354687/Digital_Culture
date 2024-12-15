@@ -10,9 +10,12 @@ from django.shortcuts import redirect
 from .models import *
 from django.apps import AppConfig
 from adminsortable2.admin import SortableAdminMixin
+from adminsortable2.admin import SortableTabularInline
+from adminsortable2.admin import SortableStackedInline
 
-class projectsFileInline(admin.TabularInline, SortableAdminMixin):
+class projectsFileInline(SortableStackedInline):
     model = projectsFilesModel
+    extra = 0
 
 @admin.register(moviesModel)
 class UserAdmin(SortableAdminMixin, admin.ModelAdmin):

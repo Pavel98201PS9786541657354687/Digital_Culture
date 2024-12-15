@@ -1,4 +1,4 @@
-FROM node:16 AS build
+FROM node:16
 
 # установка рабочей директории для приложения внутри контейнера
 WORKDIR /front
@@ -16,6 +16,10 @@ COPY . .
 RUN npm run build
 
 EXPOSE 4173
+EXPOSE 4174
+EXPOSE 8080
+
+COPY . .
 
 # команда запуска приложения
-CMD npm run preview
+CMD ["npm", "run", "preview"] 

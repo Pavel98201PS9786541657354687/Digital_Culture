@@ -1,5 +1,8 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
+import traceback
 
 # Хранение видео
 class moviesModel(models.Model):
@@ -12,7 +15,9 @@ class moviesModel(models.Model):
     description = models.TextField(verbose_name=u"Описание",
                                    blank=False,
                              null=False,)
-    fileName = models.FileField(verbose_name=u"Файл")
+    fileName = models.FileField(verbose_name=u"Файл", 
+                                # validators=[FileExtensionValidator(['pdf'])]
+                                )
     formatVideo_CHICES = [
         ("horizontal", "Горизонтальное"),
         ("vertical", "Вертикальное"),
@@ -23,6 +28,7 @@ class moviesModel(models.Model):
                               verbose_name=u"Формат файла",
                               blank=False,
                               null=False,)
+    limit_keys = models.PositiveIntegerField(verbose_name=u"Лимит файлов в проекте", default=5)
     dateCreated = models.DateTimeField(auto_now_add=True, 
                                        verbose_name=u"Дата создания")
     dateUpdate = models.DateTimeField(auto_now=True, 
@@ -64,6 +70,19 @@ class projectsFilesModel(models.Model):
                                       verbose_name=u"Дата обновления")
     weight = models.PositiveIntegerField(verbose_name=u"Сортировка",
                                          blank=False, null=False,)
+    def __str__(self):
+        return self.name
+    
+    def clean(self): 
+        project_id = self.projectsId 
+        count_keys = len(projectsFilesModel.objects.filter(projectsId = project_id).values_list("name")) 
+        try:
+            limit_keys = moviesModel.objects.filter(title = project_id).values_list("limit_keys")[0][0]
+        except:
+            print(str(traceback.format_exc()))
+            limit_keys = 5
+        if count_keys > limit_keys:
+            raise ValidationError({"name":(f"К выбранному проекту нельзя прикрепить файлы. На текущий момент превышен лимит - {limit_keys} файлов.")})
     
     class Meta:
         verbose_name = 'Проектные файлы'
