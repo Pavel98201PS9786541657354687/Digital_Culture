@@ -10,7 +10,7 @@
     "format": "eslint --fix ../src --ext ts,tsx",
     "preview": "vite preview"
   },
-  "proxy": "http://91.222.239.188:8000",
+  "proxy": "http://91.222.239.188:8001",
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "axios": "^1.7.9",
