@@ -16,4 +16,5 @@ urlpatterns = [
     path('getListVideo', api.getVideoListAPIView.as_view(), name='getMovies'),
     path('postApplications', api.applicationsPostCreateListAPIView.as_view(), name='postApplications'),
     path('blocks', api.blocksListAPIView.as_view(), name='postApplications'),
+    path('projectsFiles/<project_id>', api.projectsFilesListAPIView.as_view(), name='projectsFiles'),
 ]

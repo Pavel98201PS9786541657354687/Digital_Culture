@@ -22,3 +22,9 @@ class blocksSerializer(serializers.ModelSerializer):
     class Meta:
         model = blocks
         fields = '__all__'
+
+# Метод для вывода проектных файлов
+class projectsFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = projectsFilesModel
+        fields = '__all__'

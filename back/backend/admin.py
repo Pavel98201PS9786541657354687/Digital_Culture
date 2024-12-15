@@ -11,16 +11,31 @@ from .models import *
 from django.apps import AppConfig
 from adminsortable2.admin import SortableAdminMixin
 
+class projectsFileInline(admin.TabularInline, SortableAdminMixin):
+    model = projectsFilesModel
 
 @admin.register(moviesModel)
 class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
+    inlines = [
+        projectsFileInline,
+    ]
     class Meta:
         model = moviesModel
     list_display = ('weight','title', 'description', 'fileName', 
                     'formatVideo', 'dateCreated', 'dateUpdate')
     search_fields = ('title', 'description', 'fileName', 'formatVideo')
     list_filter = ('title', 'description', 'fileName', 'formatVideo')
-    ordring= ('weight',)    
+    ordring= ('weight',)   
+
+@admin.register(projectsFilesModel)
+class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
+    class Meta:
+        model = projectsFilesModel
+    list_display = ('weight','projectsId','name', 'fileName', 
+                    'format', 'dateCreated', 'dateUpdate')
+    search_fields = ('projectsId','name', 'fileName', 'format')
+    list_filter = ('projectsId','name', 'fileName', 'format')
+    ordring= ('weight',)   
 
 @admin.register(applications)
 class UserAdmin(admin.ModelAdmin):

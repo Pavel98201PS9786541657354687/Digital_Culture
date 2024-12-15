@@ -65,4 +65,16 @@ class applicationsPostCreateListAPIView(generics.ListCreateAPIView):
 # Метод для блоков
 class blocksListAPIView(generics.ListAPIView):
     serializer_class = serializers.blocksSerializer
-    queryset = models.blocks.objects.all()                           
+    queryset = models.blocks.objects.all()       
+
+
+# Вывод проектных файлов
+class projectsFilesListAPIView(generics.ListAPIView):
+    serializer_class = serializers.projectsFilesSerializer
+    queryset = models.projectsFilesModel.objects.all()
+    
+    def get_queryset(self):
+        project_id = self.kwargs['project_id']
+        return_data = models.projectsFilesModel.objects\
+            .filter(projectsId = project_id)
+        return return_data                    

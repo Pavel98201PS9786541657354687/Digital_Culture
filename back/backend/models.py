@@ -5,7 +5,8 @@ from django.core.validators import RegexValidator
 class moviesModel(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=255, 
-                             verbose_name=u"Заголовок", 
+                             unique=True,
+                             verbose_name=u"Заголовок",
                              blank=False,
                              null=False,)
     description = models.TextField(verbose_name=u"Описание",
@@ -17,11 +18,11 @@ class moviesModel(models.Model):
         ("vertical", "Вертикальное"),
         ("quadratic", "Квадратное")
     ]
-    
     formatVideo = models.CharField(max_length=50, choices=formatVideo_CHICES, 
-    default="URL в млг не найден", verbose_name=u"Формат видео",
-                            blank=False,
-                             null=False,)
+                              default="Горизонтальное", 
+                              verbose_name=u"Формат файла",
+                              blank=False,
+                              null=False,)
     dateCreated = models.DateTimeField(auto_now_add=True, 
                                        verbose_name=u"Дата создания")
     dateUpdate = models.DateTimeField(auto_now=True, 
@@ -29,11 +30,46 @@ class moviesModel(models.Model):
     weight = models.PositiveIntegerField(verbose_name=u"Сортировка",
                                          blank=False,
                                         null=False,)
-
+    def __str__(self):
+        return self.title
     class Meta:
         verbose_name = 'Видео'
         verbose_name_plural = 'Видео'
         ordering = ('weight',)
+
+class projectsFilesModel(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    projectsId = models.ForeignKey('moviesModel', on_delete=models.CASCADE,
+                                   blank=False, default='',
+                                   verbose_name=u"Проект")
+    name = models.CharField(max_length=255, 
+                             verbose_name=u"Имя", 
+                             blank=False,
+                             null=False,)
+    fileName = models.FileField(verbose_name=u"Файл")
+    formatVideo_CHICES = [
+        ("horizontal", "Горизонтальное"),
+        ("vertical", "Вертикальное"),
+        ("quadratic", "Квадратное")
+    ]
+    
+    format = models.CharField(max_length=50, choices=formatVideo_CHICES,
+                              default="Горизонтальное", 
+                              verbose_name=u"Формат файла",
+                              blank=False,
+                              null=False,)
+    dateCreated = models.DateTimeField(auto_now_add=True, 
+                                       verbose_name=u"Дата создания")
+    dateUpdate = models.DateTimeField(auto_now=True, 
+                                      verbose_name=u"Дата обновления")
+    weight = models.PositiveIntegerField(verbose_name=u"Сортировка",
+                                         blank=False, null=False,)
+    
+    class Meta:
+        verbose_name = 'Проектные файлы'
+        verbose_name_plural = 'Проектные файлы'
+        ordering = ('weight',)
+
 
 # Валидатор для телефона
 phone_validator = RegexValidator(r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "The phone number provided is invalid")
