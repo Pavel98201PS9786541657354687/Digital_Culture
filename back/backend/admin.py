@@ -10,7 +10,6 @@ from django.shortcuts import redirect
 from .models import *
 from django.apps import AppConfig
 from adminsortable2.admin import SortableAdminMixin
-from adminsortable2.admin import SortableTabularInline
 from adminsortable2.admin import SortableStackedInline
 
 class projectsFileInline(SortableStackedInline):
@@ -31,14 +30,14 @@ class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     ordring= ('weight',)   
 
 @admin.register(projectsFilesModel)
-class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     class Meta:
         model = projectsFilesModel
-    list_display = ('weight','projectsId','name', 'fileName', 
+    list_display = ('projectsId','name', 'fileName', 
                     'format', 'dateCreated', 'dateUpdate')
     search_fields = ('projectsId','name', 'fileName', 'format')
     list_filter = ('projectsId','name', 'fileName', 'format')
-    ordring= ('weight',)   
+    ordring= ('dateUpdate',)   
 
 @admin.register(applications)
 class UserAdmin(admin.ModelAdmin):
@@ -48,7 +47,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('initials','phone_number', 'email', 'comments','dateCreated')
     search_fields = ('initials','phone_number', 'email', 'comments','dateCreated')
     list_filter = ('initials','phone_number', 'email', 'comments','dateCreated')
-    ordring= ('initials',)
+    ordring= ('dateCreated',)
 
 @admin.register(blocks)
 class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
