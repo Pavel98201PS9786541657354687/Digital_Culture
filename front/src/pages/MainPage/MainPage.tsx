@@ -6,7 +6,7 @@ import { Header, PortfolioGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
-import liveEye from "@/assets/live-eye.webp";
+import liveEye from "@/assets/animated-eye.webp";
 import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../App";
 import axios from "axios";
