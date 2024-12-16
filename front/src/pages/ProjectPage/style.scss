@@ -1,17 +1,22 @@
 .project-page {
   &--container {
-    padding: 120px 0;
-
-    &__main-video {
+    &__file {
       width: 100%;
       height: 300px;
-      object-fit: cover;
       overflow: hidden;
       border-radius: 32px;
+      position: relative;
+
+      img, video {
+        width: 100%; /* Задает ширину видео на 100% */
+        height: 100%; /* Задает высоту видео на 100% */
+        object-fit: cover; /* Сохраняет пропорции видео и заполняет контейнер */
+      }
     }
   }
 
   &--content {
+    margin-top: 120px;
     width: 100%;
     padding-inline: 24px;
     display: flex;
