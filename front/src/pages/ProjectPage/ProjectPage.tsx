@@ -1,35 +1,91 @@
 import { Header } from "@/pages/MainPage/components";
 import "./style.scss";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { LoadingContext, ProjectDataContext } from "../../App";
 
-export const ProjectPage = () => {
-  const videoData = "BACKTOSCHOOL.mp4";
+type Props = {
+  setLoading: (boolean) => void;
+};
+
+export const ProjectPage = (props: Props) => {
+  const { setLoading } = props;
+
+  const projectData = useContext(ProjectDataContext)
+  const loading = useContext(LoadingContext);
+
+  const { projectId } = useParams();
+  const [projectInfo, setProjectInfo] = useState(null);
+  const [projectFiles, setProjectFiles] = useState([]);
+
+  useEffect(() => {
+    if (projectData) {
+      setProjectInfo(projectData);
+    }
+  }, [projectData]);
+
+  const fetchProject = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`/api/projectsFiles/${projectId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const files = response.data?.results;
+      setProjectFiles(files);
+    } catch (err) {
+      console.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProject();
+  }, []);
+
+  const renderFileByType = (path) => {
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg'];
+    const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.mkv', '.flv', '.webm'];
+
+    const extension = path.toLowerCase().split('.').pop();
+
+    if (imageExtensions.includes(`.${extension}`)) {
+      return (
+        <img src={path} alt="" />
+      );
+    } else if (videoExtensions.includes(`.${extension}`)) {
+      return (
+        <video autoPlay muted loop>
+          <source src={path} type="video/mp4" />
+          Не удалось воспроизвести видео
+        </video>
+      );
+    } else {
+      return "Тип файла не поддерживается";
+    }
+  };
+
+  if (loading) return <h2>Loading...</h2>;
 
   return (
     <div className="project-page--container">
       <Header />
       <div className="project-page--content">
         <div className="title">
-          Приглашение на вечеринку Kultura
-          <br />
-          16 марта
-        </div>
-        <div className="project-page--container__main-video">
-          <video autoPlay muted loop>
-            <source src={`src/assets/video/${videoData}`} type="video/mp4" />
-            Не удалось воспроизвести видео
-          </video>
+          {projectInfo?.title}
         </div>
         <div className="description">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
+          {projectInfo?.description}
         </div>
+        {loading ? <h2>Loading...</h2> : projectFiles.map((file) => (
+          <div className="project-page--container__file">
+            {renderFileByType(file?.fileName)}
+          </div>
+        ))}
       </div>
     </div>
   );

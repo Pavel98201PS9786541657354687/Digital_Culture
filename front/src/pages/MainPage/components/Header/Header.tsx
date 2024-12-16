@@ -1,10 +1,10 @@
-// import eyeLogoFrame from "@/assets/eyeLogoFrame.png";
+import eyeLogoFrame from "@/assets/eyeLogoFrame.png";
 import eyeLogo from "@/assets/eyeLogo.png";
 import { gsap } from "gsap";
 import { useRef, useState } from "react";
 import "./style.scss";
 import { useGSAP } from "@gsap/react";
-// import kulturaLogo from "@/assets/kultura.png";
+import kulturaLogo from "@/assets/kultura.png";
 import headerLogo from "@/assets/header-logo.gif";
 
 export const Header = () => {
@@ -12,20 +12,20 @@ export const Header = () => {
 
   const menuRef = useRef(null);
 
-  // useGSAP(() => {
-  //   gsap.to(".eye-logo", {
-  //     duration: 1,
-  //     motionPath: {
-  //       path: "#path",
-  //       align: "#path",
-  //       alignOrigin: [0.5, 0.6],
-  //     },
-  //     repeat: -1,
-  //     yoyo: true, // Цикличность анимации
-  //     repeatDelay: 1.5, // Задержка перед следующим повторением
-  //     ease: "power3.in", // Плавность анимации
-  //   });
-  // });
+  useGSAP(() => {
+    gsap.to(".eye-logo", {
+      duration: 1,
+      motionPath: {
+        path: "#path",
+        align: "#path",
+        alignOrigin: [0.5, 0.6],
+      },
+      repeat: -1,
+      yoyo: true, // Цикличность анимации
+      repeatDelay: 1.5, // Задержка перед следующим повторением
+      ease: "power3.in", // Плавность анимации
+    });
+  });
 
   const handleToggleMenu = () => {
     if (menuOpen) {
@@ -47,7 +47,6 @@ export const Header = () => {
   
   const img = new Image();
   img.src = eyeLogo;
-  console.log(img);
 
   return (
     <div className="header-container">
