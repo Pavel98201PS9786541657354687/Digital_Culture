@@ -5,5 +5,5 @@
 - python manage.py runserver
 
 # Тестовый пользователь (с правами админа)
-Логин: admin
-Пароль: admin
+- Логин: admin
+- Пароль: admin
