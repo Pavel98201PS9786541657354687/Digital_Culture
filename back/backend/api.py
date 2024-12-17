@@ -45,7 +45,7 @@ class applicationsPostCreateListAPIView(generics.ListCreateAPIView):
         try:
             data = request.data
             # Формируем сообщение
-            message = str(f"Новый пользователь: {data['initials']}, оставил заявку.\nКонтакты для связи\nТелефон: {data['phone_number']},\nE-mail: {data['email']}.\nОписание: {data['comments']}")
+            message = str(f"Новая заявка от {data['initials']}.\nКомпания: {data['copmany']}\nСфера деятельности{data['sphere_activity']}\nСоц. сети организации {data['url_links']}\nТелефон для связи: {data['phone_number']}.\nОписание: {data['comments']}")
             serializer_class = serializers.applicationsPostSerializer(data=data)
             queryset = models.applications.objects.all()
             serializer_class.is_valid(raise_exception=True)

@@ -42,11 +42,17 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(applications)
 class UserAdmin(admin.ModelAdmin):
     class Meta:
-        model = moviesModel
+        model = applications
         
-    list_display = ('initials','phone_number', 'email', 'comments','dateCreated')
-    search_fields = ('initials','phone_number', 'email', 'comments','dateCreated')
-    list_filter = ('initials','phone_number', 'email', 'comments','dateCreated')
+    list_display = ('initials','phone_number', 'company', 
+                    'sphere_activity','url_links', 
+                    'comments','dateCreated')
+    search_fields = ('initials','phone_number', 'company', 
+                    'sphere_activity',
+                    'dateCreated')
+    list_filter = ('initials','phone_number', 'company', 
+                   'sphere_activity',
+                   'dateCreated')
     ordring= ('dateCreated',)
 
 @admin.register(blocks)
