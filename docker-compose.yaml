@@ -5,9 +5,9 @@ services:
     build: ./front/
     container_name: frontend
     ports:
-      - "4175:4175"
+      - "8080:8080"
     expose:
-      - "4175"
+      - "8080"
     volumes:
       - ./front:/front/
       - node_modules:/front/node_modules
