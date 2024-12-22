@@ -6,8 +6,15 @@ import "./style.scss";
 import { useGSAP } from "@gsap/react";
 import kulturaLogo from "@/assets/kultura.png";
 import headerLogo from "@/assets/header-logo.gif";
+import liveLogoLetters from "../../../../assets/live-logo-letters.webm";
 
-export const Header = () => {
+type Props = {
+  onOpenModal: () => void;
+}
+
+export const Header = (props: Props) => {
+  const { onOpenModal } = props;
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
@@ -52,8 +59,15 @@ export const Header = () => {
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
         <div className="header-left">
-          <div className="animated-logo" style={{ height: 70, overflow: "hidden", display: "flex", alignItems: "center", marginTop: -20 }}>
-            <img src={headerLogo} alt="" height={170} />
+          {/*<div className="animated-logo"*/}
+          {/*     style={{ height: 70, overflow: "hidden", display: "flex", alignItems: "center", marginTop: -20 }}>*/}
+          {/*  <img src={headerLogo} alt="" height={170} />*/}
+          {/*</div>*/}
+          <div>
+            <video width="60%" autoPlay loop muted>
+              <source src={liveLogoLetters} type="video/webm" />
+              Ваш браузер не поддерживает видео.
+            </video>
           </div>
           {/*<div className="logo-container">*/}
           {/*  <img className="eye-logo-frame" src={eyeLogoFrame} alt="Frame" />*/}
@@ -96,7 +110,7 @@ export const Header = () => {
           <li>услуги</li>
           <li id="about-menu-item">о нас</li>
         </ul>
-        <button>связаться с нами</button>
+        <button onClick={onOpenModal}>связаться с нами</button>
       </div>
     </div>
   );

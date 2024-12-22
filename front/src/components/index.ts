@@ -1,1 +1,1 @@
-export * from "./FlutedGlass";
+export * from "./Modal";

@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../App";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
+import { Modal } from "../../components";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
@@ -24,6 +25,7 @@ export const MainPage = (props: Props) => {
   const loading = useContext(LoadingContext);
   console.log("loading", loading);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [videos, setVideos] = useState([]);
   const [videosLoadingState, setVideosLoadingState] = useState([]);
   const limit = 10;
@@ -124,27 +126,33 @@ export const MainPage = (props: Props) => {
   </div>;
 
   return (
-    <div className="container">
-      <div id="eye-container">
-        <div className="image-container">
-          <img id="eye-video" src={liveEye} alt="Eye video shot" />
-        </div>
-      </div>
-      <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
-      <Header />
-      <div className="banner">
-        <div className="slogan-container">
-          <div className="slogan-big">СОЗДАЕМ</div>
-          <div className="slogan-big">3D РЕКЛАМУ</div>
-          <div className="slogan-small">
-            <div>КОТОРУЮ</div>
-            <div>ЗАПОМНЯТ</div>
+    <>
+      <div className="container">
+        <div id="eye-container">
+          <div className="image-container">
+            <img id="eye-video" src={liveEye} alt="Eye video shot" />
           </div>
         </div>
-        <button className="banner-action-button">ЗАКАЗАТЬ РЕКЛАМУ</button>
+        <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
+        <Header onOpenModal={() => setIsModalOpen(true)} />
+        <div className="banner">
+          <div className="slogan-container">
+            <div className="slogan-big">СОЗДАЕМ</div>
+            <div className="slogan-big">3D РЕКЛАМУ</div>
+            <div className="slogan-small">
+              <div>КОТОРУЮ</div>
+              <div>ЗАПОМНЯТ</div>
+            </div>
+          </div>
+          <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>ЗАКАЗАТЬ РЕКЛАМУ</button>
+        </div>
+        <PortfolioGrid videos={videos} offset={offset} increaseOffset={() => setOffset(offset + 1)}
+                       setProjectInfo={setProjectInfo} setLoading={setLoading} />
+        <ServicesCarousel setLoading={setLoading} />
       </div>
-      <PortfolioGrid videos={videos} offset={offset} increaseOffset={() => setOffset(offset + 1)} setProjectInfo={setProjectInfo} setLoading={setLoading} />
-      <ServicesCarousel setLoading={setLoading} />
-    </div>
+      <Modal title="Обсудить мой проект" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2>Hello</h2>
+      </Modal>
+    </>
   );
 };
