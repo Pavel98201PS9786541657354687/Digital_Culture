@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import "./style.scss";
 import { chunkArrayRandomSize } from "@/pages/MainPage/components/PortfolioGrid/utils";
-import downArrow from "@/assets/arrow-down.png";
+import downArrow from "@/assets/arrow.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -47,17 +47,11 @@ export const PortfolioGrid = (props: Props) => {
             trigger: line,
             start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
             once: true,
-            onEnter: () => {
-              console.log("onEnter");
-            },
           },
         },
       );
     });
   }, [lineGroups]);
-
-  console.log("videos", videos);
-  console.log("lineGroups", lineGroups);
 
   return (
     <>
@@ -91,7 +85,6 @@ export const PortfolioGrid = (props: Props) => {
         })}
       </div>
       <div className="show-more-button" onClick={increaseOffset}>
-        <div>ПОСМОТРЕТЬ ЕЩЕ</div>
         <img src={downArrow} alt="" />
       </div>
     </>

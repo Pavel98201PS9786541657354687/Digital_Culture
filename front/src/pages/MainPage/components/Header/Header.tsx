@@ -1,12 +1,11 @@
-import eyeLogoFrame from "@/assets/eyeLogoFrame.png";
 import eyeLogo from "@/assets/eyeLogo.png";
 import { gsap } from "gsap";
 import { useRef, useState } from "react";
 import "./style.scss";
 import { useGSAP } from "@gsap/react";
-import kulturaLogo from "@/assets/kultura.png";
-import headerLogo from "@/assets/header-logo.gif";
-import liveLogoLetters from "../../../../assets/live-logo-letters.webm";
+import liveLogoLetters from "@/assets/live-logo-letters.webm";
+import liveLogoEye from "@/assets/live-logo-eye.webm";
+import { useNavigate } from "react-router";
 
 type Props = {
   onOpenModal: () => void;
@@ -18,6 +17,7 @@ export const Header = (props: Props) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useGSAP(() => {
     gsap.to(".eye-logo", {
@@ -58,37 +58,15 @@ export const Header = (props: Props) => {
   return (
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
-        <div className="header-left">
-          {/*<div className="animated-logo"*/}
-          {/*     style={{ height: 70, overflow: "hidden", display: "flex", alignItems: "center", marginTop: -20 }}>*/}
-          {/*  <img src={headerLogo} alt="" height={170} />*/}
-          {/*</div>*/}
-          <div>
-            <video width="60%" autoPlay loop muted>
+        <div className="header-left" onClick={() => navigate("/")}>
+            <video width="12%" autoPlay loop muted>
+              <source src={liveLogoEye} type="video/webm" />
+              Ваш браузер не поддерживает видео.
+            </video>
+            <video className="logo-letters" width="60%" autoPlay loop muted>
               <source src={liveLogoLetters} type="video/webm" />
               Ваш браузер не поддерживает видео.
             </video>
-          </div>
-          {/*<div className="logo-container">*/}
-          {/*  <img className="eye-logo-frame" src={eyeLogoFrame} alt="Frame" />*/}
-          {/*  <img className="eye-logo" src={eyeLogo} alt="Logo" />*/}
-          {/*  <svg className="eye-path" width="0" height="0">*/}
-          {/*    <path id="path" d="M 20 -6 L 29 -12" />*/}
-          {/*  </svg>*/}
-          {/*</div>*/}
-          {/*<div className="logo-container--literal">*/}
-          {/*  <div className="letters-digital-container">*/}
-          {/*    {Array.from("DIGITAL").map((letter, index) => (*/}
-          {/*      <span*/}
-          {/*        key={index}*/}
-          {/*        className="letter"*/}
-          {/*        style={{ display: "inline-block" }}>*/}
-          {/*        {letter}*/}
-          {/*      </span>*/}
-          {/*    ))}*/}
-          {/*  </div>*/}
-          {/*  <img id="kultura-logo" src={kulturaLogo} alt="Kultura Logo" />*/}
-          {/*</div>*/}
         </div>
         <div
           id="menu-button"
