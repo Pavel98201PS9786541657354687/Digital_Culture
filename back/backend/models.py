@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 import traceback
+from django.core.validators import URLValidator
 
 # Хранение видео
 class moviesModel(models.Model):
@@ -97,26 +98,33 @@ phone_validator = RegexValidator(r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\
 class applications(models.Model):
     application_id = models.BigAutoField(primary_key=True)
     initials = models.CharField(max_length=255, 
-                               verbose_name=u"ФИО",
+                               verbose_name=u"Имя",
                              blank=False, null=False)
     phone_number = models.CharField(max_length=16, 
                                     validators=[phone_validator], 
                                     unique=True,
                                     verbose_name=u"Телефон")
-    email = models.EmailField(max_length=100, unique=True,
-                              verbose_name=u"E-mail")
-    title = models.CharField(max_length=255, 
-                             verbose_name=u"Заголовок", 
-                             blank=False,
-                             null=False,)
-    comments = models.TextField(verbose_name=u"Комментарии",
-                                   blank=False, null=False)
+    company = models.CharField(max_length=1000,
+                               verbose_name=u"Организация",
+                               blank=True, null=True,
+                               default="")
+    sphere_activity = models.CharField(max_length=255, 
+                             verbose_name=u"Сфера деятельности", 
+                             blank=True, null=True,
+                             default='')
+    url_links = models.CharField(max_length=1000,
+                                 validators=[URLValidator()],
+                                 verbose_name=u"Соц. сети организации",
+                                 blank=True, null=True, default='')
+    comments = models.TextField(max_length=1000,
+                                verbose_name=u"Комментарии",
+                                blank=True, null=True,)
     dateCreated = models.DateTimeField(auto_now_add=True, 
                                        verbose_name=u"Дата отправки заявки")
     class Meta:
         verbose_name = 'Заявки'
         verbose_name_plural = 'Заявки'
-        ordering = ('initials',)
+        ordering = ('dateCreated',)
 
 # Хранение блоков
 class blocks(models.Model):

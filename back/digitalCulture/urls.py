@@ -17,9 +17,9 @@ from django.urls import re_path as url
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="Документация к API",
         default_version='v1',
-        description="Документация к API Биржы цитирования",
+        description="Документация к API",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
