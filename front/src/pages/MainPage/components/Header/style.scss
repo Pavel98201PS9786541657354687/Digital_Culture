@@ -15,55 +15,13 @@
       z-index: 100;
 
       &-left {
+        width: fit-content;
         display: flex;
         align-items: flex-start;
-        column-gap: 3px;
-      }
 
-      .logo-container {
-        position: relative;
-        width: 50px;
-        height: 50px;
-
-        .eye-logo {
-          position: absolute;
-          width: 27px;
-        }
-
-        .eye-logo-frame {
-          position: absolute;
-          width: 50px;
-        }
-
-        .eye-path {
-          position: absolute;
-          bottom: 32px;
-        }
-
-        &--literal {
-          position: relative;
-          height: 100%;
-
-          #kultura-logo {
-            position: absolute;
-            width: 77px;
-            bottom: -10px;
-            left: -7px;
-          }
-        }
-      }
-
-      .letters-digital-container {
-        display: flex;
-        font-size: 36px;
-        margin-top: -2px;
-
-        .letter {
-          color: #ffffff;
-          font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
-          font-weight: 800;
-          font-size: 36px;
-          line-height: 29px;
+        .logo-letters {
+          margin-top: -39px;
+          margin-left: -3px;
         }
       }
 
@@ -74,6 +32,7 @@
         transform: rotate(0deg);
         transition: 0.5s ease-in-out;
         cursor: pointer;
+        display: flex;
 
         span {
           display: block;

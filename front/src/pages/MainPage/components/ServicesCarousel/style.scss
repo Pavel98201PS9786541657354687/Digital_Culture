@@ -6,7 +6,6 @@
     overflow: hidden;
   }
 
-
   #panels {
     #panels-container {
       height: 100vh;
@@ -88,6 +87,7 @@
             border: none;
             color: #ffffff;
             border-radius: 8px;
+            z-index: 100;
           }
         }
       }

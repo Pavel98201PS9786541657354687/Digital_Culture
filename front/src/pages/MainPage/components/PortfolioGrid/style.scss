@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  margin-bottom: 100px;
+  margin-bottom: 30px;
 
   .portfolio-line {
     display: grid;
@@ -38,18 +38,13 @@
 }
 
 .show-more-button {
+  display: flex;
+  justify-content: center;
+  width: 50%;
   margin-inline: auto;
   cursor: pointer;
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 8px;
-  font-size: 12px;
-  color: #ffffff;
-  font-family: YandexSansDisplay-Thin, sans-serif;
 
   img {
-    width: 130px;
+    width: 150px;
   }
 }

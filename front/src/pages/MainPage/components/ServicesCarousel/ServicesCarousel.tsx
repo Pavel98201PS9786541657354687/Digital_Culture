@@ -2,9 +2,15 @@ import "./style.scss";
 import { gsap } from "gsap";
 import { toArray } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
-import { serviceTilesContent } from "@/pages/MainPage/components/ServicesCarousel/constants";
 
-export const ServicesCarousel = () => {
+type Props = {
+  blocks: any[];
+  openModal: () => void;
+}
+
+export const ServicesCarousel = (props: Props) => {
+  const { blocks = [], openModal } = props;
+
   useGSAP(() => {
     const panelsContainer = document.getElementById("panels-container");
     const panels = toArray("#panels-container .panel");
@@ -25,13 +31,13 @@ export const ServicesCarousel = () => {
         end: () =>  "+=" + (panelsContainer?.offsetWidth - innerWidth),
       },
     });
-  })
+  }, [blocks]);
 
   return (
     <div id="page" className="site">
       <section id="panels" style={{ overflow: "hidden" }}>
-        <div id="panels-container" style={{ width: "500%" }}>
-          {serviceTilesContent.map((tileContent, index) => (
+        <div id="panels-container" style={{ width: `${blocks?.length * 100}%` }}>
+          {blocks.map((tileContent, index) => (
             <div
               key={index}
               id={`panel-${index + 1}`}
@@ -39,7 +45,7 @@ export const ServicesCarousel = () => {
               <div className="service-tile">
                 <div className="service-tile--title">{tileContent.title}:</div>
                 <div className="service-tile--description">{tileContent.description}</div>
-                <button className="service-tile--action">ЗАКАЗАТЬ</button>
+                <button className="service-tile--action" onClick={openModal}>ЗАКАЗАТЬ</button>
               </div>
             </div>
           ))}
