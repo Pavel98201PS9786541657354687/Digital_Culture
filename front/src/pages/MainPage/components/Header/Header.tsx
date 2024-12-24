@@ -1,4 +1,3 @@
-import eyeLogo from "@/assets/eyeLogo.png";
 import { gsap } from "gsap";
 import { useRef, useState } from "react";
 import "./style.scss";
@@ -51,9 +50,6 @@ export const Header = (props: Props) => {
       });
     }
   };
-  
-  const img = new Image();
-  img.src = eyeLogo;
 
   return (
     <div className="header-container">
