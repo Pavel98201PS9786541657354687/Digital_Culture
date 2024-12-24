@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import "./style.scss";
 import { chunkArrayRandomSize } from "@/pages/MainPage/components/PortfolioGrid/utils";
-import downArrow from "@/assets/arrow.png";
+import downArrow from "@/assets/show-more-arrow.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
