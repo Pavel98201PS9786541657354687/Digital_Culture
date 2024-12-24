@@ -1,9 +1,12 @@
-import { Header } from "@/pages/MainPage/components";
+import { Form, Header } from "@/pages/MainPage/components";
 import "./style.scss";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { LoadingContext, ProjectDataContext } from "../../App";
+import { PuffLoader } from "react-spinners";
+import { Modal } from "../../components";
+import { Footer } from "../MainPage/components/Footer";
 
 type Props = {
   setLoading: (boolean) => void;
@@ -16,6 +19,8 @@ export const ProjectPage = (props: Props) => {
   const loading = useContext(LoadingContext);
 
   const { projectId } = useParams();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectInfo, setProjectInfo] = useState(null);
   const [projectFiles, setProjectFiles] = useState([]);
 
@@ -69,24 +74,42 @@ export const ProjectPage = (props: Props) => {
     }
   };
 
-  if (loading) return <h2>Loading...</h2>;
+  const handleSubmit = () => {
+    setIsModalOpen(false);
+  };
+
+  if (loading) return <div className="loader">
+    <PuffLoader />
+  </div>;
 
   return (
-    <div className="project-page--container">
-      <Header />
-      <div className="project-page--content">
-        <div className="title">
-          {projectInfo?.title}
-        </div>
-        <div className="description">
-          {projectInfo?.description}
-        </div>
-        {loading ? <h2>Loading...</h2> : projectFiles.map((file) => (
-          <div className="project-page--container__file">
-            {renderFileByType(file?.fileName)}
+    <>
+      <div className="project-page">
+        <div className="project-page--container">
+          <Header />
+          <div className="project-page--content">
+            <div className="title">
+              {projectInfo?.title}
+            </div>
+            <div className="description">
+              {projectInfo?.description}
+            </div>
+            {loading ? <PuffLoader /> : projectFiles.map((file) => (
+              <div className="project-page--container__file">
+                {renderFileByType(file?.fileName)}
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        <div className="form-wrapper">
+          <h2>Обсудим ваш проект?</h2>
+          <Form />
+        </div>
+        <Footer />
       </div>
-    </div>
+      <Modal title="Свяжемся, чтобы обсудить детали" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Form onSubmit={handleSubmit} />
+      </Modal>
+    </>
   );
 };

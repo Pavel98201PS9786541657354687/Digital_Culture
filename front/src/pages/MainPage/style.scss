@@ -15,32 +15,18 @@
     opacity: 90%;
 
     .image-container {
-      //overflow: hidden;
       position: relative;
       display: inline-block;
-
-      //&::after {
-      //  content: "";
-      //  position: absolute;
-      //  bottom: -35px;
-      //  left: 0;
-      //  right: 0;
-      //  height: 35%; /* Высота области размытия и прозрачности */
-      //  opacity: 100%;
-      //  background: #808180;
-      //  filter: blur(10px); /* Настройте уровень размытия */
-      //  pointer-events: none; /* Чтобы не мешать взаимодействию с изображением */
-      //}
 
       /* Псевдоэлемент для создания тени */
       &::before {
         content: ""; /* Обязательно указываем content для псевдоэлемента */
-        position: absolute; /* Абсолютное позиционирование */
-        top: 0; /* Начинаем от верхней границы контейнера */
-        left: 0; /* Начинаем от левой границы контейнера */
-        right: 0; /* Растягиваем до правой границы контейнера */
-        bottom: -1px; /* Растягиваем до нижней границы контейнера */
-        box-shadow: -1px -80px 73px -6px rgba(128, 129, 128, 1) inset; /* Ваша тень */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        box-shadow: -1px -80px 73px -6px rgba(128, 129, 128, 1) inset;
         pointer-events: none; /* Чтобы клик по тени не блокировал взаимодействие с изображением */
       }
 
@@ -106,41 +92,6 @@
       padding-inline: 10px;
       color: #ffffff;
       border: none;
-    }
-  }
-
-  .ribbed-blur {
-    position: relative;
-    width: 300px;
-    height: 200px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    overflow: hidden; /* Скрываем лишнее */
-    backdrop-filter: blur(5px); /* Общее размытие фона */
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-
-      background: repeating-linear-gradient(
-                      45deg,
-                      rgba(255, 255, 255, 0.2),
-                      rgba(255, 255, 255, 0.2) 10px,
-                      rgba(255, 255, 255, 0.1) 10px,
-                      rgba(255, 255, 255, 0.1) 20px
-      );
-
-      filter: blur(5px); /* Размытие для создания ребристого эффекта */
-      z-index: 1; /* Под содержимым */
-    }
-
-    h1 {
-      position: relative; /* Содержимое должно быть выше псевдоэлемента */
-      z-index: 2; /* Устанавливаем выше эффекта */
     }
   }
 }
