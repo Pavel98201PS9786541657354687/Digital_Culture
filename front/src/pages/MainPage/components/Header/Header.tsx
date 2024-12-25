@@ -18,21 +18,6 @@ export const Header = (props: Props) => {
   const menuRef = useRef(null);
   const navigate = useNavigate();
 
-  useGSAP(() => {
-    gsap.to(".eye-logo", {
-      duration: 1,
-      motionPath: {
-        path: "#path",
-        align: "#path",
-        alignOrigin: [0.5, 0.6],
-      },
-      repeat: -1,
-      yoyo: true, // Цикличность анимации
-      repeatDelay: 1.5, // Задержка перед следующим повторением
-      ease: "power3.in", // Плавность анимации
-    });
-  });
-
   const handleToggleMenu = () => {
     if (menuOpen) {
       gsap.to(menuRef.current, {
