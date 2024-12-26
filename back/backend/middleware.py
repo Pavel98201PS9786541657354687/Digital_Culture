@@ -4,5 +4,5 @@ class ContentTypeMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        response['Content-Type'] = 'text/html'
+        response['Content-Type'] = 'application/json'
         return response
