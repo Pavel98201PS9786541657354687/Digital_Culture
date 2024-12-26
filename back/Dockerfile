@@ -10,5 +10,8 @@ RUN apt-get update && apt-get install -y netcat-openbsd iputils-ping postgresql-
 COPY requirements.txt /back
 RUN pip install -r requirements.txt
 
+# Сборка статических файлов
+RUN python manage.py collectstatic --noinput
+
 # копирование всех файлов приложения в контейнер
 COPY . .
