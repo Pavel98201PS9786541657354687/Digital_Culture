@@ -105,7 +105,7 @@ export const MainPage = (props: Props) => {
           offset,
         }
       });
-      const videoList = response.data?.results;
+      const videoList = response.data?.results ?? [];
       setVideos((prevVideos) => [...prevVideos, ...videoList]);
     } catch (err) {
       console.error(err.message);
@@ -126,7 +126,7 @@ export const MainPage = (props: Props) => {
           offset: 0,
         }
       });
-      const blockList = response.data?.results;
+      const blockList = response.data?.results ?? [];
       setBlocks((prevBlocks) => [...prevBlocks, ...blockList]);
     } catch (err) {
       console.error(err.message);
