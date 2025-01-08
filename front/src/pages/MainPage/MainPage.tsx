@@ -140,9 +140,9 @@ export const MainPage = (props: Props) => {
     fetchBlocks();
   }, [offset]);
 
-  if (loading) return <div className="loader">
-    <PuffLoader />
-  </div>;
+  // if (loading) return <div className="loader">
+  //   <PuffLoader />
+  // </div>;
 
   const handleSubmit = () => {
     setIsModalOpen(false);

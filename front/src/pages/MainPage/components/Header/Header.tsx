@@ -1,7 +1,6 @@
 import { gsap } from "gsap";
 import { useRef, useState } from "react";
 import "./style.scss";
-import { useGSAP } from "@gsap/react";
 import liveLogoLetters from "@/assets/live-logo-letters.webm";
 import liveLogoEye from "@/assets/live-logo-eye.webm";
 import { useNavigate } from "react-router";

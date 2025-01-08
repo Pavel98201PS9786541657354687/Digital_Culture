@@ -15,6 +15,10 @@ body {
     rgba(128, 129, 128, 1) 0%,
     rgba(128, 129, 128, 1) 0%
   );
+
+  #root {
+    background: #191a19;
+  }
 }
 
 @font-face {
