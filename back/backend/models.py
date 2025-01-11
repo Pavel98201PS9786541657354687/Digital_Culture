@@ -15,13 +15,13 @@ class moviesModel(models.Model):
                              null=False,)
     title_en = models.CharField(max_length=255, 
                              unique=True,
-                             verbose_name=u"Заголовок",
+                             verbose_name=u"Заголовок (англ.)",
                              blank=False,
                              null=False, default="")
     description = models.TextField(verbose_name=u"Описание",
                                    blank=False,
                              null=False,)
-    description_en = models.TextField(verbose_name=u"Описание",
+    description_en = models.TextField(verbose_name=u"Описание  (англ.)",
                                    blank=False,
                                 null=False, default="")
     fileName = models.FileField(verbose_name=u"Файл", 
@@ -142,13 +142,13 @@ class blocks(models.Model):
                              blank=False,
                              null=False,)
     title_en = models.CharField(max_length=255, 
-                             verbose_name=u"Заголовок", 
+                             verbose_name=u"Заголовок  (англ.)", 
                              blank=False,
                              null=False, default="")
     description = models.TextField(verbose_name=u"Описание",
                                    blank=False,
                              null=False,)
-    description_en = models.TextField(verbose_name=u"Описание",
+    description_en = models.TextField(verbose_name=u"Описание  (англ.)",
                                    blank=False,
                              null=False, default="")
     dateCreated = models.DateTimeField(auto_now_add=True, 
