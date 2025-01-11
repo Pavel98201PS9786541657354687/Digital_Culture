@@ -45,6 +45,11 @@ class moviesModel(models.Model):
     weight = models.PositiveIntegerField(verbose_name=u"Сортировка",
                                          blank=False,
                                         null=False,)
+    def delete(self, *args, **kwargs):
+        storage, path = self.fileName.storage, self.fileName.path
+        super(moviesModel, self).delete(*args, **kwargs)
+        storage.delete(path)
+    
     def __str__(self):
         return self.title
     class Meta:
@@ -92,6 +97,11 @@ class projectsFilesModel(models.Model):
             limit_keys = 5
         if count_keys > limit_keys:
             raise ValidationError({"name":(f"К выбранному проекту нельзя прикрепить файлы. На текущий момент превышен лимит - {limit_keys} файлов.")})
+    
+    def delete(self, *args, **kwargs):
+        storage, path = self.fileName.storage, self.fileName.path
+        super(projectsFilesModel, self).delete(*args, **kwargs)
+        storage.delete(path)
     
     class Meta:
         verbose_name = 'Проектные файлы'

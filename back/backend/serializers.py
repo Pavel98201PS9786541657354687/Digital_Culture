@@ -3,6 +3,7 @@ from .models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
 from django.http import JsonResponse, HttpResponseBadRequest
+import pandas as pd
 
 # Метод для получения файлов
 class getVideoSerializer(serializers.ModelSerializer):
@@ -22,41 +23,31 @@ class blocksSerializer(serializers.ModelSerializer):
         model = blocks
         fields = '__all__'
 
-# Метод для вывода проектных файлов
-class projectsFilesSerializer(serializers.ModelSerializer):
-    title = serializers.SerializerMethodField()
-    description = serializers.SerializerMethodField()
-    title_en = serializers.SerializerMethodField()
-    description_en = serializers.SerializerMethodField()
-    
+class ProjectsFilesModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = projectsFilesModel
-        fields = ('id', 'projectsId', 'title','title_en',
-                  'description','description_en', 'name', 'fileName',
-                  'format', 'dateCreated', 'dateUpdate', 'weight')
-        
-    def get_title(self, obj):
-        return "Title"
-    
-    def get_description(self, obj):
-        return "Description"
-        
-    def get_title_en(self, obj):
-        return "Title_en"
-    
-    def get_description_en(self, obj):
-        return "Description_en"
-    
+        fields = '__all__'
+
+# Метод для вывода проектных файлов
+class projectsFilesSerializer(serializers.ModelSerializer):
+    files = serializers.SerializerMethodField()
+
+    class Meta:
+        model = moviesModel
+        fields = ('id', 'title', 'title_en', 'description', 'description_en', 'files')
+
+    def get_files(self, obj):
+        return "Title"  # Это может быть изменено на что-то более информативное
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        projectsId = representation['projectsId']
-        # Получаем заголовок и описание
-        title = moviesModel.objects.filter(id = projectsId).values_list("title")[0][0]
-        description = moviesModel.objects.filter(id = projectsId).values_list("description")[0][0]
-        title_en = moviesModel.objects.filter(id = projectsId).values_list("title_en")[0][0]
-        description_en = moviesModel.objects.filter(id = projectsId).values_list("description_en")[0][0]
-        representation['title'] = title
-        representation['title_en'] = title_en
-        representation['description'] = description
-        representation['description_en'] = description_en
-        return representation 
+        try:
+            projectsId = representation['id']
+            files = projectsFilesModel.objects.filter(projectsId=projectsId)
+            serializer = ProjectsFilesModelSerializer(files, many=True)  # Сериализуем файлы
+            representation['files'] = serializer.data  # Добавляем сериализованные данные
+        except Exception as e:
+            representation['files'] = []
+            print(f"Error: {e}")  # Для отладки
+        return representation
+ 

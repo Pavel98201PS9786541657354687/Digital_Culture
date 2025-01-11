@@ -100,7 +100,7 @@ class projectsFilesListAPIView(generics.ListAPIView):
     
     def get_queryset(self):
         project_id = self.kwargs['project_id']
-        return models.projectsFilesModel.objects.filter(projectsId=project_id)
+        return models.moviesModel.objects.filter(id=project_id)
 
     def list(self, request, *args, **kwargs):
         # Получаем стандартный ответ от родительского класса
