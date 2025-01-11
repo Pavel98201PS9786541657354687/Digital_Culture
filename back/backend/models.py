@@ -13,9 +13,17 @@ class moviesModel(models.Model):
                              verbose_name=u"Заголовок",
                              blank=False,
                              null=False,)
+    title_en = models.CharField(max_length=255, 
+                             unique=True,
+                             verbose_name=u"Заголовок",
+                             blank=False,
+                             null=False, default="")
     description = models.TextField(verbose_name=u"Описание",
                                    blank=False,
                              null=False,)
+    description_en = models.TextField(verbose_name=u"Описание",
+                                   blank=False,
+                                null=False, default="")
     fileName = models.FileField(verbose_name=u"Файл", 
                                 # validators=[FileExtensionValidator(['pdf'])]
                                 )
@@ -133,9 +141,16 @@ class blocks(models.Model):
                              verbose_name=u"Заголовок", 
                              blank=False,
                              null=False,)
+    title_en = models.CharField(max_length=255, 
+                             verbose_name=u"Заголовок", 
+                             blank=False,
+                             null=False, default="")
     description = models.TextField(verbose_name=u"Описание",
                                    blank=False,
                              null=False,)
+    description_en = models.TextField(verbose_name=u"Описание",
+                                   blank=False,
+                             null=False, default="")
     dateCreated = models.DateTimeField(auto_now_add=True, 
                                        verbose_name=u"Дата создания")
     dateUpdate = models.DateTimeField(auto_now=True, 
