@@ -8,8 +8,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 class getVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = moviesModel
-        fields = ('id','title', 'description', 'fileName', 
-                  'formatVideo', 'weight')
+        fields = '__all__'
 
 # Метод для отправки формы заявок
 class applicationsPostSerializer(serializers.ModelSerializer):
@@ -51,7 +50,6 @@ class projectsFilesSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         projectsId = representation['projectsId']
-        # print(instance)
         # Получаем заголовок и описание
         title = moviesModel.objects.filter(id = projectsId).values_list("title")[0][0]
         description = moviesModel.objects.filter(id = projectsId).values_list("description")[0][0]
