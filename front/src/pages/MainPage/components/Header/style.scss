@@ -5,6 +5,7 @@
     z-index: 999;
 
     .header {
+      overflow: hidden;
       position: relative;
       width: 100vw;
       height: 90px;
@@ -20,7 +21,7 @@
         align-items: flex-start;
 
         .logo-letters {
-          margin-top: -39px;
+          margin-top: -42px;
           margin-left: -3px;
         }
       }
@@ -114,12 +115,16 @@
       ul {
         font-family: "YandexSansDisplay-Thin", sans-serif;
         list-style: none;
-        margin-top: 110px;
+        margin-top: 32px;
         padding: 0;
         text-align: center;
 
         li {
           margin-top: 16px;
+
+          a {
+            text-decoration: none;
+          }
         }
 
         #about-menu-item {

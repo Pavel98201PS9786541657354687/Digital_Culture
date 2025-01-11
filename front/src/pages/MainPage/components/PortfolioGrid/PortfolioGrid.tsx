@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import "./style.scss";
-import { chunkArrayRandomSize } from "@/pages/MainPage/components/PortfolioGrid/utils";
+import { getGridChunksByFileFormats } from "@/pages/MainPage/components/PortfolioGrid/utils";
 import downArrow from "@/assets/down-arrow.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -22,7 +22,7 @@ export const PortfolioGrid = (props: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const groups = chunkArrayRandomSize(videos);
+    const groups = getGridChunksByFileFormats(videos);
     setLineGroups(groups);
   }, [videos]);
 
@@ -47,25 +47,29 @@ export const PortfolioGrid = (props: Props) => {
             trigger: line,
             start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
             once: true,
+            onEnter: () => {
+              console.log("Enter");
+            }
           },
         },
       );
     });
   }, [lineGroups]);
 
+  if (!lineGroups?.length) {
+    return null;
+  }
+
   return (
     <>
-      <div id="portfolio-section">
+      <div id="projects">
         {lineGroups?.map((lineGroup, index) => {
-          const indexOfDoubleElement =
-            lineGroup?.length === 2 ? Math.floor(Math.random() * 2) : -1;
-
           return (
             <div className="portfolio-line" key={`portfolio-line-${index}`}>
               {lineGroup.map((videoData, videoRowIndex) => (
                 <div
                   key={`line-grid-${index}-${videoRowIndex}`}
-                  className={`tile ${indexOfDoubleElement === videoRowIndex ? "double" : ""} ${lineGroup?.length === 1 ? "full" : ""}`}
+                  className={`tile span-${videoData?.colSpan}`}
                 onClick={() => {
                   setProjectInfo(videoData);
                   navigate(`/projects/${videoData?.id + 1}`);
@@ -73,7 +77,6 @@ export const PortfolioGrid = (props: Props) => {
                   <video autoPlay muted loop>
                     <source
                       src={videoData?.fileName}
-                      // src={`src/assets/video/${videoData}`}
                       type="video/mp4"
                     />
                     Не удалось воспроизвести видео
@@ -84,9 +87,11 @@ export const PortfolioGrid = (props: Props) => {
           );
         })}
       </div>
-      <div className="show-more-button" onClick={increaseOffset}>
-        <img src={downArrow} alt="" />
-      </div>
+      {!!lineGroups?.length && (
+        <div className="show-more-button" onClick={increaseOffset}>
+          <img src={downArrow} alt="" />
+        </div>
+      )}
     </>
   );
 };

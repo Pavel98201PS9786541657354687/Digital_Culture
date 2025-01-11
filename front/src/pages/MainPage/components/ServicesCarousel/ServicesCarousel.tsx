@@ -12,14 +12,14 @@ export const ServicesCarousel = (props: Props) => {
   const { blocks = [], openModal } = props;
 
   useGSAP(() => {
-    const panelsContainer = document.getElementById("panels-container");
-    const panels = toArray("#panels-container .panel");
+    const panelsContainer = document.getElementById("services-container");
+    const panels = toArray("#services-container .panel");
 
     gsap.to(panels, {
       xPercent: -100 * ( panels.length - 1 ),
       ease: "none",
       scrollTrigger: {
-        trigger: "#panels-container",
+        trigger: "#services-container",
         pin: true,
         start: "top top",
         scrub: 2,
@@ -33,10 +33,14 @@ export const ServicesCarousel = (props: Props) => {
     });
   }, [blocks]);
 
+  if (!blocks?.length) {
+    return null;
+  }
+
   return (
-    <div id="page" className="site">
-      <section id="panels" style={{ overflow: "hidden" }}>
-        <div id="panels-container" style={{ width: `${blocks?.length * 100}%` }}>
+    <div>
+      <section id="services" style={{ overflow: "hidden" }}>
+        <div id="services-container" style={{ width: `${blocks?.length * 100}%` }}>
           {blocks.map((tileContent, index) => (
             <div
               key={index}

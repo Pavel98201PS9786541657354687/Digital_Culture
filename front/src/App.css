@@ -9,7 +9,7 @@ body {
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  background: rgb(128, 129, 128);
+  /*background: rgb(128, 129, 128);*/
   background: linear-gradient(
     180deg,
     rgba(128, 129, 128, 1) 0%,
@@ -17,7 +17,7 @@ body {
   );
 
   #root {
-    background: #191a19;
+    /*background: #191a19;*/
   }
 }
 

@@ -18,7 +18,7 @@
   &--content {
     margin-top: 120px;
     width: 100%;
-    padding-inline: 24px;
+    padding-inline: 16px;
     display: flex;
     flex-direction: column;
     row-gap: 16px;
@@ -35,6 +35,7 @@
   }
 
   .form-wrapper {
+    margin-top: 32px;
     width: calc(100% - 32px);
     padding: 32px 16px 16px;
     background-color: rgba(0, 0, 0, 0.2);

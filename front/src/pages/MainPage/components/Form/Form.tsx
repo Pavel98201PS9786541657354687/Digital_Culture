@@ -1,4 +1,4 @@
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 
 import "./style.scss";
 import { useState } from "react";
@@ -11,7 +11,7 @@ export const Form = ({ onSubmit }) => {
   const [sphereActivity, setSphereActivity] = useState("");
   const [urlLinks, setUrlLinks] = useState("");
   const [comments, setComments] = useState("");
-
+  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(null);
 
   const isFormValid = initials.length && phoneNumber.length && company.length && sphereActivity.length && urlLinks.length && comments.length;
@@ -19,9 +19,17 @@ export const Form = ({ onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let formattedNumber = phoneNumber;
+    // Заменяем код страны (7) на 8
+    if (formattedNumber.startsWith("+7")) {
+      formattedNumber = "8" + formattedNumber.slice(2);
+    }
+    // Убираем все нецифровые символы
+    formattedNumber = formattedNumber.replace(/[^0-9]/g, "");
+
     const data = {
       initials,
-      phone_number: phoneNumber,
+      phone_number: formattedNumber,
       company,
       sphere_activity: sphereActivity,
       url_links: urlLinks,
@@ -31,10 +39,17 @@ export const Form = ({ onSubmit }) => {
     try {
       const response = await axios.post('/api/postApplications', data);
 
-      const result = await response.data();
+      const result = await response.data;
       console.log(result);
-      onSubmit();
-      setError(null);
+      if (result.status === 200) {
+        setError(null);
+        setIsSuccess(true);
+        setTimeout(() => {
+          onSubmit();
+        }, 2000);
+      } else {
+        setError(result?.["Подробнее"]);
+      }
     } catch (error) {
       setError("Произошла ошибка при отправке заявки");
     }
@@ -94,7 +109,7 @@ export const Form = ({ onSubmit }) => {
         className={!comments.length && "empty"}
       />
       <input type="submit" value="Отправить" disabled={!isFormValid} />
-      <div className="error">{error}</div>
+      {isSuccess ? <div className="success">Заявка успешно отправлена</div> : <div className="error">{error}</div>}
     </form>
   );
 };

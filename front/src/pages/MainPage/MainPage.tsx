@@ -6,7 +6,7 @@ import { Form, Header, PortfolioGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
-import liveEye from "@/assets/animated-eye.webp";
+import liveEye from "@/assets/live-eye.gif";
 import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../App";
 import axios from "axios";
@@ -68,6 +68,23 @@ export const MainPage = (props: Props) => {
       },
     });
   });
+
+  useEffect(() => {
+    const anchors = document.querySelectorAll('a[href*="#"]')
+
+    for (let anchor of anchors) {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault()
+
+        const blockID = anchor.getAttribute('href').substr(1)
+
+        document.getElementById(blockID).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      })
+    }
+  }, []);
 
   const handleVideoLoad = (index) => {
     setVideosLoadingState((prev) => {

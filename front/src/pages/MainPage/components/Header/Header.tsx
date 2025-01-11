@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { useRef, useState } from "react";
 import "./style.scss";
 import liveLogoLetters from "@/assets/live-logo-letters.webm";
+import liveLogoLettersGif from "@/assets/live-logo-letters.gif";
 import liveLogoEye from "@/assets/live-logo-eye.webm";
 import { useNavigate } from "react-router";
 
@@ -35,18 +36,20 @@ export const Header = (props: Props) => {
     }
   };
 
+  const handleClickMenuItem = () => {
+    setMenuOpen(false);
+    handleToggleMenu();
+  };
+
   return (
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
         <div className="header-left" onClick={() => navigate("/")}>
-            <video width="12%" autoPlay loop muted>
-              <source src={liveLogoEye} type="video/webm" />
-              Ваш браузер не поддерживает видео.
-            </video>
-            <video className="logo-letters" width="60%" autoPlay loop muted>
-              <source src={liveLogoLetters} type="video/webm" />
-              Ваш браузер не поддерживает видео.
-            </video>
+          <video width="12%" autoPlay loop muted>
+            <source src={liveLogoEye} type="video/webm" />
+            Ваш браузер не поддерживает видео.
+          </video>
+          <img className="logo-letters" width="60%" src={liveLogoLettersGif} alt="" />
         </div>
         <div
           id="menu-button"
@@ -63,10 +66,13 @@ export const Header = (props: Props) => {
       <div ref={menuRef} className="menu-container">
         <div className="lang-choice">RU / ENG</div>
         <ul>
-          <li>главная</li>
-          <li>портфолио</li>
-          <li>услуги</li>
-          <li id="about-menu-item">о нас</li>
+          <li onClick={handleClickMenuItem}>
+            <a href="/">
+              главная
+            </a>
+          </li>
+          <li onClick={handleClickMenuItem}><a href="#projects">портфолио</a></li>
+          <li onClick={handleClickMenuItem}><a href="#services">услуги</a></li>
         </ul>
         <button onClick={onOpenModal}>связаться с нами</button>
       </div>

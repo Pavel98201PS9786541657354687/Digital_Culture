@@ -35,12 +35,20 @@ form {
   }
 
   .error {
-    position: absolute;
-    bottom: -8px;
+    margin-top: -20px;
     width: 100%;
     font-size: 14px;
     font-family: YandexSansDisplay-Thin, sans-serif;
     text-align: center;
     color: red;
+  }
+
+  .success {
+    margin-top: -20px;
+    width: 100%;
+    font-size: 14px;
+    font-family: YandexSansDisplay-Thin, sans-serif;
+    text-align: center;
+    color: green;
   }
 }
