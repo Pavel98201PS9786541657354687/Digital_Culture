@@ -1,27 +1,52 @@
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 
 import "./style.scss";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { LanguageContext } from "../../../../App";
+import { literalContent } from "../../../../constants";
 
-export const Form = ({ onSubmit }) => {
+type Props = {
+  onSubmit: () => void;
+  theme?: "light" | "dark";
+}
+
+export const Form = (props: Props) => {
+  const { onSubmit, theme = "light" } = props;
+
   const [initials, setInitials] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [company, setCompany] = useState("");
   const [sphereActivity, setSphereActivity] = useState("");
   const [urlLinks, setUrlLinks] = useState("");
   const [comments, setComments] = useState("");
-
+  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(null);
 
-  const isFormValid = initials.length && phoneNumber.length && company.length && sphereActivity.length && urlLinks.length && comments.length;
+  const language = useContext(LanguageContext);
+
+  const isFormValid =
+    initials.length
+    && phoneNumber.length
+    && company.length
+    && sphereActivity.length
+    && urlLinks.length
+    && comments.length;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let formattedNumber = phoneNumber;
+    // Заменяем код страны (7) на 8
+    if (formattedNumber.startsWith("+7")) {
+      formattedNumber = "8" + formattedNumber.slice(2);
+    }
+    // Убираем все нецифровые символы
+    formattedNumber = formattedNumber.replace(/[^0-9]/g, "");
+
     const data = {
       initials,
-      phone_number: phoneNumber,
+      phone_number: formattedNumber,
       company,
       sphere_activity: sphereActivity,
       url_links: urlLinks,
@@ -31,21 +56,41 @@ export const Form = ({ onSubmit }) => {
     try {
       const response = await axios.post('/api/postApplications', data);
 
-      const result = await response.data();
-      console.log(result);
-      onSubmit();
-      setError(null);
+      const result = await response.data;
+
+      if (result.status === 200) {
+        setError(null);
+        setIsSuccess(true);
+        setTimeout(() => {
+          onSubmit();
+        }, 2000);
+      } else {
+        setError(result?.["Подробнее"]);
+      }
     } catch (error) {
-      setError("Произошла ошибка при отправке заявки");
+      setError(literalContent.applicationError[language]);
     }
   };
 
+  const getFormStatus = () => {
+    if (!isSuccess && !error) {
+      return null;
+    }
+    if (isSuccess) {
+      return <div className="success">{literalContent.applicationSuccess[language]}</div>;
+    }
+    if (error) {
+      return <div className="error">{error}</div>;
+    }
+    return "";
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={theme}>
       <input
         required
         type="text"
-        placeholder="Имя"
+        placeholder={literalContent.name[language]}
         value={initials}
         onChange={(e) => setInitials(e.target.value)}
         className={!initials.length && "empty"}
@@ -53,7 +98,7 @@ export const Form = ({ onSubmit }) => {
       <InputMask
         required
         mask="+7 (999) 999-9999"
-        placeholder="Номер телефона"
+        placeholder={literalContent.phone[language]}
         value={phoneNumber}
         type="text"
         onChange={(e) => setPhoneNumber(e.target.value)}
@@ -64,7 +109,7 @@ export const Form = ({ onSubmit }) => {
       <input
         required
         type="text"
-        placeholder="Организация"
+        placeholder={literalContent.company[language]}
         value={company}
         onChange={(e) => setCompany(e.target.value)}
         className={!company.length && "empty"}
@@ -72,7 +117,7 @@ export const Form = ({ onSubmit }) => {
       <input
         required
         type="text"
-        placeholder="Сфера деятельности"
+        placeholder={literalContent.sphereActivity[language]}
         value={sphereActivity}
         onChange={(e) => setSphereActivity(e.target.value)}
         className={!sphereActivity.length && "empty"}
@@ -80,7 +125,7 @@ export const Form = ({ onSubmit }) => {
       <input
         required
         type="text"
-        placeholder="Соцсети организации"
+        placeholder={literalContent.socialNetworks[language]}
         value={urlLinks}
         onChange={(e) => setUrlLinks(e.target.value)}
         className={!urlLinks.length && "empty"}
@@ -88,13 +133,13 @@ export const Form = ({ onSubmit }) => {
       <input
         required
         type="text"
-        placeholder="Комментарий"
+        placeholder={literalContent.comment[language]}
         value={comments}
         onChange={(e) => setComments(e.target.value)}
         className={!comments.length && "empty"}
       />
-      <input type="submit" value="Отправить" disabled={!isFormValid} />
-      <div className="error">{error}</div>
+      <input type="submit" value={literalContent.send[language]?.toUpperCase()} disabled={!isFormValid} />
+      {getFormStatus()}
     </form>
   );
 };

@@ -1,34 +1,73 @@
-import { Form, Header } from "@/pages/MainPage/components";
+import { FileGrid, Form } from "@/pages/MainPage/components";
 import "./style.scss";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { LoadingContext, ProjectDataContext } from "../../App";
+import { useNavigate, useParams } from "react-router";
+import { LoadingContext, LanguageContext } from "../../App";
 import { PuffLoader } from "react-spinners";
-import { Modal } from "../../components";
-import { Footer } from "../MainPage/components/Footer";
+import { Modal, Footer, Header } from "../../components";
+import arrowRight from "@/assets/arrow-right.svg";
+import { renderFileByType } from "@/utils";
+import { literalContent } from "../../constants";
+import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 
 type Props = {
   setLoading: (boolean) => void;
+  handleSwitchLanguage: () => void;
 };
 
 export const ProjectPage = (props: Props) => {
-  const { setLoading } = props;
+  const { setLoading, handleSwitchLanguage } = props;
 
-  const projectData = useContext(ProjectDataContext)
   const loading = useContext(LoadingContext);
+  const language = useContext(LanguageContext);
 
   const { projectId } = useParams();
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectInfo, setProjectInfo] = useState(null);
-  const [projectFiles, setProjectFiles] = useState([]);
+  const [lineGroups, setLineGroups] = useState([]);
+  const [filesLoadingState, setFilesLoadingState] = useState([]);
 
   useEffect(() => {
-    if (projectData) {
-      setProjectInfo(projectData);
+    if (filesLoadingState.length) {
+      setLoading(filesLoadingState?.some(state => state === true));
     }
-  }, [projectData]);
+  }, [filesLoadingState]);
+
+  useEffect(() => {
+    if (projectInfo?.files?.length) {
+      setFilesLoadingState(new Array(projectInfo?.files?.length).fill(true));
+      preloadFiles(projectInfo?.files);
+      const groups = getGridChunksByFileFormats(projectInfo?.files);
+      setLineGroups(groups);
+    }
+  }, [projectInfo?.files]);
+
+  const handleFileLoad = (index) => {
+    setFilesLoadingState((prev) => {
+      const newStates = [...prev];
+      newStates[index] = false; // Устанавливаем состояние загрузки в false для загруженного видео
+      return newStates;
+    });
+  };
+
+  const preloadFiles = async (videos) => {
+    const videoPromises = videos.map((videoData, index) => {
+      return new Promise((resolve) => {
+        const video = document.createElement('video');
+        video.src = videoData?.fileName;
+        video.onloadeddata = () => {
+          handleFileLoad(index);
+          resolve();
+        };
+        video.load();
+      });
+    });
+
+    await Promise.all(videoPromises);
+  };
 
   const fetchProject = async () => {
     if (loading) return;
@@ -39,8 +78,8 @@ export const ProjectPage = (props: Props) => {
           "Content-Type": "application/json",
         },
       });
-      const files = response.data?.results;
-      setProjectFiles(files);
+      const projectInfo = response.data?.results?.[0];
+      setProjectInfo(projectInfo)
     } catch (err) {
       console.error(err.message);
     } finally {
@@ -52,28 +91,6 @@ export const ProjectPage = (props: Props) => {
     fetchProject();
   }, []);
 
-  const renderFileByType = (path) => {
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg'];
-    const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.mkv', '.flv', '.webm'];
-
-    const extension = path.toLowerCase().split('.').pop();
-
-    if (imageExtensions.includes(`.${extension}`)) {
-      return (
-        <img src={path} alt="" />
-      );
-    } else if (videoExtensions.includes(`.${extension}`)) {
-      return (
-        <video autoPlay muted loop>
-          <source src={path} type="video/mp4" />
-          Не удалось воспроизвести видео
-        </video>
-      );
-    } else {
-      return "Тип файла не поддерживается";
-    }
-  };
-
   const handleSubmit = () => {
     setIsModalOpen(false);
   };
@@ -82,32 +99,47 @@ export const ProjectPage = (props: Props) => {
     <PuffLoader />
   </div>;
 
+  const title = language === "ru" ? projectInfo?.title : projectInfo?.title_en;
+  const description = language === "ru" ? projectInfo?.description : projectInfo?.description_en;
+
   return (
     <>
       <div className="project-page">
         <div className="project-page--container">
-          <Header />
+          <Header onOpenModal={() => setIsModalOpen(true)} handleSwitchLanguage={handleSwitchLanguage} />
           <div className="project-page--content">
+            <div className="breadcrumbs">
+              <div className="breadcrumb" style={{ textDecoration: "underline" }} onClick={() => navigate("/")}>
+                {literalContent.main[language]}
+              </div>
+              <img src={arrowRight} width={8} alt="" />
+              <div className="breadcrumb">
+                {literalContent.projects[language]}
+              </div>
+              <img src={arrowRight} width={8} alt="" />
+              <div className="breadcrumb">
+                {title}
+              </div>
+            </div>
             <div className="title">
-              {projectInfo?.title}
+              {title}
             </div>
             <div className="description">
-              {projectInfo?.description}
+              {description}
             </div>
-            {loading ? <PuffLoader /> : projectFiles.map((file) => (
-              <div className="project-page--container__file">
-                {renderFileByType(file?.fileName)}
-              </div>
-            ))}
+            {loading ? <PuffLoader /> : <FileGrid lineGroups={lineGroups} />}
           </div>
         </div>
         <div className="form-wrapper">
-          <h2>Обсудим ваш проект?</h2>
-          <Form />
+          <h2>{literalContent.letsDiscuss[language]}</h2>
+          <Form onSubmit={() => setIsModalOpen(false)} theme="dark" />
         </div>
-        <Footer />
       </div>
-      <Modal title="Свяжемся, чтобы обсудить детали" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Footer handleSwitchLanguage={handleSwitchLanguage} />
+      <Modal
+        title={literalContent.weWillContactYou[language]}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}>
         <Form onSubmit={handleSubmit} />
       </Modal>
     </>

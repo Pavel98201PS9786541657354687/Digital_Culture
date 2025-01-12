@@ -2,40 +2,46 @@ import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./style.scss";
-import { Form, Header, PortfolioGrid, ServicesCarousel } from "./components";
+import { Form, FileGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
-import liveEye from "@/assets/animated-eye.webp";
+import liveEye from "@/assets/live-eye.gif";
 import { useContext, useEffect, useState } from "react";
-import { LoadingContext } from "../../App";
+import { LanguageContext, LoadingContext } from "../../App";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
-import { Modal } from "../../components";
-import { Footer } from "./components/Footer";
+import { Modal, Header, Footer } from "../../components";
+import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
+import { literalContent } from "../../constants";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
 type Props = {
-  setProjectInfo?: (data) => void;
   setLoading: (boolean) => void;
+  handleSwitchLanguage: () => void;
 };
 
 export const MainPage = (props: Props) => {
-  const { setProjectInfo, setLoading } = props;
+  const { setLoading, handleSwitchLanguage } = props;
   const loading = useContext(LoadingContext);
+  const language = useContext(LanguageContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videos, setVideos] = useState([]);
+  const [lineGroups, setLineGroups] = useState([]);
   const [blocks, setBlocks] = useState([]);
   const [videosLoadingState, setVideosLoadingState] = useState([]);
-  const limit = 10;
+  const limit = 3;
   const [offset, setOffset] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (videos?.length) {
       setVideosLoadingState(new Array(videos?.length).fill(true));
       preloadVideos(videos);
+      const groups = getGridChunksByFileFormats(videos);
+      setLineGroups(groups);
     }
   }, [videos]);
 
@@ -47,7 +53,7 @@ export const MainPage = (props: Props) => {
 
   useGSAP(() => {
     gsap.to("#bg-bone-image", {
-      y: "-150%", // Перемещение фона вверх
+      y: "-190%", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#bg-bone-image",
@@ -67,7 +73,24 @@ export const MainPage = (props: Props) => {
         scrub: 1, // Скорость анимации относительно скролла
       },
     });
-  });
+  }, [loading]);
+
+  useEffect(() => {
+    const anchors = document.querySelectorAll('a[href*="#"]')
+
+    for (let anchor of anchors) {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault()
+
+        const blockID = anchor.getAttribute('href').substr(1)
+
+        document.getElementById(blockID).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      })
+    }
+  }, []);
 
   const handleVideoLoad = (index) => {
     setVideosLoadingState((prev) => {
@@ -106,6 +129,7 @@ export const MainPage = (props: Props) => {
         }
       });
       const videoList = response.data?.results ?? [];
+      setCount(response.data?.count ?? 0);
       setVideos((prevVideos) => [...prevVideos, ...videoList]);
     } catch (err) {
       console.error(err.message);
@@ -140,9 +164,9 @@ export const MainPage = (props: Props) => {
     fetchBlocks();
   }, [offset]);
 
-  // if (loading) return <div className="loader">
-  //   <PuffLoader />
-  // </div>;
+  if (loading) return <div className="loader">
+    <PuffLoader />
+  </div>;
 
   const handleSubmit = () => {
     setIsModalOpen(false);
@@ -157,24 +181,39 @@ export const MainPage = (props: Props) => {
           </div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
-        <Header onOpenModal={() => setIsModalOpen(true)} />
+        <Header handleSwitchLanguage={handleSwitchLanguage} onOpenModal={() => setIsModalOpen(true)} />
         <div className="banner">
           <div className="slogan-container">
-            <div className="slogan-big">СОЗДАЕМ</div>
-            <div className="slogan-big">3D РЕКЛАМУ</div>
+            <div className="slogan-big">{literalContent.weCreate[language]?.toUpperCase()}</div>
+            <div className="slogan-big">{literalContent["3dAds"][language]?.toUpperCase()}</div>
             <div className="slogan-small">
-              <div>КОТОРУЮ</div>
-              <div>ЗАПОМНЯТ</div>
+              {language === "ru" ? (
+                <>
+                  <div>КОТОРУЮ</div>
+                  <div>ЗАПОМНЯТ</div>
+                </>
+              ) : (
+                <div>THAT CATCHES THE EYE</div>
+              )}
             </div>
           </div>
-          <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>ЗАКАЗАТЬ РЕКЛАМУ</button>
+          <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>{literalContent.orderAds[language]?.toUpperCase()}</button>
         </div>
-        <PortfolioGrid videos={videos} offset={offset} increaseOffset={() => setOffset(offset + 1)}
-                       setProjectInfo={setProjectInfo} setLoading={setLoading} />
-        <ServicesCarousel blocks={blocks} setLoading={setLoading} openModal={() => setIsModalOpen(true)} />
-        <Footer />
+        <FileGrid
+          lineGroups={lineGroups}
+          videos={videos}
+          offset={offset}
+          increaseOffset={() => setOffset(offset + limit)}
+          total={count}
+        />
+        <ServicesCarousel
+          blocks={blocks}
+          openModal={() => setIsModalOpen(true)}
+          lineGroups={lineGroups}
+        />
       </div>
-      <Modal title="Свяжемся, чтобы обсудить детали" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Footer handleSwitchLanguage={handleSwitchLanguage} />
+      <Modal title={literalContent.weWillContactYou[language]} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Form onSubmit={handleSubmit} />
       </Modal>
     </>

@@ -1,94 +1,96 @@
-@media (max-width: 5000px) {
-  .full-screen {
-    display: block;
-    width: 100%;
+.full-screen {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#services {
+  max-width: 500px;
+  overflow: hidden;
+  z-index: 999;
+
+  #services-container {
     height: 100vh;
-    overflow: hidden;
-  }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    padding: 0;
+    overflow-x: hidden;
 
-  #panels {
-    #panels-container {
+    .panel {
+      position: relative;
+      width: 100vw;
       height: 100vh;
-      display: -webkit-box;
-      display: -ms-flexbox;
+      overflow: hidden;
       display: flex;
-      -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-      padding: 0;
-      overflow-x: scroll;
+      text-align: left;
+      align-items: center;
+      justify-content: center;
 
-      .panel {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .anchor-panel, .nav-panel {
+        text-transform: uppercase;
+        margin-right: 2rem;
+      }
+
+      .service-tile {
+        color: #ffffff;
+        width: 90%;
+        height: 370px;
+        border-radius: 64px;
         display: flex;
-        text-align: left;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 48px 32px;
         align-items: center;
-        justify-content: center;
+        text-align: center;
 
-        img {
-          max-width: 100%;
-          height: auto;
-          display: block;
-        }
+        /* Эффект полупрозрачного матового стекла */
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
 
-        .anchor-panel, .nav-panel {
-          text-transform: uppercase;
-          margin-right: 2rem;
-        }
+        position: relative;
 
-        .service-tile {
-          color: #ffffff;
-          width: 90%;
-          height: 370px;
+        &::before {
+          content: '';
+          position: absolute;
           border-radius: 64px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 48px 32px;
-          align-items: center;
-          text-align: center;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
 
-          /* Эффект полупрозрачного матового стекла */
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(5px);
-          -webkit-backdrop-filter: blur(5px);
+          filter: blur(10px);
+        }
 
-          position: relative;
+        &--title {
+          font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+          font-size: 20px;
+        }
 
-          &::before {
-            content: '';
-            position: absolute;
-            border-radius: 64px;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+        &--description {
+          font-family: "YandexSansDisplay-Thin", sans-serif;
+          font-size: 14px;
+        }
 
-            filter: blur(10px);
-          }
-
-          &--title {
-            font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
-            font-size: 20px;
-          }
-
-          &--description {
-            font-family: "YandexSansDisplay-Thin", sans-serif;
-            font-size: 14px;
-          }
-
-          &--action {
-            font-family: "YandexSansDisplay-Thin", sans-serif;
-            font-size: 16px;
-            background-color: #3d3d3d;
-            padding: 8px 24px;
-            border: none;
-            color: #ffffff;
-            border-radius: 8px;
-            z-index: 100;
-          }
+        &--action {
+          font-family: "YandexSansDisplay-Thin", sans-serif;
+          font-size: 16px;
+          background-color: #3d3d3d;
+          padding: 8px 24px;
+          border: none;
+          color: #ffffff;
+          border-radius: 8px;
+          z-index: 100;
         }
       }
     }

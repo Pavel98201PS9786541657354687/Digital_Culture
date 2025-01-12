@@ -1,4 +1,6 @@
 .project-page {
+  max-width: 500px;
+  margin: 0 auto;
   &--container {
     &__file {
       width: 100%;
@@ -12,17 +14,30 @@
         height: 100%;
         object-fit: cover; /* Сохраняет пропорции видео и заполняет контейнер */
       }
+
+      .unsuported-type-informer {
+        padding-left: 32px;
+        font-family: YandexSansDisplay-Thin, sans-serif;
+      }
     }
   }
 
   &--content {
     margin-top: 120px;
     width: 100%;
-    padding-inline: 24px;
+    padding-inline: 16px;
     display: flex;
     flex-direction: column;
     row-gap: 16px;
     color: #ffffff;
+
+    .breadcrumbs {
+      font-family: "YandexSansDisplay-Thin", sans-serif;
+      color: lightgray;
+      display: flex;
+      align-items: center;
+      column-gap: 8px;
+    }
 
     .title {
       font-size: 24px;
@@ -31,13 +46,15 @@
 
     .description {
       font-family: "YandexSansDisplay-Thin", sans-serif;
+      margin-bottom: -64px;
     }
   }
 
   .form-wrapper {
+    margin-top: 32px;
     width: calc(100% - 32px);
     padding: 32px 16px 16px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(69, 69, 69, 0.5);
     border-radius: 16px;
     margin-inline: auto;
     margin-bottom: 64px;
