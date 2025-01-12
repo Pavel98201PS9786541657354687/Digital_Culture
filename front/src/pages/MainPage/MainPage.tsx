@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./style.scss";
-import { Form, Header, PortfolioGrid, ServicesCarousel } from "./components";
+import { Form, FileGrid, ServicesCarousel } from "./components";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
@@ -11,31 +11,35 @@ import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../App";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
-import { Modal } from "../../components";
-import { Footer } from "./components/Footer";
+import { Modal, Header, Footer } from "../../components";
+import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
 type Props = {
-  setProjectInfo?: (data) => void;
   setLoading: (boolean) => void;
+  handleSwitchLanguage: () => void;
 };
 
 export const MainPage = (props: Props) => {
-  const { setProjectInfo, setLoading } = props;
+  const { setLoading } = props;
   const loading = useContext(LoadingContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videos, setVideos] = useState([]);
+  const [lineGroups, setLineGroups] = useState([]);
   const [blocks, setBlocks] = useState([]);
   const [videosLoadingState, setVideosLoadingState] = useState([]);
-  const limit = 10;
+  const limit = 3;
   const [offset, setOffset] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (videos?.length) {
       setVideosLoadingState(new Array(videos?.length).fill(true));
       preloadVideos(videos);
+      const groups = getGridChunksByFileFormats(videos);
+      setLineGroups(groups);
     }
   }, [videos]);
 
@@ -47,7 +51,7 @@ export const MainPage = (props: Props) => {
 
   useGSAP(() => {
     gsap.to("#bg-bone-image", {
-      y: "-150%", // Перемещение фона вверх
+      y: "-190%", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#bg-bone-image",
@@ -123,6 +127,7 @@ export const MainPage = (props: Props) => {
         }
       });
       const videoList = response.data?.results ?? [];
+      setCount(response.data?.count ?? 0);
       setVideos((prevVideos) => [...prevVideos, ...videoList]);
     } catch (err) {
       console.error(err.message);
@@ -157,9 +162,9 @@ export const MainPage = (props: Props) => {
     fetchBlocks();
   }, [offset]);
 
-  // if (loading) return <div className="loader">
-  //   <PuffLoader />
-  // </div>;
+  if (loading) return <div className="loader">
+    <PuffLoader />
+  </div>;
 
   const handleSubmit = () => {
     setIsModalOpen(false);
@@ -186,9 +191,18 @@ export const MainPage = (props: Props) => {
           </div>
           <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>ЗАКАЗАТЬ РЕКЛАМУ</button>
         </div>
-        <PortfolioGrid videos={videos} offset={offset} increaseOffset={() => setOffset(offset + 1)}
-                       setProjectInfo={setProjectInfo} setLoading={setLoading} />
-        <ServicesCarousel blocks={blocks} setLoading={setLoading} openModal={() => setIsModalOpen(true)} />
+        <FileGrid
+          lineGroups={lineGroups}
+          videos={videos}
+          offset={offset}
+          increaseOffset={() => setOffset(offset + limit)}
+          total={count}
+        />
+        <ServicesCarousel
+          blocks={blocks}
+          openModal={() => setIsModalOpen(true)}
+          lineGroups={lineGroups}
+        />
         <Footer />
       </div>
       <Modal title="Свяжемся, чтобы обсудить детали" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

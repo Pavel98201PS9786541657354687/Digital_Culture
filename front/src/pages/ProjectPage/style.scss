@@ -12,6 +12,11 @@
         height: 100%;
         object-fit: cover; /* Сохраняет пропорции видео и заполняет контейнер */
       }
+
+      .unsuported-type-informer {
+        padding-left: 32px;
+        font-family: YandexSansDisplay-Thin, sans-serif;
+      }
     }
   }
 
@@ -23,6 +28,14 @@
     flex-direction: column;
     row-gap: 16px;
     color: #ffffff;
+
+    .breadcrumbs {
+      font-family: "YandexSansDisplay-Thin", sans-serif;
+      color: lightgray;
+      display: flex;
+      align-items: center;
+      column-gap: 8px;
+    }
 
     .title {
       font-size: 24px;

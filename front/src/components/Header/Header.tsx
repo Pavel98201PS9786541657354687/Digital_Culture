@@ -1,17 +1,20 @@
 import { gsap } from "gsap";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "./style.scss";
-import liveLogoLetters from "@/assets/live-logo-letters.webm";
-import liveLogoLettersGif from "@/assets/live-logo-letters.gif";
-import liveLogoEye from "@/assets/live-logo-eye.webm";
+import liveLogoLettersGif from "../../assets/live-logo-letters.gif";
 import { useNavigate } from "react-router";
+import { LanguageContext } from "../../App";
+import { literalContent } from "../../constants";
 
 type Props = {
   onOpenModal: () => void;
+  handleSwitchLanguage: () => void;
 }
 
 export const Header = (props: Props) => {
-  const { onOpenModal } = props;
+  const { onOpenModal, handleSwitchLanguage } = props;
+
+  const language = useContext(LanguageContext);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -41,15 +44,21 @@ export const Header = (props: Props) => {
     handleToggleMenu();
   };
 
+  const onChangeLanguage = () => {
+    handleSwitchLanguage();
+    setMenuOpen(false);
+    handleToggleMenu();
+  };
+
   return (
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
         <div className="header-left" onClick={() => navigate("/")}>
-          <video width="12%" autoPlay loop muted>
-            <source src={liveLogoEye} type="video/webm" />
-            Ваш браузер не поддерживает видео.
-          </video>
-          <img className="logo-letters" width="60%" src={liveLogoLettersGif} alt="" />
+          {/*<video width="9%" autoPlay loop muted>*/}
+          {/*  <source src={liveLogoEye} type="video/webm" />*/}
+          {/*  Ваш браузер не поддерживает видео.*/}
+          {/*</video>*/}
+          <img className="logo-letters" width="50%" src={liveLogoLettersGif} alt="" />
         </div>
         <div
           id="menu-button"
@@ -64,17 +73,21 @@ export const Header = (props: Props) => {
         </div>
       </div>
       <div ref={menuRef} className="menu-container">
-        <div className="lang-choice">RU / ENG</div>
+        <div className="lang-choice" onClick={onChangeLanguage}>RU / ENG</div>
         <ul>
           <li onClick={handleClickMenuItem}>
-            <a href="/">
-              главная
+            <a href="/front/public">
+              {literalContent.main[language]?.toLowerCase()}
             </a>
           </li>
-          <li onClick={handleClickMenuItem}><a href="#projects">портфолио</a></li>
-          <li onClick={handleClickMenuItem}><a href="#services">услуги</a></li>
+          <li onClick={handleClickMenuItem}>
+            <a href="#projects">{literalContent.portfolio[language]?.toLowerCase()}</a>
+          </li>
+          <li onClick={handleClickMenuItem}>
+            <a href="#services">{literalContent.services[language]?.toLowerCase()}</a>
+          </li>
         </ul>
-        <button onClick={onOpenModal}>связаться с нами</button>
+        <button onClick={onOpenModal}>{literalContent.contactUs[language]?.toLowerCase()}</button>
       </div>
     </div>
   );
