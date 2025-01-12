@@ -23,10 +23,10 @@ class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     ]
     class Meta:
         model = moviesModel
-    list_display = ('weight','title', 'description', 'fileName', 
+    list_display = ('weight','title', 'title_en', 'fileName', 
                     'formatVideo', 'dateCreated', 'dateUpdate')
-    search_fields = ('title', 'description', 'fileName', 'formatVideo')
-    list_filter = ('title', 'description', 'fileName', 'formatVideo')
+    search_fields = ('title', 'title_en', 'fileName', 'formatVideo')
+    list_filter = ('title', 'title_en', 'fileName', 'formatVideo')
     ordring= ('weight',)   
 
 @admin.register(projectsFilesModel)
@@ -60,10 +60,8 @@ class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Meta:
         model = blocks
 
-    list_display = ('weight','title', 'description', 
+    list_display = ('weight','title', 'title_en',
                     'dateCreated', 'dateUpdate')
-    search_fields = ('title', 'description',
-                     'dateCreated', 'dateUpdate','weight')
-    list_filter = ('title', 'description', 
-                   'dateCreated', 'dateUpdate', 'weight')
+    search_fields = ('title', 'title_en', 'dateCreated', 'dateUpdate','weight')
+    list_filter = ('title', 'title_en', 'dateCreated', 'dateUpdate', 'weight')
     ordring= ('weight',)
