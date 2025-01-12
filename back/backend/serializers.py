@@ -23,6 +23,7 @@ class blocksSerializer(serializers.ModelSerializer):
         model = blocks
         fields = '__all__'
 
+# Метод для merge видео и проектных файлов
 class ProjectsFilesModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = projectsFilesModel
@@ -37,17 +38,20 @@ class projectsFilesSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'title_en', 'description', 'description_en', 'files')
 
     def get_files(self, obj):
-        return "Title"  # Это может быть изменено на что-то более информативное
+        request = self.context.get('request')
+        projectsId = obj.id
+        files = projectsFilesModel.objects.filter(projectsId=projectsId)
+        
+        # Сериализуем файлы
+        serializer = ProjectsFilesModelSerializer(files, many=True)
+        
+        # Добавляем абсолютные URL к каждому файлу
+        for file in serializer.data:
+            if 'fileName' in file and file['fileName']:
+                file['fileName'] = request.build_absolute_uri(file['fileName'])
+
+        return serializer.data
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        try:
-            projectsId = representation['id']
-            files = projectsFilesModel.objects.filter(projectsId=projectsId)
-            serializer = ProjectsFilesModelSerializer(files, many=True)  # Сериализуем файлы
-            representation['files'] = serializer.data  # Добавляем сериализованные данные
-        except Exception as e:
-            representation['files'] = []
-            print(f"Error: {e}")  # Для отладки
         return representation
- 
