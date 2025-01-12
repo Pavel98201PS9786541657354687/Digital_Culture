@@ -76,7 +76,7 @@ export const Header = (props: Props) => {
         <div className="lang-choice" onClick={onChangeLanguage}>RU / ENG</div>
         <ul>
           <li onClick={handleClickMenuItem}>
-            <a href="/front/public">
+            <a href="/">
               {literalContent.main[language]?.toLowerCase()}
             </a>
           </li>

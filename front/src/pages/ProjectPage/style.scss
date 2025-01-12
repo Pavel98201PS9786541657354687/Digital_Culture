@@ -1,4 +1,6 @@
 .project-page {
+  max-width: 500px;
+  margin: 0 auto;
   &--container {
     &__file {
       width: 100%;
@@ -44,6 +46,7 @@
 
     .description {
       font-family: "YandexSansDisplay-Thin", sans-serif;
+      margin-bottom: -64px;
     }
   }
 

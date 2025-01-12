@@ -9,15 +9,16 @@ import { useContext } from "react";
 import { LanguageContext } from "../../App";
 
 type Props = {
+  videos?: any[];
   lineGroups: any[];
   setProjectInfo?: (data) => void;
-  increaseOffset: () => void;
-  offset: number;
-  total: number;
+  increaseOffset?: () => void;
+  total?: number;
+  canShowMore?: boolean;
 };
 
 export const FileGrid = (props: Props) => {
-  const { videos, lineGroups, increaseOffset, total } = props;
+  const { videos = [], lineGroups, increaseOffset, total, canShowMore = true } = props;
 
   const navigate = useNavigate();
   const language = useContext(LanguageContext);
@@ -71,7 +72,7 @@ export const FileGrid = (props: Props) => {
           );
         })}
       </div>
-      {total > videos.length && (
+      {canShowMore && total > videos.length && (
         <div className="show-more-button" onClick={increaseOffset}>
           <div className="show-more-text">
             {literalContent.watchMore[language]?.toUpperCase()}

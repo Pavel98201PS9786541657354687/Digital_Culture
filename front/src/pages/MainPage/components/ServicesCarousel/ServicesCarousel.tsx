@@ -46,14 +46,14 @@ export const ServicesCarousel = (props: Props) => {
   }
 
   return (
-    <div>
+    <div style={{ backgroundColor: "transparent" }}>
       <section id="services" style={{ overflow: "hidden" }}>
         <div id="services-container" style={{ width: `${blocks?.length * 100}%` }}>
           {blocks.map((tileContent, index) => (
             <div
               key={index}
               id={`panel-${index + 1}`}
-              className="panel full-screen gradient-green">
+              className="panel full-screen">
               <div className="service-tile">
                 <div className="service-tile--title">{tileContent[titleAccessor]}:</div>
                 <div className="service-tile--description">{tileContent[descriptionAccessor]}</div>

@@ -34,8 +34,9 @@ export const getGridChunksByFileFormats = (array: Video[]) => {
     return [];
   }
   const items = array?.map((file, index) => (
-    {...file, colSpan: mapColSpanByFormat[file?.formatVideo]}
+    {...file, colSpan: mapColSpanByFormat[file?.formatVideo] || mapColSpanByFormat[file?.format] || 0}
   ));
+  console.log(items);
 
   const lineGroup = [];
 

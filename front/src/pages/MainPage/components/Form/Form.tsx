@@ -86,7 +86,7 @@ export const Form = (props: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="dark">
+    <form onSubmit={handleSubmit} className={theme}>
       <input
         required
         type="text"

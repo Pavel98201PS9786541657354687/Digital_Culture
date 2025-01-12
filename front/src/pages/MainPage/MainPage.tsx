@@ -73,7 +73,7 @@ export const MainPage = (props: Props) => {
         scrub: 1, // Скорость анимации относительно скролла
       },
     });
-  });
+  }, [loading]);
 
   useEffect(() => {
     const anchors = document.querySelectorAll('a[href*="#"]')
@@ -211,8 +211,8 @@ export const MainPage = (props: Props) => {
           openModal={() => setIsModalOpen(true)}
           lineGroups={lineGroups}
         />
-        <Footer handleSwitchLanguage={handleSwitchLanguage} />
       </div>
+      <Footer handleSwitchLanguage={handleSwitchLanguage} />
       <Modal title={literalContent.weWillContactYou[language]} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Form onSubmit={handleSubmit} />
       </Modal>

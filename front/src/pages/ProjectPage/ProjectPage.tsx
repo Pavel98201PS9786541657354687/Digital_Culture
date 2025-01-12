@@ -1,4 +1,4 @@
-import { Form } from "@/pages/MainPage/components";
+import { FileGrid, Form } from "@/pages/MainPage/components";
 import "./style.scss";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { Modal, Footer, Header } from "../../components";
 import arrowRight from "@/assets/arrow-right.svg";
 import { renderFileByType } from "@/utils";
 import { literalContent } from "../../constants";
+import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 
 type Props = {
   setLoading: (boolean) => void;
@@ -26,6 +27,47 @@ export const ProjectPage = (props: Props) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectInfo, setProjectInfo] = useState(null);
+  const [lineGroups, setLineGroups] = useState([]);
+  const [filesLoadingState, setFilesLoadingState] = useState([]);
+
+  useEffect(() => {
+    if (filesLoadingState.length) {
+      setLoading(filesLoadingState?.some(state => state === true));
+    }
+  }, [filesLoadingState]);
+
+  useEffect(() => {
+    if (projectInfo?.files?.length) {
+      setFilesLoadingState(new Array(projectInfo?.files?.length).fill(true));
+      preloadFiles(projectInfo?.files);
+      const groups = getGridChunksByFileFormats(projectInfo?.files);
+      setLineGroups(groups);
+    }
+  }, [projectInfo?.files]);
+
+  const handleFileLoad = (index) => {
+    setFilesLoadingState((prev) => {
+      const newStates = [...prev];
+      newStates[index] = false; // Устанавливаем состояние загрузки в false для загруженного видео
+      return newStates;
+    });
+  };
+
+  const preloadFiles = async (videos) => {
+    const videoPromises = videos.map((videoData, index) => {
+      return new Promise((resolve) => {
+        const video = document.createElement('video');
+        video.src = videoData?.fileName;
+        video.onloadeddata = () => {
+          handleFileLoad(index);
+          resolve();
+        };
+        video.load();
+      });
+    });
+
+    await Promise.all(videoPromises);
+  };
 
   const fetchProject = async () => {
     if (loading) return;
@@ -85,19 +127,15 @@ export const ProjectPage = (props: Props) => {
             <div className="description">
               {description}
             </div>
-            {loading ? <PuffLoader /> : projectInfo?.files?.map((file) => (
-              <div className="project-page--container__file">
-                {renderFileByType(file?.fileName)}
-              </div>
-            ))}
+            {loading ? <PuffLoader /> : <FileGrid lineGroups={lineGroups} />}
           </div>
         </div>
         <div className="form-wrapper">
           <h2>{literalContent.letsDiscuss[language]}</h2>
-          <Form />
+          <Form onSubmit={() => setIsModalOpen(false)} theme="dark" />
         </div>
-        <Footer handleSwitchLanguage={handleSwitchLanguage} />
       </div>
+      <Footer handleSwitchLanguage={handleSwitchLanguage} />
       <Modal
         title={literalContent.weWillContactYou[language]}
         isOpen={isModalOpen}

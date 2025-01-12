@@ -28,7 +28,7 @@ export const Footer = (props: Props) => {
           {/*  <source src={liveLogoEye} type="video/webm" />*/}
           {/*  Ваш браузер не поддерживает видео.*/}
           {/*</video>*/}
-          <img className="footer-content-logo__letters" width={200} src={liveLogoLettersGif} alt="" />
+          <img className="footer-content-logo__letters" width="45%" src={liveLogoLettersGif} alt="" />
         </div>
         <a href="tel:+79619650500" className="footer-content-phone">+7 (961) 965-05-00</a>
         <div className="footer-content-socials">
