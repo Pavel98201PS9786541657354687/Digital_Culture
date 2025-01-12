@@ -4,6 +4,9 @@ import "./style.scss";
 import downArrow from "../../assets/down-arrow.png";
 import { useNavigate } from "react-router";
 import { renderFileByType } from "../../utils";
+import { literalContent } from "../../constants";
+import { useContext } from "react";
+import { LanguageContext } from "../../App";
 
 type Props = {
   lineGroups: any[];
@@ -17,6 +20,7 @@ export const FileGrid = (props: Props) => {
   const { videos, lineGroups, increaseOffset, total } = props;
 
   const navigate = useNavigate();
+  const language = useContext(LanguageContext);
 
   useGSAP(() => {
     const lines = document.querySelectorAll(".portfolio-line");
@@ -69,7 +73,10 @@ export const FileGrid = (props: Props) => {
       </div>
       {total > videos.length && (
         <div className="show-more-button" onClick={increaseOffset}>
-          <img src={downArrow} alt="Показать больше" />
+          <div className="show-more-text">
+            {literalContent.watchMore[language]?.toUpperCase()}
+          </div>
+          <img src={downArrow} alt="Посмотреть ещё" />
         </div>
       )}
     </>

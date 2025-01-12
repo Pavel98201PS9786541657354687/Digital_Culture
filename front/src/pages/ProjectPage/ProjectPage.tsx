@@ -67,7 +67,7 @@ export const ProjectPage = (props: Props) => {
           <Header onOpenModal={() => setIsModalOpen(true)} handleSwitchLanguage={handleSwitchLanguage} />
           <div className="project-page--content">
             <div className="breadcrumbs">
-              <div className="breadcrumb" onClick={() => navigate("/")}>
+              <div className="breadcrumb" style={{ textDecoration: "underline" }} onClick={() => navigate("/")}>
                 {literalContent.main[language]}
               </div>
               <img src={arrowRight} width={8} alt="" />

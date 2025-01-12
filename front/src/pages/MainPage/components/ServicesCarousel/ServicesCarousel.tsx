@@ -2,6 +2,9 @@ import "./style.scss";
 import { gsap } from "gsap";
 import { toArray } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
+import { literalContent } from "../../../../constants";
+import { useContext } from "react";
+import { LanguageContext } from "../../../../App";
 
 type Props = {
   blocks: any[];
@@ -10,6 +13,11 @@ type Props = {
 
 export const ServicesCarousel = (props: Props) => {
   const { blocks = [], openModal } = props;
+
+  const language = useContext(LanguageContext);
+
+  const titleAccessor = language === "ru" ? "title" : "title_en";
+  const descriptionAccessor = language === "ru" ? "description" : "description_en";
 
   useGSAP(() => {
     const panelsContainer = document.getElementById("services-container");
@@ -47,9 +55,11 @@ export const ServicesCarousel = (props: Props) => {
               id={`panel-${index + 1}`}
               className="panel full-screen gradient-green">
               <div className="service-tile">
-                <div className="service-tile--title">{tileContent.title}:</div>
-                <div className="service-tile--description">{tileContent.description}</div>
-                <button className="service-tile--action" onClick={openModal}>ЗАКАЗАТЬ</button>
+                <div className="service-tile--title">{tileContent[titleAccessor]}:</div>
+                <div className="service-tile--description">{tileContent[descriptionAccessor]}</div>
+                <button className="service-tile--action" onClick={openModal}>
+                  {literalContent.order[language]?.toUpperCase()}
+                </button>
               </div>
             </div>
           ))}

@@ -35,4 +35,64 @@ export const literalContent = {
     ru: "Политика обработки персональных данных",
     eng: "Privacy policy",
   },
+  name: {
+    ru: "Имя",
+    eng: "Name",
+  },
+  phone: {
+    ru: "Номер телефона",
+    eng: "Phone number",
+  },
+  company: {
+    ru: "Организация",
+    eng: "Company name",
+  },
+  sphereActivity: {
+    ru: "Сфера деятельности",
+    eng: "Sphere of activity",
+  },
+  socialNetworks: {
+    ru: "Соцсети организации",
+    eng: "Social network profile link",
+  },
+  urlLinks: {
+    ru: "Ссылки на сайт",
+    eng: "URL links",
+  },
+  comment: {
+    ru: "Комментарий",
+    eng: "Comment",
+  },
+  send: {
+    ru: "Отправить",
+    eng: "Send",
+  },
+  applicationSuccess: {
+    ru: "Заявка успешно отправлена",
+    eng: "Application successfully sent",
+  },
+  applicationError: {
+    ru: "Произошла ошибка при отправке заявки",
+    eng: "An error occurred while sending the application",
+  },
+  weCreate: {
+    ru: "Создаем",
+    eng: "We create",
+  },
+  ["3dAds"]: {
+    ru: "3D рекламу",
+    eng: "3D ads",
+  },
+  order: {
+    ru: "Заказать",
+    eng: "Order",
+  },
+  orderAds: {
+    ru: "Заказать рекламу",
+    eng: "Order ads",
+  },
+  watchMore: {
+    ru: "Посмотреть ещё",
+    eng: "Watch more",
+  },
 }

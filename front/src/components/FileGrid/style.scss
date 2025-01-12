@@ -39,10 +39,19 @@
 
 .show-more-button {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 50%;
   margin-inline: auto;
   cursor: pointer;
+  row-gap: 10px;
+  padding-top: 32px;
+
+  .show-more-text {
+    font-family: YandexSansDisplay-Thin, sans-serif;
+    font-size: 11px;
+    color: #ffffff
+  }
 
   img {
     width: 150px;

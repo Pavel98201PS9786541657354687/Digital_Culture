@@ -34,6 +34,29 @@ form {
     }
   }
 
+  &.dark {
+    input[type="text"] {
+      border-bottom: 2px solid darkgray;
+      color: #ffffff;
+
+      &.empty {
+        border-bottom-color: red;
+      }
+
+      &::placeholder {
+        color: lightgray;
+      }
+    }
+
+    .error {
+      color: #F85C50;
+    }
+
+    .success {
+      color: #00CF91;
+    }
+  }
+
   .error {
     margin-top: -20px;
     width: 100%;

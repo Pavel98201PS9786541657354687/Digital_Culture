@@ -8,11 +8,12 @@ import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
 import liveEye from "@/assets/live-eye.gif";
 import { useContext, useEffect, useState } from "react";
-import { LoadingContext } from "../../App";
+import { LanguageContext, LoadingContext } from "../../App";
 import axios from "axios";
 import { PuffLoader } from "react-spinners";
 import { Modal, Header, Footer } from "../../components";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
+import { literalContent } from "../../constants";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
@@ -22,8 +23,9 @@ type Props = {
 };
 
 export const MainPage = (props: Props) => {
-  const { setLoading } = props;
+  const { setLoading, handleSwitchLanguage } = props;
   const loading = useContext(LoadingContext);
+  const language = useContext(LanguageContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videos, setVideos] = useState([]);
@@ -179,17 +181,23 @@ export const MainPage = (props: Props) => {
           </div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
-        <Header onOpenModal={() => setIsModalOpen(true)} />
+        <Header handleSwitchLanguage={handleSwitchLanguage} onOpenModal={() => setIsModalOpen(true)} />
         <div className="banner">
           <div className="slogan-container">
-            <div className="slogan-big">СОЗДАЕМ</div>
-            <div className="slogan-big">3D РЕКЛАМУ</div>
+            <div className="slogan-big">{literalContent.weCreate[language]?.toUpperCase()}</div>
+            <div className="slogan-big">{literalContent["3dAds"][language]?.toUpperCase()}</div>
             <div className="slogan-small">
-              <div>КОТОРУЮ</div>
-              <div>ЗАПОМНЯТ</div>
+              {language === "ru" ? (
+                <>
+                  <div>КОТОРУЮ</div>
+                  <div>ЗАПОМНЯТ</div>
+                </>
+              ) : (
+                <div>THAT CATCHES THE EYE</div>
+              )}
             </div>
           </div>
-          <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>ЗАКАЗАТЬ РЕКЛАМУ</button>
+          <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>{literalContent.orderAds[language]?.toUpperCase()}</button>
         </div>
         <FileGrid
           lineGroups={lineGroups}
@@ -203,9 +211,9 @@ export const MainPage = (props: Props) => {
           openModal={() => setIsModalOpen(true)}
           lineGroups={lineGroups}
         />
-        <Footer />
+        <Footer handleSwitchLanguage={handleSwitchLanguage} />
       </div>
-      <Modal title="Свяжемся, чтобы обсудить детали" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal title={literalContent.weWillContactYou[language]} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Form onSubmit={handleSubmit} />
       </Modal>
     </>
