@@ -13,7 +13,7 @@ services:
       - node_modules:/front/node_modules
     networks:
       - vite-network
-      
+
   backend:
     build: ./back
     container_name: backend
