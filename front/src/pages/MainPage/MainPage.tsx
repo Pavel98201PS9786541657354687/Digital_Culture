@@ -9,11 +9,10 @@ import bonePng from "@/assets/bone.png";
 import liveEye from "@/assets/live-eye.gif";
 import { useContext, useEffect, useState } from "react";
 import { LanguageContext, LoadingContext } from "../../App";
-import axios from "axios";
 import { PuffLoader } from "react-spinners";
 import { Modal, Header, Footer } from "../../components";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
-import { literalContent } from "../../constants";
+import { literalContent, API_URL, axiosInstance } from "@/constants";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
@@ -119,10 +118,7 @@ export const MainPage = (props: Props) => {
   const fetchVideos = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/getListVideo', {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await axiosInstance.get(`${API_URL}/api/getListVideo`, {
         params: {
           limit,
           offset,
@@ -141,10 +137,7 @@ export const MainPage = (props: Props) => {
   const fetchBlocks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/blocks', {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await axiosInstance.get('${API_URL}/api/blocks', {
         params: {
           limit: 1000,
           offset: 0,

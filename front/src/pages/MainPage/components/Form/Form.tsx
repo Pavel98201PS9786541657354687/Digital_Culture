@@ -2,9 +2,8 @@ import InputMask from "react-input-mask";
 
 import "./style.scss";
 import { useContext, useState } from "react";
-import axios from "axios";
 import { LanguageContext } from "../../../../App";
-import { literalContent } from "../../../../constants";
+import { literalContent, API_URL, axiosInstance } from "@/constants";
 
 type Props = {
   onSubmit: () => void;
@@ -54,7 +53,7 @@ export const Form = (props: Props) => {
     };
 
     try {
-      const response = await axios.post('/api/postApplications', data);
+      const response = await axiosInstance.post(`${API_URL}/api/postApplications`, data);
 
       const result = await response.data;
 
