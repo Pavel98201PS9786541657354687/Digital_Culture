@@ -63,6 +63,24 @@
   }
 }
 
+@media (min-width: 1000px) {
+  .slogan-container {
+    padding-top: 70px;
+    scale: 2;
+  }
+
+  .banner-action-button {
+    scale: 1.5;
+  }
+
+  #eye-container {
+    width: 40vw;
+    margin-inline: auto;
+    left: 0;
+    right: 0;
+  }
+}
+
 .banner {
   height: 100vh;
   width: 100%;

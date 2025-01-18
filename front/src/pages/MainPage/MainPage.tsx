@@ -34,6 +34,7 @@ export const MainPage = (props: Props) => {
   const limit = 3;
   const [offset, setOffset] = useState(0);
   const [count, setCount] = useState(0);
+  const [videosLoading, setVideosLoading] = useState(false);
 
   useEffect(() => {
     if (videos?.length) {
@@ -44,15 +45,15 @@ export const MainPage = (props: Props) => {
     }
   }, [videos]);
 
-  useEffect(() => {
-    if (videosLoadingState.length) {
-      setLoading(videosLoadingState?.some(state => state === true));
-    }
-  }, [videosLoadingState]);
+  // useEffect(() => {
+  //   if (videosLoadingState.length) {
+  //     setLoading(videosLoadingState?.some(state => state === true));
+  //   }
+  // }, [videosLoadingState]);
 
   useGSAP(() => {
     gsap.to("#bg-bone-image", {
-      y: "-190%", // Перемещение фона вверх
+      y: "-120%", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#bg-bone-image",
@@ -116,7 +117,7 @@ export const MainPage = (props: Props) => {
   };
 
   const fetchVideos = async () => {
-    setLoading(true);
+    setVideosLoading(true);
     try {
       const response = await axiosInstance.get(`${API_URL}/api/getListVideo`, {
         params: {
@@ -130,14 +131,14 @@ export const MainPage = (props: Props) => {
     } catch (err) {
       console.error(err.message);
     } finally {
-      setLoading(false);
+      setVideosLoading(false);
     }
   };
 
   const fetchBlocks = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get('${API_URL}/api/blocks', {
+      const response = await axiosInstance.get(`${API_URL}/api/blocks`, {
         params: {
           limit: 1000,
           offset: 0,
@@ -153,8 +154,11 @@ export const MainPage = (props: Props) => {
   }
 
   useEffect(() => {
-    fetchVideos();
     fetchBlocks();
+  }, []);
+
+  useEffect(() => {
+    fetchVideos();
   }, [offset]);
 
   if (loading) return <div className="loader">
@@ -192,13 +196,19 @@ export const MainPage = (props: Props) => {
           </div>
           <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>{literalContent.orderAds[language]?.toUpperCase()}</button>
         </div>
-        <FileGrid
-          lineGroups={lineGroups}
-          videos={videos}
-          offset={offset}
-          increaseOffset={() => setOffset(offset + limit)}
-          total={count}
-        />
+        {videosLoading ? (
+          <div>
+            <PuffLoader />
+          </div>
+        ) : (
+          <FileGrid
+            lineGroups={lineGroups}
+            videos={videos}
+            offset={offset}
+            increaseOffset={() => setOffset(offset + limit)}
+            total={count}
+          />
+        )}
         <ServicesCarousel
           blocks={blocks}
           openModal={() => setIsModalOpen(true)}
