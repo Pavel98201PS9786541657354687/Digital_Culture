@@ -32,12 +32,12 @@ export const Footer = (props: Props) => {
         </div>
         <a href="tel:+79619650500" className="footer-content-phone">+7 (961) 965-05-00</a>
         <div className="footer-content-socials">
-          <a href="https://www.instagram.com/digital.kultura">
+          <a href="https://www.instagram.com/digital.kultura" target="_blank">
             <div>
               <img src={instagramLogo} alt="Digital Kultura Instagram Link" />
             </div>
           </a>
-          <a href="">
+          <a href="https://t.me/digital_kultura" target="_blank">
             <div>
               <img src={telegramLogo} alt="Digital Kultura Telegram Link" />
             </div>

@@ -28,8 +28,8 @@ export const literalContent = {
     eng: "We will contact you to discuss the details",
   },
   copyright: {
-    ru: "ООО «Макларенс» 2025. Все права защищены.",
-    eng: "LLC «Maclarens» 2025. All rights reserved.",
+    ru: "ООО «КУЛЬТУРА ПРОДАКШН» 2025. Все права защищены.",
+    eng: "LLC «KULTURA PRODUCTION» 2025. All rights reserved.",
   },
   privacyPolicy: {
     ru: "Политика обработки персональных данных",

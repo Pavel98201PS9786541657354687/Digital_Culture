@@ -1,6 +1,5 @@
 import { FileGrid, Form } from "@/pages/MainPage/components";
 import "./style.scss";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { LoadingContext, LanguageContext } from "../../App";
@@ -8,7 +7,7 @@ import { PuffLoader } from "react-spinners";
 import { Modal, Footer, Header } from "../../components";
 import arrowRight from "@/assets/arrow-right.svg";
 import { renderFileByType } from "@/utils";
-import { literalContent } from "../../constants";
+import { literalContent, API_URL, axiosInstance } from "@/constants";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 
 type Props = {
@@ -73,11 +72,7 @@ export const ProjectPage = (props: Props) => {
     if (loading) return;
     setLoading(true);
     try {
-      const response = await axios.get(`/api/projectsFiles/${projectId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axiosInstance.get(`${API_URL}/api/projectsFiles/${projectId}`);
       const projectInfo = response.data?.results?.[0];
       setProjectInfo(projectInfo)
     } catch (err) {
