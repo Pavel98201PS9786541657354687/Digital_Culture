@@ -5,7 +5,7 @@ import downArrow from "../../assets/down-arrow.png";
 import { useNavigate } from "react-router";
 import { renderFileByType } from "../../utils";
 import { literalContent } from "../../constants";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { LanguageContext } from "../../App";
 
 type Props = {
@@ -15,6 +15,29 @@ type Props = {
   increaseOffset?: () => void;
   total?: number;
   canShowMore?: boolean;
+};
+
+const FileTile = ({ videoData, navigate }) => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(true);
+
+  const handleVideoLoad = () => {
+    console.log("loaded");
+    setIsVideoLoaded(true);
+  };
+
+  return (
+    <div
+      key={`line-grid-${videoData.index}-${videoData.videoRowIndex}`}
+      className={`tile span-${videoData?.colSpan}`}
+      onClick={() => navigate(`/projects/${videoData?.id}`)}
+    >
+      {isVideoLoaded ? (
+        renderFileByType(videoData?.fileName, handleVideoLoad)
+      ) : (
+        <div>Загрузка видео...</div> // Контент, который будет показан до загрузки видео
+      )}
+    </div>
+  );
 };
 
 export const FileGrid = (props: Props) => {
@@ -61,12 +84,13 @@ export const FileGrid = (props: Props) => {
           return (
             <div className="portfolio-line" key={`portfolio-line-${index}`}>
               {lineGroup.map((videoData, videoRowIndex) => (
-                <div
-                  key={`line-grid-${index}-${videoRowIndex}`}
-                  className={`tile span-${videoData?.colSpan}`}
-                  onClick={() => navigate(`/projects/${videoData?.id}`)}>
-                  {renderFileByType(videoData?.fileName)}
-                </div>
+                // <div
+                //   key={`line-grid-${index}-${videoRowIndex}`}
+                //   className={`tile span-${videoData?.colSpan}`}
+                //   onClick={() => navigate(`/projects/${videoData?.id}`)}>
+                //   {renderFileByType(videoData?.fileName)}
+                // </div>
+                <FileTile key={`line-grid-${index}-${videoRowIndex}`} videoData={videoData} navigate={navigate} />
               ))}
             </div>
           );
