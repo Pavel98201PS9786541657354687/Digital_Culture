@@ -1,7 +1,8 @@
 import { gsap } from "gsap";
 import { useContext, useRef, useState } from "react";
 import "./style.scss";
-import liveLogoLettersGif from "../../assets/live-logo-letters.gif";
+import liveLogoLettersGif from "../../assets/live-logo-letters-2.gif";
+import liveLogoEyeGif from "../../assets/live-logo-eye-2.gif";
 import { useNavigate } from "react-router";
 import { LanguageContext } from "../../App";
 import { literalContent } from "../../constants";
@@ -54,11 +55,8 @@ export const Header = (props: Props) => {
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
         <div className="header-left" onClick={() => navigate("/")}>
-          {/*<video width="9%" autoPlay loop muted>*/}
-          {/*  <source src={liveLogoEye} type="video/webm" />*/}
-          {/*  Ваш браузер не поддерживает видео.*/}
-          {/*</video>*/}
-          <img className="logo-letters" width="50%" src={liveLogoLettersGif} alt="" />
+          <img className="logo-eye" src={liveLogoEyeGif} alt="" />
+          <img className="logo-letters" src={liveLogoLettersGif} alt="" />
         </div>
         <div
           id="menu-button"

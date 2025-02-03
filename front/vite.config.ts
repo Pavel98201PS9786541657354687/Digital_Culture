@@ -24,7 +24,12 @@ export default ({ mode }) => {
           // target: "http://91.222.239.188:8001",
           target: "http://digitalkultura.ru:8001",
           changeOrigin: true,
-          rewrite: (path) => path.replace(`/^/api /`, ""),
+          // rewrite: (path) => path.replace(`/^/api /`, ""),
+        },
+        "/media": {
+          target: "http://digitalkultura.ru:8001",
+          changeOrigin: true,
+          // rewrite: (path) => path.replace(`/^/media /`, ""),
         },
       },
     },

@@ -104,7 +104,9 @@ export const MainPage = (props: Props) => {
     const videoPromises = videos.map((videoData, index) => {
       return new Promise((resolve) => {
         const video = document.createElement('video');
-        video.src = videoData?.fileName;
+        const parsedUrl = new URL(videoData?.fileName);
+        const relativePath = parsedUrl.pathname;
+        video.src = "http://digitalkultura.ru:8001" + relativePath;
         video.onloadeddata = () => {
           handleVideoLoad(index);
           resolve();
