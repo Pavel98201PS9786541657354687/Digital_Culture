@@ -6,9 +6,9 @@ services:
     build: ./front/
     container_name: frontend
     ports:
-      - "8081:8081"
+      - "8080:8080"
     expose:
-      - "8081"
+      - "8080"
     volumes:
       - ./front:/front/
       - ./front/node_modules:/front/node_modules
@@ -21,8 +21,8 @@ services:
     container_name: backend
     volumes:
       - ./back:/back/
-      - ./back/digitalCulture/media/:/media
-      - ./back/digitalCulture/static:/static
+      - ./back/digitalCulture/media/:/back/media
+      - ./back/digitalCulture/static:/back/static
     ports:
       - "8001:8001"
     networks:
@@ -31,3 +31,10 @@ services:
 networks:
   vite-network:
     driver: bridge
+
+
+volumes:
+  static:
+    driver: local
+  media:
+    driver: local
