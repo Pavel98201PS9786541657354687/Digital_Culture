@@ -18,5 +18,5 @@ COPY . .
 # Сборка статических файлов
 RUN python manage.py collectstatic --noinput
 
-# Запускаем приложение с помощью Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8001", "digitalCulture.wsgi:application"]
+COPY ./entrypoint.sh /
+ENTRYPOINT ["sh", "/entrypoint.sh"]
