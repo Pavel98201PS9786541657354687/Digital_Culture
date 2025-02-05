@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   frontend:
-    restart: always
+    # restart: always
     build: ./front/
     container_name: frontend
     ports:
@@ -16,7 +16,7 @@ services:
       - vite-network
 
   backend:
-    restart: always
+    # restart: always
     build: ./back
     container_name: backend
     volumes:
@@ -27,25 +27,6 @@ services:
       - "8001:8001"
     networks:
       - vite-network
-
-  nginx:
-    restart: always
-    image: nginx:latest
-    container_name: nginx
-    volumes:
-      - ./nginx:/etc/nginx/conf.d # Смонтировать директорию с конфигом
-      - ./ssl:/etc/ssl/ # Смонтировать директорию с сертификатами
-      - ./back/digitalCulture:/back/
-      - ./back/digitalCulture/static:/static
-      - ./back/digitalCulture/media/:/media
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - vite-network
-    depends_on:
-      - frontend
-      - backend
 
 networks:
   vite-network:

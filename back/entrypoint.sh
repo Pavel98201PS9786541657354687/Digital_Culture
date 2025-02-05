@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-pdm run manage.py collectstatic --noinput
-pdm run manage.py migrate --noinput
-pdm run gunicorn -b :8001 appname.wsgi
+python manage.py collectstatic
+python manage.py migrate
+gunicorn digitalCulture.wsgi:application --bind 0.0.0.0:8001
