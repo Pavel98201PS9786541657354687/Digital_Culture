@@ -2,7 +2,7 @@ import {
   AppSources,
   appSources,
 } from "./app.sources";
-import { cacheService, NotificationServiceModel } from "@/stores";
+import { cacheService, CacheService, NotificationServiceModel } from "@/stores";
 
 class AppService {
   private serviceBaseKey = "app-service";
