@@ -12,10 +12,13 @@
   },
   "proxy": "http://91.222.239.188:8001",
   "dependencies": {
+    "@astral/mobx-query": "^1.10.3",
     "@gsap/react": "^2.1.1",
     "axios": "^1.7.9",
     "esbuild": "^0.19.8",
     "gsap": "^3.12.5",
+    "mobx": "^6.13.6",
+    "mobx-react": "^9.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-input-mask": "^2.0.4",
