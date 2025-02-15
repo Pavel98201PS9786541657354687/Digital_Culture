@@ -3,18 +3,15 @@ import { gsap } from "gsap";
 import { toArray } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
 import { literalContent } from "../../../../constants";
-import { useContext } from "react";
-import { LanguageContext } from "../../../../App";
 
 type Props = {
   blocks: any[];
   openModal: () => void;
+  language: "ru" | "eng";
 }
 
 export const ServicesCarousel = (props: Props) => {
-  const { blocks = [], openModal } = props;
-
-  const language = useContext(LanguageContext);
+  const { blocks = [], openModal, language } = props;
 
   const titleAccessor = language === "ru" ? "title" : "title_en";
   const descriptionAccessor = language === "ru" ? "description" : "description_en";

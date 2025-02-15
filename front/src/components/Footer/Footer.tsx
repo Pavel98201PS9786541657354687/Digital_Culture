@@ -5,18 +5,16 @@ import liveLogoEyeGif from "../../assets/live-logo-eye-2.gif";
 import liveLogoLettersGif from "../../assets/live-logo-letters-2.gif";
 import { useNavigate } from "react-router";
 import { literalContent } from "../../constants";
-import { useContext } from "react";
-import { LanguageContext } from "../../App";
 
 type Props = {
   handleSwitchLanguage: () => void;
+  language: "ru" | "eng";
 }
 
 export const Footer = (props: Props) => {
-  const { handleSwitchLanguage } = props;
+  const { language, handleSwitchLanguage } = props;
 
   const navigate = useNavigate();
-  const language = useContext(LanguageContext);
 
   return (
     <footer className="footer">

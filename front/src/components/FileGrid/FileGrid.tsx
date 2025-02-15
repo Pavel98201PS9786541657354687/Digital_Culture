@@ -5,8 +5,7 @@ import downArrow from "../../assets/down-arrow.png";
 import { useNavigate } from "react-router";
 import { renderFileByType } from "../../utils";
 import { literalContent } from "../../constants";
-import { useContext, useState } from "react";
-import { LanguageContext } from "../../App";
+import { useState } from "react";
 
 type Props = {
   videos?: any[];
@@ -15,6 +14,7 @@ type Props = {
   increaseOffset?: () => void;
   total?: number;
   canShowMore?: boolean;
+  language: "ru" | "eng";
 };
 
 const FileTile = ({ videoData, navigate }) => {
@@ -41,10 +41,9 @@ const FileTile = ({ videoData, navigate }) => {
 };
 
 export const FileGrid = (props: Props) => {
-  const { videos = [], lineGroups, increaseOffset, total, canShowMore = true } = props;
+  const { videos = [], lineGroups, increaseOffset, total, canShowMore = true, language } = props;
 
   const navigate = useNavigate();
-  const language = useContext(LanguageContext);
 
   useGSAP(() => {
     const lines = document.querySelectorAll(".portfolio-line");

@@ -1,37 +1,21 @@
-import { apiHttpClient, NotificationServiceModel } from "@/shared";
+import { API_URL } from "../../constants";
+import { apiHttpClient } from "../core";
 
-const apiPrefix = "api/front/";
+const apiPrefix = `${API_URL}/api/`;
 
 export const appSources = {
-  getList: (
-    params: Partial<NotificationServiceModel.NotificationsRequestParams>,
-  ) => {
-    return apiHttpClient.get<NotificationServiceModel.NotificationsListResponse>(
-      apiPrefix + `notifications`,
-      {
-        params,
-      },
-    );
+  getListVideo: (params) => {
+    return apiHttpClient.get(apiPrefix + `getListVideo`, { params });
   },
-  updateItem: (
-    id: string,
-    data: NotificationServiceModel.NotificationUpdateItem,
-  ) => {
-    return apiHttpClient.patch(apiPrefix + `notifications/${id}`, data);
+  getProjectData: (id: string) => {
+    return apiHttpClient.get(apiPrefix + `projectsFiles/${id}`);
   },
-  multiUpdate: (
-    ids: string[],
-    data: NotificationServiceModel.NotificationUpdateItem,
-  ) => {
-    return apiHttpClient.patch(apiPrefix + `notifications/multi`, {
-      notificationId: ids,
-      ...data,
-    });
+  getListBlocks: (params) => {
+    return apiHttpClient.get(apiPrefix + `blocks`, { params });
   },
-  sendEmail: (notificationId: string) =>
-    apiHttpClient.post(apiPrefix + `notifications/forwardEmail`, {
-      notificationId,
-    }),
+  postApplication: (data: any) => {
+    return apiHttpClient.patch(apiPrefix + `postApplications`, data);
+  },
 };
 
 export type AppSources = typeof appSources;

@@ -1,21 +1,20 @@
 import { gsap } from "gsap";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./style.scss";
 import liveLogoLettersGif from "../../assets/live-logo-letters-2.gif";
 import liveLogoEyeGif from "../../assets/live-logo-eye-2.gif";
 import { useNavigate } from "react-router";
-import { LanguageContext } from "../../App";
 import { literalContent } from "../../constants";
 
 type Props = {
   onOpenModal: () => void;
   handleSwitchLanguage: () => void;
+  language: "ru" | "eng";
 }
 
 export const Header = (props: Props) => {
-  const { onOpenModal, handleSwitchLanguage } = props;
+  const { onOpenModal, handleSwitchLanguage, language } = props;
 
-  const language = useContext(LanguageContext);
 
   const [menuOpen, setMenuOpen] = useState(false);
 

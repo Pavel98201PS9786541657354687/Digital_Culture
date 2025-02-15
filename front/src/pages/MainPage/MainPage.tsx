@@ -7,34 +7,33 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import bonePng from "@/assets/bone.png";
 import liveEye from "@/assets/live-eye.gif";
-import { useContext, useEffect, useState } from "react";
-import { LanguageContext, LoadingContext } from "../../App";
+import { useEffect, useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { Modal, Header, Footer } from "../../components";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
-import { literalContent, API_URL, axiosInstance } from "@/constants";
+import { literalContent } from "@/constants";
+import { observer } from "mobx-react";
+import { appViewStore } from "../../stores/app.store";
+import { useGetListBlocks, useGetListVideo } from "../../hooks";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
-type Props = {
-  setLoading: (boolean) => void;
-  handleSwitchLanguage: () => void;
-};
+export const MainPage = observer(() => {
+  const loading = false;
 
-export const MainPage = (props: Props) => {
-  const { setLoading, handleSwitchLanguage } = props;
-  const loading = useContext(LoadingContext);
-  const language = useContext(LanguageContext);
+  const { data: videosByPage, isLoading: isListVideoLoading } = useGetListVideo();
+  const { data: blocks, isLoading: isListBlocksLoading } = useGetListBlocks();
+  const { language, totalProjectCount } = appViewStore;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videos, setVideos] = useState([]);
   const [lineGroups, setLineGroups] = useState([]);
-  const [blocks, setBlocks] = useState([]);
   const [videosLoadingState, setVideosLoadingState] = useState([]);
-  const limit = 3;
-  const [offset, setOffset] = useState(0);
-  const [count, setCount] = useState(0);
   const [videosLoading, setVideosLoading] = useState(false);
+
+  useEffect(() => {
+    setVideos((prev) =>[...prev, ...videosByPage]);
+  }, [videosByPage]);
 
   useEffect(() => {
     if (videos?.length) {
@@ -118,51 +117,6 @@ export const MainPage = (props: Props) => {
     await Promise.all(videoPromises);
   };
 
-  const fetchVideos = async () => {
-    setVideosLoading(true);
-    try {
-      const response = await axiosInstance.get(`${API_URL}/api/getListVideo`, {
-        params: {
-          limit,
-          offset,
-        }
-      });
-      const videoList = response.data?.results ?? [];
-      setCount(response.data?.count ?? 0);
-      setVideos((prevVideos) => [...prevVideos, ...videoList]);
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setVideosLoading(false);
-    }
-  };
-
-  const fetchBlocks = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(`${API_URL}/api/blocks`, {
-        params: {
-          limit: 1000,
-          offset: 0,
-        }
-      });
-      const blockList = response.data?.results ?? [];
-      setBlocks((prevBlocks) => [...prevBlocks, ...blockList]);
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchBlocks();
-  }, []);
-
-  useEffect(() => {
-    fetchVideos();
-  }, [offset]);
-
   if (loading) return <div className="loader">
     <PuffLoader />
   </div>;
@@ -180,7 +134,7 @@ export const MainPage = (props: Props) => {
           </div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
-        <Header handleSwitchLanguage={handleSwitchLanguage} onOpenModal={() => setIsModalOpen(true)} />
+        <Header language={language} handleSwitchLanguage={appViewStore.switchLanguage} onOpenModal={() => setIsModalOpen(true)} />
         <div className="banner">
           <div className="slogan-container">
             <div className="slogan-big">{literalContent.weCreate[language]?.toUpperCase()}</div>
@@ -206,9 +160,8 @@ export const MainPage = (props: Props) => {
           <FileGrid
             lineGroups={lineGroups}
             videos={videos}
-            offset={offset}
-            increaseOffset={() => setOffset(offset + limit)}
-            total={count}
+            increaseOffset={() => appViewStore.increaseOffset()}
+            total={totalProjectCount}
           />
         )}
         <ServicesCarousel
@@ -217,10 +170,10 @@ export const MainPage = (props: Props) => {
           lineGroups={lineGroups}
         />
       </div>
-      <Footer handleSwitchLanguage={handleSwitchLanguage} />
+      <Footer language={language} handleSwitchLanguage={appViewStore.switchLanguage} />
       <Modal title={literalContent.weWillContactYou[language]} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Form onSubmit={handleSubmit} />
       </Modal>
     </>
   );
-};
+});

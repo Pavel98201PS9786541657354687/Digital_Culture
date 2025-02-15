@@ -1,8 +1,5 @@
-import {
-  AppSources,
-  appSources,
-} from "./app.sources";
-import { cacheService, CacheService, NotificationServiceModel } from "@/stores";
+import { AppSources, appSources } from "./app.sources";
+import { cacheService, CacheService } from "@/stores";
 
 class AppService {
   private serviceBaseKey = "app-service";
@@ -12,24 +9,31 @@ class AppService {
     private readonly cache: CacheService,
   ) {}
 
-  getList(
-    params: Partial<NotificationServiceModel.NotificationsRequestParams>,
-  ) {
+  getListVideo(params) {
     return this.cache.createQuery(
-      [this.serviceBaseKey, "notificationsList", params],
-      () => this.sources.getList(params),
+      [this.serviceBaseKey, "listVideo", params],
+      () => this.sources.getListVideo(params),
     );
   }
 
-  async update(
-    id: string,
-    data: NotificationServiceModel.NotificationUpdateItem,
-  ) {
-    const res = await this.cache
-      .createMutation((id: string) => this.sources.updateItem(id, data))
-      .async(id);
-    await this.cache.invalidate(["notificationsList"]);
-    return res;
+  getProjectData(id: string) {
+    return this.cache.createQuery(
+      [this.serviceBaseKey, id],
+      () => this.sources.getProjectData(id),
+    );
+  }
+
+  getListBlocks(params) {
+    return this.cache.createQuery(
+      [this.serviceBaseKey, "listBlocks", params],
+      () => this.sources.getListBlocks(params),
+    );
+  }
+
+  async postApplication(data: any) {
+    return await this.cache
+      .createMutation(() => this.sources.postApplication(data))
+      .async();
   }
 }
 

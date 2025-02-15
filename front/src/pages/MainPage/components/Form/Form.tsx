@@ -1,17 +1,17 @@
 import InputMask from "react-input-mask";
 
 import "./style.scss";
-import { useContext, useState } from "react";
-import { LanguageContext } from "../../../../App";
+import React, { useState } from "react";
 import { literalContent, API_URL, axiosInstance } from "@/constants";
 
 type Props = {
   onSubmit: () => void;
   theme?: "light" | "dark";
+  language: "ru" | "eng";
 }
 
 export const Form = (props: Props) => {
-  const { onSubmit, theme = "light" } = props;
+  const { onSubmit, theme = "light", language } = props;
 
   const [initials, setInitials] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -21,8 +21,6 @@ export const Form = (props: Props) => {
   const [comments, setComments] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(null);
-
-  const language = useContext(LanguageContext);
 
   const isFormValid =
     initials.length
