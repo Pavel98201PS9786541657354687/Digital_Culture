@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -13,7 +13,11 @@ import { literalContent } from "@/constants";
 
 import { Footer, Header, Modal } from "../../components";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
-import { useGetListBlocks, useGetListVideo } from "../../hooks";
+import {
+  useGetListBlocks,
+  useGetListVideo,
+  useOnLoadImages,
+} from "../../hooks";
 import { appViewStore } from "../../stores/app.store";
 
 import { FileGrid, Form, ServicesCarousel } from "./components";
@@ -21,6 +25,12 @@ import { FileGrid, Form, ServicesCarousel } from "./components";
 import "./style.scss";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
+
+const LoadingComponent = () => (
+  <div className="loader-container">
+    <PuffLoader />
+  </div>
+);
 
 export const MainPage = observer(() => {
   const loading = false;
@@ -35,6 +45,9 @@ export const MainPage = observer(() => {
   const [lineGroups, setLineGroups] = useState([]);
   const [videosLoadingState, setVideosLoadingState] = useState([]);
   const [videosLoading, setVideosLoading] = useState(false);
+
+  const liveEyeRef = useRef<HTMLDivElement>(null);
+  const liveEyeLoaded = useOnLoadImages(liveEyeRef);
 
   useEffect(() => {
     if (videosByPage.length) {
@@ -131,7 +144,7 @@ export const MainPage = observer(() => {
     <>
       <div className="container">
         <div id="eye-container">
-          <div className="image-container">
+          <div className="image-container" ref={liveEyeRef}>
             <img id="eye-video" src={liveEye} alt="Eye video shot" />
           </div>
         </div>
@@ -166,20 +179,17 @@ export const MainPage = observer(() => {
             {literalContent.orderAds[language]?.toUpperCase()}
           </button>
         </div>
-        {videosLoading ? (
-          <div>
-            <PuffLoader />
-          </div>
+        {isListVideoLoading ? (
+          <LoadingComponent />
         ) : (
-          <div className="video-grid-container">
-            <FileGrid
-              lineGroups={lineGroups}
-              videos={videos}
-              increaseOffset={() => appViewStore.increaseOffset()}
-              total={totalProjectCount}
-              language={language}
-            />
-          </div>
+          <FileGrid
+            lineGroups={lineGroups}
+            videos={videos}
+            increaseOffset={() => appViewStore.increaseOffset()}
+            total={totalProjectCount}
+            language={language}
+            containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
+          />
         )}
         {/*<ServicesCarouselGsap*/}
         {/*  blocks={blocks}*/}
@@ -187,12 +197,16 @@ export const MainPage = observer(() => {
         {/*  lineGroups={lineGroups}*/}
         {/*  language={language}*/}
         {/*/>*/}
-        <ServicesCarousel
-          blocks={blocks}
-          openModal={() => setIsModalOpen(true)}
-          lineGroups={lineGroups}
-          language={language}
-        />
+        {isListBlocksLoading ? (
+          <LoadingComponent />
+        ) : (
+          <ServicesCarousel
+            blocks={blocks}
+            openModal={() => setIsModalOpen(true)}
+            lineGroups={lineGroups}
+            language={language}
+          />
+        )}
       </div>
       <Footer
         language={language}

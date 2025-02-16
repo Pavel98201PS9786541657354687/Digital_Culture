@@ -17,6 +17,7 @@ type Props = {
   total?: number;
   canShowMore?: boolean;
   language: "ru" | "eng";
+  containerStyles?: Record<string, string>;
 };
 
 export const FileGrid = (props: Props) => {
@@ -27,6 +28,7 @@ export const FileGrid = (props: Props) => {
     total,
     canShowMore = true,
     language,
+    containerStyles = {},
   } = props;
 
   const navigate = useNavigate();
@@ -64,7 +66,7 @@ export const FileGrid = (props: Props) => {
 
   return (
     <>
-      <div id="projects">
+      <div id="projects" style={containerStyles}>
         {lineGroups?.map((lineGroup, index) => {
           return (
             <div className="portfolio-line" key={`portfolio-line-${index}`}>

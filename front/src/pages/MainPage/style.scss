@@ -56,9 +56,12 @@
     }
   }
 
-  .video-grid-container {
-    padding-top: 100px;
-    padding-inline: 16px;
+  .loader-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

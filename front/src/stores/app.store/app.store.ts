@@ -13,7 +13,7 @@ class AppViewStore {
 
   public increaseOffset = () => {
     this.offset += this.limit;
-  }
+  };
 
   public switchLanguage = () => {
     if (this.language === "ru") {
@@ -23,20 +23,15 @@ class AppViewStore {
     }
   };
 
+  public setTotalProjectCount = (count: number) => {
+    this.totalProjectCount = count;
+  };
+
   constructor() {
     makeAutoObservable(this);
   }
 
   public getListVideo() {
-    // const res = this.appService.getListVideo({
-    //   limit: this.limit,
-    //   offset: this.offset,
-    // }).async().then((response) => {
-    //   this.totalProjectCount = response.data?.count ?? 0;
-    //   return response;
-    // });
-    //
-    // return res;
     return this.appService.getListVideo({
       limit: this.limit,
       offset: this.offset,
