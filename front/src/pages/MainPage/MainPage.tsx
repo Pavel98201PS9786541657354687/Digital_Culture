@@ -1,27 +1,32 @@
-import { gsap } from "gsap";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "./style.scss";
-import { Form, FileGrid, ServicesCarousel } from "./components";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useGSAP } from "@gsap/react";
-import bonePng from "@/assets/bone.png";
-import liveEye from "@/assets/live-eye.gif";
 import { useEffect, useState } from "react";
 import { PuffLoader } from "react-spinners";
-import { Modal, Header, Footer } from "../../components";
-import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
-import { literalContent } from "@/constants";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { observer } from "mobx-react";
-import { appViewStore } from "../../stores/app.store";
+
+import bonePng from "@/assets/bone.png";
+import liveEye from "@/assets/live-eye.gif";
+import { literalContent } from "@/constants";
+
+import { Footer, Header, Modal } from "../../components";
+import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 import { useGetListBlocks, useGetListVideo } from "../../hooks";
+import { appViewStore } from "../../stores/app.store";
+
+import { FileGrid, Form, ServicesCarousel } from "./components";
+
+import "./style.scss";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
 export const MainPage = observer(() => {
   const loading = false;
 
-  const { data: videosByPage, isLoading: isListVideoLoading } = useGetListVideo();
+  const { data: videosByPage, isLoading: isListVideoLoading } =
+    useGetListVideo();
   const { data: blocks, isLoading: isListBlocksLoading } = useGetListBlocks();
   const { language, totalProjectCount } = appViewStore;
 
@@ -32,7 +37,9 @@ export const MainPage = observer(() => {
   const [videosLoading, setVideosLoading] = useState(false);
 
   useEffect(() => {
-    setVideos((prev) =>[...prev, ...videosByPage]);
+    if (videosByPage.length) {
+      setVideos((prev) => [...prev, ...videosByPage]);
+    }
   }, [videosByPage]);
 
   useEffect(() => {
@@ -43,12 +50,6 @@ export const MainPage = observer(() => {
       setLineGroups(groups);
     }
   }, [videos]);
-
-  // useEffect(() => {
-  //   if (videosLoadingState.length) {
-  //     setLoading(videosLoadingState?.some(state => state === true));
-  //   }
-  // }, [videosLoadingState]);
 
   useGSAP(() => {
     gsap.to("#bg-bone-image", {
@@ -75,19 +76,19 @@ export const MainPage = observer(() => {
   }, [loading]);
 
   useEffect(() => {
-    const anchors = document.querySelectorAll('a[href*="#"]')
+    const anchors = document.querySelectorAll('a[href*="#"]');
 
     for (let anchor of anchors) {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault()
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
 
-        const blockID = anchor.getAttribute('href').substr(1)
+        const blockID = anchor.getAttribute("href").substr(1);
 
         document.getElementById(blockID).scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        })
-      })
+          behavior: "smooth",
+          block: "start",
+        });
+      });
     }
   }, []);
 
@@ -102,10 +103,8 @@ export const MainPage = observer(() => {
   const preloadVideos = async (videos) => {
     const videoPromises = videos.map((videoData, index) => {
       return new Promise((resolve) => {
-        const video = document.createElement('video');
-        const parsedUrl = new URL(videoData?.fileName);
-        const relativePath = parsedUrl.pathname;
-        video.src = "http://digitalkultura.ru:8001" + relativePath;
+        const video = document.createElement("video");
+        video.src = videoData?.fileName;
         video.onloadeddata = () => {
           handleVideoLoad(index);
           resolve();
@@ -117,9 +116,12 @@ export const MainPage = observer(() => {
     await Promise.all(videoPromises);
   };
 
-  if (loading) return <div className="loader">
-    <PuffLoader />
-  </div>;
+  if (loading)
+    return (
+      <div className="loader">
+        <PuffLoader />
+      </div>
+    );
 
   const handleSubmit = () => {
     setIsModalOpen(false);
@@ -134,11 +136,19 @@ export const MainPage = observer(() => {
           </div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
-        <Header language={language} handleSwitchLanguage={appViewStore.switchLanguage} onOpenModal={() => setIsModalOpen(true)} />
+        <Header
+          language={language}
+          handleSwitchLanguage={appViewStore.switchLanguage}
+          onOpenModal={() => setIsModalOpen(true)}
+        />
         <div className="banner">
           <div className="slogan-container">
-            <div className="slogan-big">{literalContent.weCreate[language]?.toUpperCase()}</div>
-            <div className="slogan-big">{literalContent["3dAds"][language]?.toUpperCase()}</div>
+            <div className="slogan-big">
+              {literalContent.weCreate[language]?.toUpperCase()}
+            </div>
+            <div className="slogan-big">
+              {literalContent["3dAds"][language]?.toUpperCase()}
+            </div>
             <div className="slogan-small">
               {language === "ru" ? (
                 <>
@@ -150,29 +160,49 @@ export const MainPage = observer(() => {
               )}
             </div>
           </div>
-          <button className="banner-action-button" onClick={() => setIsModalOpen(true)}>{literalContent.orderAds[language]?.toUpperCase()}</button>
+          <button
+            className="banner-action-button"
+            onClick={() => setIsModalOpen(true)}>
+            {literalContent.orderAds[language]?.toUpperCase()}
+          </button>
         </div>
         {videosLoading ? (
           <div>
             <PuffLoader />
           </div>
         ) : (
-          <FileGrid
-            lineGroups={lineGroups}
-            videos={videos}
-            increaseOffset={() => appViewStore.increaseOffset()}
-            total={totalProjectCount}
-          />
+          <div className="video-grid-container">
+            <FileGrid
+              lineGroups={lineGroups}
+              videos={videos}
+              increaseOffset={() => appViewStore.increaseOffset()}
+              total={totalProjectCount}
+              language={language}
+            />
+          </div>
         )}
+        {/*<ServicesCarouselGsap*/}
+        {/*  blocks={blocks}*/}
+        {/*  openModal={() => setIsModalOpen(true)}*/}
+        {/*  lineGroups={lineGroups}*/}
+        {/*  language={language}*/}
+        {/*/>*/}
         <ServicesCarousel
           blocks={blocks}
           openModal={() => setIsModalOpen(true)}
           lineGroups={lineGroups}
+          language={language}
         />
       </div>
-      <Footer language={language} handleSwitchLanguage={appViewStore.switchLanguage} />
-      <Modal title={literalContent.weWillContactYou[language]} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Form onSubmit={handleSubmit} />
+      <Footer
+        language={language}
+        handleSwitchLanguage={appViewStore.switchLanguage}
+      />
+      <Modal
+        title={literalContent.weWillContactYou[language]}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}>
+        <Form onSubmit={handleSubmit} language={language} />
       </Modal>
     </>
   );

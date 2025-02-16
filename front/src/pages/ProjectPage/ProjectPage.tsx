@@ -17,7 +17,8 @@ export const ProjectPage = observer(() => {
 
   const navigate = useNavigate();
 
-  const { data: projectData, isLoading: isProjectDataLoading } = useGetProjectData();
+  const { data: projectData, isLoading: isProjectDataLoading } =
+    useGetProjectData();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lineGroups, setLineGroups] = useState([]);
@@ -43,7 +44,7 @@ export const ProjectPage = observer(() => {
   const preloadFiles = async (videos) => {
     const videoPromises = videos.map((videoData, index) => {
       return new Promise((resolve) => {
-        const video = document.createElement('video');
+        const video = document.createElement("video");
         video.src = videoData?.fileName;
         video.onloadeddata = () => {
           handleFileLoad(index);
@@ -60,21 +61,32 @@ export const ProjectPage = observer(() => {
     setIsModalOpen(false);
   };
 
-  if (loading) return <div className="loader">
-    <PuffLoader />
-  </div>;
+  if (loading)
+    return (
+      <div className="loader">
+        <PuffLoader />
+      </div>
+    );
 
   const title = language === "ru" ? projectData?.title : projectData?.title_en;
-  const description = language === "ru" ? projectData?.description : projectData?.description_en;
+  const description =
+    language === "ru" ? projectData?.description : projectData?.description_en;
 
   return (
     <>
       <div className="project-page">
         <div className="project-page--container">
-          <Header language={language} handleSwitchLanguage={appViewStore.switchLanguage} onOpenModal={() => setIsModalOpen(true)} />
+          <Header
+            language={language}
+            handleSwitchLanguage={appViewStore.switchLanguage}
+            onOpenModal={() => setIsModalOpen(true)}
+          />
           <div className="project-page--content">
             <div className="breadcrumbs">
-              <div className="breadcrumb" style={{ textDecoration: "underline" }} onClick={() => navigate("/")}>
+              <div
+                className="breadcrumb"
+                style={{ textDecoration: "underline" }}
+                onClick={() => navigate("/")}>
                 {literalContent.main[language]}
               </div>
               <img src={arrowRight} width={8} alt="" />
@@ -82,17 +94,17 @@ export const ProjectPage = observer(() => {
                 {literalContent.projects[language]}
               </div>
               <img src={arrowRight} width={8} alt="" />
-              <div className="breadcrumb">
-                {title}
+              <div className="breadcrumb">{title}</div>
+            </div>
+            <div className="title">{title}</div>
+            <div className="description">{description}</div>
+            {loading ? (
+              <PuffLoader />
+            ) : (
+              <div className="file-grid-container">
+                <FileGrid lineGroups={lineGroups} language={language} />
               </div>
-            </div>
-            <div className="title">
-              {title}
-            </div>
-            <div className="description">
-              {description}
-            </div>
-            {loading ? <PuffLoader /> : <FileGrid lineGroups={lineGroups} />}
+            )}
           </div>
         </div>
         <div className="form-wrapper">
@@ -100,7 +112,10 @@ export const ProjectPage = observer(() => {
           <Form onSubmit={() => setIsModalOpen(false)} theme="dark" />
         </div>
       </div>
-      <Footer language={language} handleSwitchLanguage={appViewStore.switchLanguage} />
+      <Footer
+        language={language}
+        handleSwitchLanguage={appViewStore.switchLanguage}
+      />
       <Modal
         title={literalContent.weWillContactYou[language]}
         isOpen={isModalOpen}

@@ -1,20 +1,21 @@
-import { gsap } from "gsap";
 import { useRef, useState } from "react";
-import "./style.scss";
-import liveLogoLettersGif from "../../assets/live-logo-letters-2.gif";
-import liveLogoEyeGif from "../../assets/live-logo-eye-2.gif";
 import { useNavigate } from "react-router";
+import { gsap } from "gsap";
+
+import liveLogoEyeGif from "../../assets/live-logo-eye-2.gif";
+import liveLogoLettersGif from "../../assets/live-logo-letters-2.gif";
 import { literalContent } from "../../constants";
+
+import "./style.scss";
 
 type Props = {
   onOpenModal: () => void;
   handleSwitchLanguage: () => void;
   language: "ru" | "eng";
-}
+};
 
 export const Header = (props: Props) => {
   const { onOpenModal, handleSwitchLanguage, language } = props;
-
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -70,21 +71,27 @@ export const Header = (props: Props) => {
         </div>
       </div>
       <div ref={menuRef} className="menu-container">
-        <div className="lang-choice" onClick={onChangeLanguage}>RU / ENG</div>
+        <div className="lang-choice" onClick={onChangeLanguage}>
+          RU / ENG
+        </div>
         <ul>
           <li onClick={handleClickMenuItem}>
-            <a href="/">
-              {literalContent.main[language]?.toLowerCase()}
+            <a href="/">{literalContent.main[language]?.toLowerCase()}</a>
+          </li>
+          <li onClick={handleClickMenuItem}>
+            <a href="#projects">
+              {literalContent.portfolio[language]?.toLowerCase()}
             </a>
           </li>
           <li onClick={handleClickMenuItem}>
-            <a href="#projects">{literalContent.portfolio[language]?.toLowerCase()}</a>
-          </li>
-          <li onClick={handleClickMenuItem}>
-            <a href="#services">{literalContent.services[language]?.toLowerCase()}</a>
+            <a href="#services">
+              {literalContent.services[language]?.toLowerCase()}
+            </a>
           </li>
         </ul>
-        <button onClick={onOpenModal}>{literalContent.contactUs[language]?.toLowerCase()}</button>
+        <button onClick={onOpenModal}>
+          {literalContent.contactUs[language]?.toLowerCase()}
+        </button>
       </div>
     </div>
   );

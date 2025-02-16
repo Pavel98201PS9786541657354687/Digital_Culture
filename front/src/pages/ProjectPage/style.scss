@@ -9,7 +9,8 @@
       border-radius: 32px;
       position: relative;
 
-      img, video {
+      img,
+      video {
         width: 100%;
         height: 100%;
         object-fit: cover; /* Сохраняет пропорции видео и заполняет контейнер */
@@ -48,6 +49,10 @@
       font-family: "YandexSansDisplay-Thin", sans-serif;
       margin-bottom: -64px;
       display: contents;
+    }
+
+    .file-grid-container {
+      padding-top: 16px;
     }
   }
 

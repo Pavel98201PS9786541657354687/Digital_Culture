@@ -1,11 +1,13 @@
+import { useNavigate } from "react-router";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import "./style.scss";
+
 import downArrow from "../../assets/down-arrow.png";
-import { useNavigate } from "react-router";
-import { renderFileByType } from "../../utils";
 import { literalContent } from "../../constants";
-import { useState } from "react";
+
+import { FileTile } from "./components";
+
+import "./style.scss";
 
 type Props = {
   videos?: any[];
@@ -17,31 +19,15 @@ type Props = {
   language: "ru" | "eng";
 };
 
-const FileTile = ({ videoData, navigate }) => {
-  const [isVideoLoaded, setIsVideoLoaded] = useState(true);
-
-  const handleVideoLoad = () => {
-    console.log("loaded");
-    setIsVideoLoaded(true);
-  };
-
-  return (
-    <div
-      key={`line-grid-${videoData.index}-${videoData.videoRowIndex}`}
-      className={`tile span-${videoData?.colSpan}`}
-      onClick={() => navigate(`/projects/${videoData?.id}`)}
-    >
-      {isVideoLoaded ? (
-        renderFileByType(videoData?.fileName, handleVideoLoad)
-      ) : (
-        <div>Загрузка видео...</div> // Контент, который будет показан до загрузки видео
-      )}
-    </div>
-  );
-};
-
 export const FileGrid = (props: Props) => {
-  const { videos = [], lineGroups, increaseOffset, total, canShowMore = true, language } = props;
+  const {
+    videos = [],
+    lineGroups,
+    increaseOffset,
+    total,
+    canShowMore = true,
+    language,
+  } = props;
 
   const navigate = useNavigate();
 
@@ -89,7 +75,11 @@ export const FileGrid = (props: Props) => {
                 //   onClick={() => navigate(`/projects/${videoData?.id}`)}>
                 //   {renderFileByType(videoData?.fileName)}
                 // </div>
-                <FileTile key={`line-grid-${index}-${videoRowIndex}`} videoData={videoData} navigate={navigate} />
+                <FileTile
+                  key={`line-grid-${index}-${videoRowIndex}`}
+                  videoData={videoData}
+                  navigate={navigate}
+                />
               ))}
             </div>
           );

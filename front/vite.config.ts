@@ -21,15 +21,14 @@ export default ({ mode }) => {
     server: {
       proxy: {
         "/api": {
-          // target: "http://91.222.239.188:8001",
-          target: "http://digitalkultura.ru:8001",
+          target: "https://digitalkultura.ru",
           changeOrigin: true,
-          // rewrite: (path) => path.replace(`/^/api /`, ""),
         },
         "/media": {
-          target: "http://digitalkultura.ru:8001",
+          target: "https://digitalkultura.ru",
+          secure: true,
           changeOrigin: true,
-          // rewrite: (path) => path.replace(`/^/media /`, ""),
+          rewrite: (path) => path.replace(`/^/media/`, "/media"),
         },
       },
     },
