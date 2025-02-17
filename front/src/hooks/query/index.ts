@@ -1,2 +1,2 @@
+export * from "./useOnLoadMedia";
 export * from "./useQuery";
-export * from "./useOnLoadImages";

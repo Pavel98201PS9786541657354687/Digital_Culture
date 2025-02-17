@@ -1,5 +1,6 @@
+import { CacheService, cacheService } from "@/stores";
+
 import { AppSources, appSources } from "./app.sources";
-import { cacheService, CacheService } from "@/stores";
 
 class AppService {
   private serviceBaseKey = "app-service";
@@ -17,9 +18,8 @@ class AppService {
   }
 
   getProjectData(id: string) {
-    return this.cache.createQuery(
-      [this.serviceBaseKey, id],
-      () => this.sources.getProjectData(id),
+    return this.cache.createQuery([this.serviceBaseKey, id], () =>
+      this.sources.getProjectData(id),
     );
   }
 
@@ -37,7 +37,4 @@ class AppService {
   }
 }
 
-export const appService = new AppService(
-  appSources,
-  cacheService,
-);
+export const appService = new AppService(appSources, cacheService);

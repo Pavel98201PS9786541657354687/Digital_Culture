@@ -13,11 +13,7 @@ import { literalContent } from "@/constants";
 
 import { Footer, Header, Modal } from "../../components";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
-import {
-  useGetListBlocks,
-  useGetListVideo,
-  useOnLoadImages,
-} from "../../hooks";
+import { useGetListBlocks, useGetListVideo, useOnLoadMedia } from "../../hooks";
 import { appViewStore } from "../../stores/app.store";
 
 import { FileGrid, Form, ServicesCarousel } from "./components";
@@ -33,8 +29,6 @@ const LoadingComponent = () => (
 );
 
 export const MainPage = observer(() => {
-  const loading = false;
-
   const { data: videosByPage, isLoading: isListVideoLoading } =
     useGetListVideo();
   const { data: blocks, isLoading: isListBlocksLoading } = useGetListBlocks();
@@ -42,12 +36,18 @@ export const MainPage = observer(() => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videos, setVideos] = useState([]);
-  const [lineGroups, setLineGroups] = useState([]);
-  const [videosLoadingState, setVideosLoadingState] = useState([]);
-  const [videosLoading, setVideosLoading] = useState(false);
 
+  // TODO: перенести в стор, чтобы не выводились только 3 последних загруженных видео при переходе в проект и обратно
+  const [lineGroups, setLineGroups] = useState([]);
+
+  /* Отслеживание состояние загрузки тяжёлого ресурса: GIF анимированного глаза */
   const liveEyeRef = useRef<HTMLDivElement>(null);
-  const liveEyeLoaded = useOnLoadImages(liveEyeRef);
+  const [liveEyeLoading] = useOnLoadMedia({
+    ref: liveEyeRef,
+    selector: "img",
+  });
+
+  const loading = isListBlocksLoading;
 
   useEffect(() => {
     if (videosByPage.length) {
@@ -57,8 +57,6 @@ export const MainPage = observer(() => {
 
   useEffect(() => {
     if (videos?.length) {
-      setVideosLoadingState(new Array(videos?.length).fill(true));
-      preloadVideos(videos);
       const groups = getGridChunksByFileFormats(videos);
       setLineGroups(groups);
     }
@@ -104,30 +102,6 @@ export const MainPage = observer(() => {
       });
     }
   }, []);
-
-  const handleVideoLoad = (index) => {
-    setVideosLoadingState((prev) => {
-      const newStates = [...prev];
-      newStates[index] = false; // Устанавливаем состояние загрузки в false для загруженного видео
-      return newStates;
-    });
-  };
-
-  const preloadVideos = async (videos) => {
-    const videoPromises = videos.map((videoData, index) => {
-      return new Promise((resolve) => {
-        const video = document.createElement("video");
-        video.src = videoData?.fileName;
-        video.onloadeddata = () => {
-          handleVideoLoad(index);
-          resolve();
-        };
-        video.load();
-      });
-    });
-
-    await Promise.all(videoPromises);
-  };
 
   if (loading)
     return (
@@ -179,18 +153,15 @@ export const MainPage = observer(() => {
             {literalContent.orderAds[language]?.toUpperCase()}
           </button>
         </div>
-        {isListVideoLoading ? (
-          <LoadingComponent />
-        ) : (
-          <FileGrid
-            lineGroups={lineGroups}
-            videos={videos}
-            increaseOffset={() => appViewStore.increaseOffset()}
-            total={totalProjectCount}
-            language={language}
-            containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
-          />
-        )}
+        <FileGrid
+          lineGroups={lineGroups}
+          videos={videos}
+          increaseOffset={() => appViewStore.increaseOffset()}
+          total={totalProjectCount}
+          language={language}
+          containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
+          loading={isListVideoLoading}
+        />
         {/*<ServicesCarouselGsap*/}
         {/*  blocks={blocks}*/}
         {/*  openModal={() => setIsModalOpen(true)}*/}

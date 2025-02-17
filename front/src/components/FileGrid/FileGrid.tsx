@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router";
+import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
 import downArrow from "../../assets/down-arrow.png";
 import { literalContent } from "../../constants";
 
-import { FileTile } from "./components";
+import { FileLineGroup } from "./components";
 
 import "./style.scss";
+import { useState } from "react";
 
 type Props = {
   videos?: any[];
@@ -18,6 +20,7 @@ type Props = {
   canShowMore?: boolean;
   language: "ru" | "eng";
   containerStyles?: Record<string, string>;
+  loading?: boolean;
 };
 
 export const FileGrid = (props: Props) => {
@@ -29,7 +32,10 @@ export const FileGrid = (props: Props) => {
     canShowMore = true,
     language,
     containerStyles = {},
+    loading,
   } = props;
+
+  const [animatedMaxIndex, setAnimatedMaxIndex] = useState(0);
 
   const navigate = useNavigate();
 
@@ -67,33 +73,31 @@ export const FileGrid = (props: Props) => {
   return (
     <>
       <div id="projects" style={containerStyles}>
-        {lineGroups?.map((lineGroup, index) => {
-          return (
-            <div className="portfolio-line" key={`portfolio-line-${index}`}>
-              {lineGroup.map((videoData, videoRowIndex) => (
-                // <div
-                //   key={`line-grid-${index}-${videoRowIndex}`}
-                //   className={`tile span-${videoData?.colSpan}`}
-                //   onClick={() => navigate(`/projects/${videoData?.id}`)}>
-                //   {renderFileByType(videoData?.fileName)}
-                // </div>
-                <FileTile
-                  key={`line-grid-${index}-${videoRowIndex}`}
-                  videoData={videoData}
-                  navigate={navigate}
-                />
-              ))}
-            </div>
-          );
-        })}
+        {lineGroups?.map((lineGroup, index) => (
+          <FileLineGroup
+            key={`portfolio-line-${index}`}
+            index={index}
+            lineGroup={lineGroup}
+            navigate={navigate}
+            animatedMaxIndex={animatedMaxIndex}
+            setAnimatedMaxIndex={setAnimatedMaxIndex}
+          />
+        ))}
       </div>
-      {canShowMore && total > videos.length && (
-        <div className="show-more-button" onClick={increaseOffset}>
-          <div className="show-more-text">
-            {literalContent.watchMore[language]?.toUpperCase()}
-          </div>
-          <img src={downArrow} alt="Посмотреть ещё" />
+      {loading ? (
+        <div className="loader-container">
+          <PuffLoader />
         </div>
+      ) : (
+        canShowMore &&
+        total > videos.length && (
+          <div className="show-more-button" onClick={increaseOffset}>
+            <div className="show-more-text">
+              {literalContent.watchMore[language]?.toUpperCase()}
+            </div>
+            <img src={downArrow} alt="Посмотреть ещё" />
+          </div>
+        )
       )}
     </>
   );

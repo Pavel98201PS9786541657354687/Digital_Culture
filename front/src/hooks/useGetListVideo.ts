@@ -1,6 +1,8 @@
-import { useQuery } from "./query";
-import { appViewStore } from "../stores/app.store";
 import { useEffect } from "react";
+
+import { appViewStore } from "../stores/app.store";
+
+import { useQuery } from "./query";
 
 export const useGetListVideo = (shouldFetch?: boolean) => {
   const { data, isLoading, error } = useQuery(

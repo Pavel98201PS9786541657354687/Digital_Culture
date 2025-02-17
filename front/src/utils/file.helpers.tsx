@@ -18,14 +18,19 @@ const videoExtensions = [
   ".webm",
 ];
 
-export const renderFileByType = (path) => {
+export const renderFileByType = (path, onLoad, onLoadStart) => {
   const extension = path?.toLowerCase().split(".").pop();
 
   if (imageExtensions.includes(`.${extension}`)) {
     return <img src={path} alt="" />;
   } else if (videoExtensions.includes(`.${extension}`)) {
     return (
-      <video autoPlay muted loop>
+      <video
+        autoPlay
+        muted
+        loop
+        onLoadStart={onLoadStart}
+        onLoadedData={onLoad}>
         <source src={path} type="video/mp4" />
         Не удалось воспроизвести видео
       </video>
