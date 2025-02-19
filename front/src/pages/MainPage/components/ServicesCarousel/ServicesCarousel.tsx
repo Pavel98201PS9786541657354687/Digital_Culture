@@ -1,7 +1,8 @@
+import { useRef, useState } from "react";
+
 import { literalContent } from "../../../../constants";
 
 import "./style.scss";
-import { useRef, useState } from "react";
 
 type Props = {
   blocks: any[];

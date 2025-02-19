@@ -1,18 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { PuffLoader } from "react-spinners";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
 
 import { renderFileByType } from "../../../../utils";
 
 export const FileLineGroup = (props) => {
-  const {
-    lineGroup = [],
-    navigate,
-    index: lineIndex,
-    animatedMaxIndex,
-    setAnimatedMaxIndex,
-  } = props;
+  const { lineGroup = [], navigate } = props;
 
   const [loadingState, setLoadingState] = useState([]);
 
@@ -24,40 +16,6 @@ export const FileLineGroup = (props) => {
     () => loadingState?.some((item) => Boolean(item)),
     [loadingState],
   );
-
-  const isAllFilesLoaded = useMemo(
-    () => loadingState?.every((item) => !item),
-    [loadingState],
-  );
-
-  useGSAP(() => {
-    if (lineIndex <= animatedMaxIndex || isLineLoading) return;
-
-    console.log("lineIndex", lineIndex);
-
-    const line = document.querySelector(".portfolio-line");
-    const tiles = line.querySelectorAll(".tile");
-
-    gsap.fromTo(
-      tiles,
-      {
-        y: 500,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        ease: "power1.out",
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: line,
-          start: lineIndex < 2 ? "top+=100 bottom" : "bottom center+=500",
-          once: true,
-          onEnter: () => setAnimatedMaxIndex(lineIndex),
-        },
-      },
-    );
-  }, [lineGroup, isLineLoading]);
 
   useEffect(() => {
     setLoadingState(new Array(lineGroup.length).fill(false));
@@ -95,14 +53,10 @@ export const FileLineGroup = (props) => {
           style={isLineLoading ? { display: "none" } : {}}>
           {lineGroup.map((videoData, videoRowIndex) => (
             <div
+              title={`Кликни для просмотра проекта ${videoData?.title}`}
               key={`line-grid-${videoData.index}-${videoRowIndex}`}
               className={`tile span-${videoData?.colSpan}`}
               onClick={() => navigate(`/projects/${videoData?.id}`)}>
-              {/*{!!loadingState[videoRowIndex] && (*/}
-              {/*  <div>*/}
-              {/*    <PuffLoader />*/}
-              {/*  </div>*/}
-              {/*)}*/}
               {renderFileByType(
                 videoData?.fileName,
                 () => handleFileLoad(videoRowIndex),

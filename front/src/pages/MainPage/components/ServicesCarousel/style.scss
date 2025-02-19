@@ -2,7 +2,6 @@
   height: 100vh;
   z-index: 999;
   width: 100vw;
-  max-width: 500px;
   overflow-x: auto;
   overflow-y: hidden;
   -ms-overflow-style: none;
@@ -19,7 +18,6 @@
 
     .panel {
       width: 100vw;
-      max-width: 500px;
       height: 100vh;
       display: flex;
       align-items: center;
@@ -76,5 +74,17 @@
         }
       }
     }
+  }
+}
+
+@media (min-width: 500px) and (max-width: 1000px) {
+  #services {
+    padding-inline: 10% !important;
+  }
+}
+
+@media (min-width: 1000px) {
+  #services {
+    padding-inline: 20% !important;
   }
 }

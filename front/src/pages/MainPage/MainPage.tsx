@@ -29,15 +29,13 @@ const LoadingComponent = () => (
 );
 
 export const MainPage = observer(() => {
+  const { language, videoList, totalProjectCount } = appViewStore;
+
   const { data: videosByPage, isLoading: isListVideoLoading } =
     useGetListVideo();
   const { data: blocks, isLoading: isListBlocksLoading } = useGetListBlocks();
-  const { language, totalProjectCount } = appViewStore;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [videos, setVideos] = useState([]);
-
-  // TODO: перенести в стор, чтобы не выводились только 3 последних загруженных видео при переходе в проект и обратно
   const [lineGroups, setLineGroups] = useState([]);
 
   /* Отслеживание состояние загрузки тяжёлого ресурса: GIF анимированного глаза */
@@ -51,26 +49,26 @@ export const MainPage = observer(() => {
 
   useEffect(() => {
     if (videosByPage.length) {
-      setVideos((prev) => [...prev, ...videosByPage]);
+      appViewStore.addItemsToVideoList(videosByPage);
     }
   }, [videosByPage]);
 
   useEffect(() => {
-    if (videos?.length) {
-      const groups = getGridChunksByFileFormats(videos);
+    if (videoList.size > 0) {
+      const groups = getGridChunksByFileFormats(Array.from(videoList));
       setLineGroups(groups);
     }
-  }, [videos]);
+  }, [videoList.size]);
 
   useGSAP(() => {
     gsap.to("#bg-bone-image", {
-      y: "-120%", // Перемещение фона вверх
+      y: "-150%", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#bg-bone-image",
         start: "top top",
         end: "max",
-        scrub: 1, // Скорость анимации относительно скролла
+        scrub: 2, // Скорость анимации относительно скролла
       },
     });
 
@@ -155,7 +153,7 @@ export const MainPage = observer(() => {
         </div>
         <FileGrid
           lineGroups={lineGroups}
-          videos={videos}
+          videos={Array.from(videoList)}
           increaseOffset={() => appViewStore.increaseOffset()}
           total={totalProjectCount}
           language={language}

@@ -4,13 +4,13 @@ type Video = {
   formatVideo: "vertical" | "horizontal" | "quadratic";
   title: string;
   weight: number;
-}
+};
 
 const mapColSpanByFormat = {
-  "vertical": 1,
-  "horizontal": 3,
-  "quadratic": 2
-}
+  vertical: 1,
+  horizontal: 3,
+  quadratic: 2,
+};
 
 export const chunkGridItems = (array: Video[]) => {
   const result = [];
@@ -33,9 +33,13 @@ export const getGridChunksByFileFormats = (array: Video[]) => {
   if (!array?.length) {
     return [];
   }
-  const items = array?.map((file, index) => (
-    {...file, colSpan: mapColSpanByFormat[file?.formatVideo] || mapColSpanByFormat[file?.format] || 0}
-  ));
+  const items = array?.map((file, index) => ({
+    ...file,
+    colSpan:
+      mapColSpanByFormat[file?.formatVideo] ||
+      mapColSpanByFormat[file?.format] ||
+      0,
+  }));
 
   const lineGroup = [];
 
@@ -58,4 +62,4 @@ export const getGridChunksByFileFormats = (array: Video[]) => {
   }
 
   return lineGroup;
-}
+};

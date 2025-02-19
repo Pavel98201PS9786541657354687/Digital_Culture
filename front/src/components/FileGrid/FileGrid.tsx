@@ -9,7 +9,6 @@ import { literalContent } from "../../constants";
 import { FileLineGroup } from "./components";
 
 import "./style.scss";
-import { useState } from "react";
 
 type Props = {
   videos?: any[];
@@ -34,8 +33,6 @@ export const FileGrid = (props: Props) => {
     containerStyles = {},
     loading,
   } = props;
-
-  const [animatedMaxIndex, setAnimatedMaxIndex] = useState(0);
 
   const navigate = useNavigate();
 
@@ -79,8 +76,6 @@ export const FileGrid = (props: Props) => {
             index={index}
             lineGroup={lineGroup}
             navigate={navigate}
-            animatedMaxIndex={animatedMaxIndex}
-            setAnimatedMaxIndex={setAnimatedMaxIndex}
           />
         ))}
       </div>

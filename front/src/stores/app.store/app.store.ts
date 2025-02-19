@@ -7,13 +7,10 @@ class AppViewStore {
 
   public language: "eng" | "ru" = "ru";
 
+  public videoList = new Set();
   private readonly limit = 3;
   public offset = 0;
   public totalProjectCount = 0;
-
-  public increaseOffset = () => {
-    this.offset += this.limit;
-  };
 
   public switchLanguage = () => {
     if (this.language === "ru") {
@@ -21,6 +18,14 @@ class AppViewStore {
     } else {
       this.language = "ru";
     }
+  };
+
+  public addItemsToVideoList = (data) => {
+    data.forEach((item) => this.videoList.add(item));
+  };
+
+  public increaseOffset = () => {
+    this.offset += this.limit;
   };
 
   public setTotalProjectCount = (count: number) => {
