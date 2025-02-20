@@ -39,14 +39,14 @@ export const MainPage = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lineGroups, setLineGroups] = useState([]);
 
-  /* Отслеживание состояние загрузки тяжёлого ресурса: GIF анимированного глаза */
-  const liveEyeRef = useRef<HTMLDivElement>(null);
-  const [liveEyeLoading] = useOnLoadMedia({
-    ref: liveEyeRef,
+  /* Отслеживание состояние загрузки изображений */
+  const imagesContainerRef = useRef<HTMLDivElement>(null);
+  const [imagesLoading] = useOnLoadMedia({
+    ref: imagesContainerRef,
     selector: "img",
   });
 
-  const loading = isListBlocksLoading;
+  const loading = isListBlocksLoading || imagesLoading;
 
   useEffect(() => {
     if (videosByPage.length) {
@@ -62,6 +62,8 @@ export const MainPage = observer(() => {
   }, [videoList.size]);
 
   useGSAP(() => {
+    if (imagesLoading) return;
+
     gsap.to("#bg-bone-image", {
       y: "-150%", // Перемещение фона вверх
       ease: "none",
@@ -83,7 +85,7 @@ export const MainPage = observer(() => {
         scrub: 1, // Скорость анимации относительно скролла
       },
     });
-  }, [loading]);
+  }, [imagesLoading]);
 
   useEffect(() => {
     const anchors = document.querySelectorAll('a[href*="#"]');
@@ -102,22 +104,23 @@ export const MainPage = observer(() => {
     }
   }, []);
 
-  if (loading)
-    return (
-      <div className="loader">
-        <PuffLoader />
-      </div>
-    );
-
   const handleSubmit = () => {
     setIsModalOpen(false);
   };
 
   return (
     <>
-      <div className="container">
+      {loading && (
+        <div className="loader">
+          <PuffLoader />
+        </div>
+      )}
+      <div
+        className="container"
+        style={loading ? { display: "none" } : undefined}
+        ref={imagesContainerRef}>
         <div id="eye-container">
-          <div className="image-container" ref={liveEyeRef}>
+          <div className="image-container">
             <img id="eye-video" src={liveEye} alt="Eye video shot" />
           </div>
         </div>
@@ -161,12 +164,6 @@ export const MainPage = observer(() => {
           containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
           loading={isListVideoLoading}
         />
-        {/*<ServicesCarouselGsap*/}
-        {/*  blocks={blocks}*/}
-        {/*  openModal={() => setIsModalOpen(true)}*/}
-        {/*  lineGroups={lineGroups}*/}
-        {/*  language={language}*/}
-        {/*/>*/}
         {isListBlocksLoading ? (
           <LoadingComponent />
         ) : (
@@ -177,11 +174,11 @@ export const MainPage = observer(() => {
             language={language}
           />
         )}
+        <Footer
+          language={language}
+          handleSwitchLanguage={appViewStore.switchLanguage}
+        />
       </div>
-      <Footer
-        language={language}
-        handleSwitchLanguage={appViewStore.switchLanguage}
-      />
       <Modal
         title={literalContent.weWillContactYou[language]}
         isOpen={isModalOpen}

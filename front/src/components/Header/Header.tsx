@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { gsap } from "gsap";
 
-import liveLogoEyeGif from "../../assets/live-logo-eye-2.gif";
-import liveLogoLettersGif from "../../assets/live-logo-letters-2.gif";
+import liveLogoEyeGif from "../../assets/live-logo-eye.gif";
+import liveLogoLettersGif from "../../assets/live-logo-letters.gif";
 import { literalContent } from "../../constants";
 
 import "./style.scss";

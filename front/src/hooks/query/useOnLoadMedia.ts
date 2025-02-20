@@ -48,7 +48,7 @@ export const useOnLoadMedia = <T extends HTMLElement>(
 
     Promise.all(promises)
       .then(() => {
-        console.log("Медиафайлы успешно загружены");
+        console.log("Медиафайлы успешно загружены", promises.length);
       })
       .catch((err: Error) => {
         console.error(err);
