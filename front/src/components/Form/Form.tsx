@@ -2,7 +2,7 @@ import InputMask from "react-input-mask";
 
 import "./style.scss";
 import React, { useState } from "react";
-import { literalContent, API_URL, axiosInstance } from "../../constants";
+import { literalContent } from "../../constants";
 import { useFormik } from "formik";
 import { getValidationSchema } from "./formik.helpers";
 import { usePostApplication } from "../../hooks";
