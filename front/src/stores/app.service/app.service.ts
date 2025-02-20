@@ -32,8 +32,8 @@ class AppService {
 
   async postApplication(data: any) {
     return await this.cache
-      .createMutation(() => this.sources.postApplication(data))
-      .async();
+      .createMutation((data) => this.sources.postApplication(data))
+      .async(data);
   }
 }
 

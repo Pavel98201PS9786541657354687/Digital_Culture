@@ -14,7 +14,7 @@ export const appSources = {
     return apiHttpClient.get(apiPrefix + `blocks`, { params });
   },
   postApplication: (data: any) => {
-    return apiHttpClient.patch(apiPrefix + `postApplications`, data);
+    return apiHttpClient.post(apiPrefix + `postApplications`, data);
   },
 };
 

@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 
 import bonePng from "@/assets/bone.png";
 import liveEye from "@/assets/live-eye.gif";
+import { FileGrid, Form } from "@/components";
 import { literalContent } from "@/constants";
 
 import { Footer, Header, Modal } from "../../components";
@@ -16,7 +17,7 @@ import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 import { useGetListBlocks, useGetListVideo, useOnLoadMedia } from "../../hooks";
 import { appViewStore } from "../../stores/app.store";
 
-import { FileGrid, Form, ServicesCarousel } from "./components";
+import { ServicesCarousel } from "./components";
 
 import "./style.scss";
 

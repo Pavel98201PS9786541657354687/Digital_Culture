@@ -95,4 +95,8 @@ export const literalContent = {
     ru: "Посмотреть ещё",
     eng: "Watch more",
   },
-}
+  fieldShouldNotBeEmpty: {
+    ru: "Поле не должно быть пустым",
+    eng: "Field should not be empty",
+  },
+};

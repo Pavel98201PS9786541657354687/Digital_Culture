@@ -18,19 +18,19 @@ form {
         border-bottom-color: red;
       }
     }
+  }
 
-    &[type="submit"] {
-      font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
-      height: 40px;
-      background-color: black;
-      color: white;
-      border-radius: 8px;
-      margin: 10px 0 20px;
-      transition: opacity 0.2s ease-in-out;
+  button {
+    font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+    height: 40px;
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    margin: 10px 0 20px;
+    transition: opacity 0.2s ease-in-out;
 
-      &:disabled {
-        opacity: 0.4;
-      }
+    &:disabled {
+      opacity: 0.4;
     }
   }
 
@@ -49,11 +49,11 @@ form {
     }
 
     .error {
-      color: #F85C50;
+      color: #f85c50;
     }
 
     .success {
-      color: #00CF91;
+      color: #00cf91;
     }
   }
 

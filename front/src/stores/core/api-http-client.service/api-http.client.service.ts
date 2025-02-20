@@ -1,4 +1,5 @@
 import { createHttpService } from "../http.service";
+import { API_URL } from "../../../constants";
 
 /**
  * Создаем экземпляр httpService
@@ -11,7 +12,7 @@ const httpService = createHttpService();
  */
 export const initApiHttpClient = () => {
   httpService.init({
-    // baseURL: baseUrl,
+    baseURL: API_URL,
   });
 };
 

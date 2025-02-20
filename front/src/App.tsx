@@ -7,11 +7,11 @@ import { initApiHttpClient } from "./stores";
 export const App = () => {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <MainPage />,
     },
     {
-      path: '/projects/:projectId',
+      path: "/projects/:projectId",
       element: <ProjectPage />,
     },
   ]);
@@ -19,8 +19,8 @@ export const App = () => {
   initApiHttpClient();
 
   return (
-    // <React.StrictMode>
+    <React.StrictMode>
       <RouterProvider router={router} />
-    // </React.StrictMode>
+    </React.StrictMode>
   );
-}
+};

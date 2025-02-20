@@ -1,15 +1,18 @@
-import { FileGrid, Form } from "@/pages/MainPage/components";
-import "./style.scss";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { PuffLoader } from "react-spinners";
-import { Modal, Footer, Header } from "../../components";
-import arrowRight from "@/assets/arrow-right.svg";
-import { literalContent } from "@/constants";
-import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
-import { appViewStore } from "../../stores/app.store";
-import { useGetProjectData } from "../../hooks";
 import { observer } from "mobx-react";
+
+import arrowRight from "@/assets/arrow-right.svg";
+import { FileGrid, Form } from "@/components";
+import { literalContent } from "@/constants";
+
+import { Footer, Header, Modal } from "../../components";
+import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
+import { useGetProjectData } from "../../hooks";
+import { appViewStore } from "../../stores/app.store";
+
+import "./style.scss";
 
 export const ProjectPage = observer(() => {
   const { language } = appViewStore;
@@ -109,7 +112,11 @@ export const ProjectPage = observer(() => {
         </div>
         <div className="form-wrapper">
           <h2>{literalContent.letsDiscuss[language]}</h2>
-          <Form onSubmit={() => setIsModalOpen(false)} theme="dark" />
+          <Form
+            onSubmit={() => setIsModalOpen(false)}
+            theme="dark"
+            language={language}
+          />
         </div>
       </div>
       <Footer
@@ -120,7 +127,7 @@ export const ProjectPage = observer(() => {
         title={literalContent.weWillContactYou[language]}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}>
-        <Form onSubmit={handleSubmit} />
+        <Form onSubmit={handleSubmit} language={language} />
       </Modal>
     </>
   );
