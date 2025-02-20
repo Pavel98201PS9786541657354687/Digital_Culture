@@ -1,12 +1,14 @@
+import { useNavigate } from "react-router";
+import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import "./style.scss";
+
 import downArrow from "../../assets/down-arrow.png";
-import { useNavigate } from "react-router";
-import { renderFileByType } from "../../utils";
 import { literalContent } from "../../constants";
-import { useContext, useState } from "react";
-import { LanguageContext } from "../../App";
+
+import { FileLineGroup } from "./components";
+
+import "./style.scss";
 
 type Props = {
   videos?: any[];
@@ -15,36 +17,24 @@ type Props = {
   increaseOffset?: () => void;
   total?: number;
   canShowMore?: boolean;
-};
-
-const FileTile = ({ videoData, navigate }) => {
-  const [isVideoLoaded, setIsVideoLoaded] = useState(true);
-
-  const handleVideoLoad = () => {
-    console.log("loaded");
-    setIsVideoLoaded(true);
-  };
-
-  return (
-    <div
-      key={`line-grid-${videoData.index}-${videoData.videoRowIndex}`}
-      className={`tile span-${videoData?.colSpan}`}
-      onClick={() => navigate(`/projects/${videoData?.id}`)}
-    >
-      {isVideoLoaded ? (
-        renderFileByType(videoData?.fileName, handleVideoLoad)
-      ) : (
-        <div>Загрузка видео...</div> // Контент, который будет показан до загрузки видео
-      )}
-    </div>
-  );
+  language: "ru" | "eng";
+  containerStyles?: Record<string, string>;
+  loading?: boolean;
 };
 
 export const FileGrid = (props: Props) => {
-  const { videos = [], lineGroups, increaseOffset, total, canShowMore = true } = props;
+  const {
+    videos = [],
+    lineGroups,
+    increaseOffset,
+    total,
+    canShowMore = true,
+    language,
+    containerStyles = {},
+    loading,
+  } = props;
 
   const navigate = useNavigate();
-  const language = useContext(LanguageContext);
 
   useGSAP(() => {
     const lines = document.querySelectorAll(".portfolio-line");
@@ -79,30 +69,30 @@ export const FileGrid = (props: Props) => {
 
   return (
     <>
-      <div id="projects">
-        {lineGroups?.map((lineGroup, index) => {
-          return (
-            <div className="portfolio-line" key={`portfolio-line-${index}`}>
-              {lineGroup.map((videoData, videoRowIndex) => (
-                // <div
-                //   key={`line-grid-${index}-${videoRowIndex}`}
-                //   className={`tile span-${videoData?.colSpan}`}
-                //   onClick={() => navigate(`/projects/${videoData?.id}`)}>
-                //   {renderFileByType(videoData?.fileName)}
-                // </div>
-                <FileTile key={`line-grid-${index}-${videoRowIndex}`} videoData={videoData} navigate={navigate} />
-              ))}
-            </div>
-          );
-        })}
+      <div id="projects" style={containerStyles}>
+        {lineGroups?.map((lineGroup, index) => (
+          <FileLineGroup
+            key={`portfolio-line-${index}`}
+            index={index}
+            lineGroup={lineGroup}
+            navigate={navigate}
+          />
+        ))}
       </div>
-      {canShowMore && total > videos.length && (
-        <div className="show-more-button" onClick={increaseOffset}>
-          <div className="show-more-text">
-            {literalContent.watchMore[language]?.toUpperCase()}
-          </div>
-          <img src={downArrow} alt="Посмотреть ещё" />
+      {loading ? (
+        <div className="loader-container">
+          <PuffLoader />
         </div>
+      ) : (
+        canShowMore &&
+        total > videos.length && (
+          <div className="show-more-button" onClick={increaseOffset}>
+            <div className="show-more-text">
+              {literalContent.watchMore[language]?.toUpperCase()}
+            </div>
+            <img src={downArrow} alt="Посмотреть ещё" />
+          </div>
+        )
       )}
     </>
   );

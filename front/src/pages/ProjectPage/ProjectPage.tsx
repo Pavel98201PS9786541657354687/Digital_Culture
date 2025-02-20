@@ -1,48 +1,40 @@
-import { FileGrid, Form } from "@/pages/MainPage/components";
-import "./style.scss";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { LoadingContext, LanguageContext } from "../../App";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { PuffLoader } from "react-spinners";
-import { Modal, Footer, Header } from "../../components";
+import { observer } from "mobx-react";
+
 import arrowRight from "@/assets/arrow-right.svg";
-import { renderFileByType } from "@/utils";
-import { literalContent, API_URL, axiosInstance } from "@/constants";
+import { FileGrid, Form } from "@/components";
+import { literalContent } from "@/constants";
+
+import { Footer, Header, Modal } from "../../components";
 import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
+import { useGetProjectData } from "../../hooks";
+import { appViewStore } from "../../stores/app.store";
 
-type Props = {
-  setLoading: (boolean) => void;
-  handleSwitchLanguage: () => void;
-};
+import "./style.scss";
 
-export const ProjectPage = (props: Props) => {
-  const { setLoading, handleSwitchLanguage } = props;
+export const ProjectPage = observer(() => {
+  const { language } = appViewStore;
+  const loading = false;
 
-  const loading = useContext(LoadingContext);
-  const language = useContext(LanguageContext);
-
-  const { projectId } = useParams();
   const navigate = useNavigate();
 
+  const { data: projectData, isLoading: isProjectDataLoading } =
+    useGetProjectData();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [projectInfo, setProjectInfo] = useState(null);
   const [lineGroups, setLineGroups] = useState([]);
   const [filesLoadingState, setFilesLoadingState] = useState([]);
 
   useEffect(() => {
-    if (filesLoadingState.length) {
-      setLoading(filesLoadingState?.some(state => state === true));
-    }
-  }, [filesLoadingState]);
-
-  useEffect(() => {
-    if (projectInfo?.files?.length) {
-      setFilesLoadingState(new Array(projectInfo?.files?.length).fill(true));
-      preloadFiles(projectInfo?.files);
-      const groups = getGridChunksByFileFormats(projectInfo?.files);
+    if (projectData?.files?.length) {
+      setFilesLoadingState(new Array(projectData?.files?.length).fill(true));
+      preloadFiles(projectData?.files);
+      const groups = getGridChunksByFileFormats(projectData?.files);
       setLineGroups(groups);
     }
-  }, [projectInfo?.files]);
+  }, [projectData?.files]);
 
   const handleFileLoad = (index) => {
     setFilesLoadingState((prev) => {
@@ -55,7 +47,7 @@ export const ProjectPage = (props: Props) => {
   const preloadFiles = async (videos) => {
     const videoPromises = videos.map((videoData, index) => {
       return new Promise((resolve) => {
-        const video = document.createElement('video');
+        const video = document.createElement("video");
         video.src = videoData?.fileName;
         video.onloadeddata = () => {
           handleFileLoad(index);
@@ -68,43 +60,36 @@ export const ProjectPage = (props: Props) => {
     await Promise.all(videoPromises);
   };
 
-  const fetchProject = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(`${API_URL}/api/projectsFiles/${projectId}`);
-      const projectInfo = response.data?.results?.[0];
-      setProjectInfo(projectInfo)
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProject();
-  }, []);
-
   const handleSubmit = () => {
     setIsModalOpen(false);
   };
 
-  if (loading) return <div className="loader">
-    <PuffLoader />
-  </div>;
+  if (loading)
+    return (
+      <div className="loader">
+        <PuffLoader />
+      </div>
+    );
 
-  const title = language === "ru" ? projectInfo?.title : projectInfo?.title_en;
-  const description = language === "ru" ? projectInfo?.description : projectInfo?.description_en;
+  const title = language === "ru" ? projectData?.title : projectData?.title_en;
+  const description =
+    language === "ru" ? projectData?.description : projectData?.description_en;
 
   return (
     <>
       <div className="project-page">
         <div className="project-page--container">
-          <Header onOpenModal={() => setIsModalOpen(true)} handleSwitchLanguage={handleSwitchLanguage} />
+          <Header
+            language={language}
+            handleSwitchLanguage={appViewStore.switchLanguage}
+            onOpenModal={() => setIsModalOpen(true)}
+          />
           <div className="project-page--content">
             <div className="breadcrumbs">
-              <div className="breadcrumb" style={{ textDecoration: "underline" }} onClick={() => navigate("/")}>
+              <div
+                className="breadcrumb"
+                style={{ textDecoration: "underline" }}
+                onClick={() => navigate("/")}>
                 {literalContent.main[language]}
               </div>
               <img src={arrowRight} width={8} alt="" />
@@ -112,31 +97,38 @@ export const ProjectPage = (props: Props) => {
                 {literalContent.projects[language]}
               </div>
               <img src={arrowRight} width={8} alt="" />
-              <div className="breadcrumb">
-                {title}
+              <div className="breadcrumb">{title}</div>
+            </div>
+            <div className="title">{title}</div>
+            <div className="description">{description}</div>
+            {loading ? (
+              <PuffLoader />
+            ) : (
+              <div className="file-grid-container">
+                <FileGrid lineGroups={lineGroups} language={language} />
               </div>
-            </div>
-            <div className="title">
-              {title}
-            </div>
-            <div className="description">
-              {description}
-            </div>
-            {loading ? <PuffLoader /> : <FileGrid lineGroups={lineGroups} />}
+            )}
           </div>
         </div>
         <div className="form-wrapper">
           <h2>{literalContent.letsDiscuss[language]}</h2>
-          <Form onSubmit={() => setIsModalOpen(false)} theme="dark" />
+          <Form
+            onSubmit={() => setIsModalOpen(false)}
+            theme="dark"
+            language={language}
+          />
         </div>
       </div>
-      <Footer handleSwitchLanguage={handleSwitchLanguage} />
+      <Footer
+        language={language}
+        handleSwitchLanguage={appViewStore.switchLanguage}
+      />
       <Modal
         title={literalContent.weWillContactYou[language]}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}>
-        <Form onSubmit={handleSubmit} />
+        <Form onSubmit={handleSubmit} language={language} />
       </Modal>
     </>
   );
-};
+});

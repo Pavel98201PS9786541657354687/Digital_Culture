@@ -1,32 +1,25 @@
-.full-screen {
-  display: block;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
 #services {
-  max-width: 500px;
-  overflow: hidden;
+  height: 100vh;
   z-index: 999;
+  width: 100vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  cursor: grab;
 
-  #services-container {
-    height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-scroll-container {
     display: flex;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
     padding: 0;
-    overflow-x: hidden;
 
     .panel {
-      position: relative;
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
       display: flex;
-      text-align: left;
       align-items: center;
       justify-content: center;
 
@@ -36,7 +29,8 @@
         display: block;
       }
 
-      .anchor-panel, .nav-panel {
+      .anchor-panel,
+      .nav-panel {
         text-transform: uppercase;
         margin-right: 2rem;
       }
@@ -57,20 +51,6 @@
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-
-        position: relative;
-
-        &::before {
-          content: '';
-          position: absolute;
-          border-radius: 64px;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-
-          filter: blur(10px);
-        }
 
         &--title {
           font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
@@ -94,5 +74,17 @@
         }
       }
     }
+  }
+}
+
+@media (min-width: 500px) and (max-width: 1000px) {
+  #services {
+    padding-inline: 10% !important;
+  }
+}
+
+@media (min-width: 1000px) {
+  #services {
+    padding-inline: 20% !important;
   }
 }

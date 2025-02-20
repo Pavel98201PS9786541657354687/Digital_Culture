@@ -13,13 +13,20 @@
     color: white;
 
     &-logo {
+      height: 45px;
       width: fit-content;
       display: flex;
       align-items: flex-start;
+      min-width: 120px;
+      margin-bottom: 20px;
+
+      &__eye {
+        height: 37px;
+      }
 
       &__letters {
-        margin-top: -39px;
-        max-height: 200px;
+        margin-left: 1px;
+        height: 45px;
       }
     }
 

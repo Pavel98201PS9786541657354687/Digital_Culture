@@ -9,7 +9,6 @@
 .container {
   width: 100%;
   height: 100%;
-  max-width: 500px;
   margin: 0 auto;
 
   #bg-bone-image {
@@ -54,6 +53,14 @@
         display: block; /* Убираем пробелы под изображением */
       }
     }
+  }
+
+  .loader-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

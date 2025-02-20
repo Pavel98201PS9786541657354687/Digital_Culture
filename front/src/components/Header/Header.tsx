@@ -1,20 +1,21 @@
-import { gsap } from "gsap";
-import { useContext, useRef, useState } from "react";
-import "./style.scss";
-import liveLogoLettersGif from "../../assets/live-logo-letters.gif";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { LanguageContext } from "../../App";
+import { gsap } from "gsap";
+
+import liveLogoEyeGif from "../../assets/live-logo-eye.gif";
+import liveLogoLettersGif from "../../assets/live-logo-letters.gif";
 import { literalContent } from "../../constants";
+
+import "./style.scss";
 
 type Props = {
   onOpenModal: () => void;
   handleSwitchLanguage: () => void;
-}
+  language: "ru" | "eng";
+};
 
 export const Header = (props: Props) => {
-  const { onOpenModal, handleSwitchLanguage } = props;
-
-  const language = useContext(LanguageContext);
+  const { onOpenModal, handleSwitchLanguage, language } = props;
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -54,11 +55,8 @@ export const Header = (props: Props) => {
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
         <div className="header-left" onClick={() => navigate("/")}>
-          {/*<video width="9%" autoPlay loop muted>*/}
-          {/*  <source src={liveLogoEye} type="video/webm" />*/}
-          {/*  Ваш браузер не поддерживает видео.*/}
-          {/*</video>*/}
-          <img className="logo-letters" width="50%" src={liveLogoLettersGif} alt="" />
+          <img className="logo-eye" src={liveLogoEyeGif} alt="" />
+          <img className="logo-letters" src={liveLogoLettersGif} alt="" />
         </div>
         <div
           id="menu-button"
@@ -73,21 +71,27 @@ export const Header = (props: Props) => {
         </div>
       </div>
       <div ref={menuRef} className="menu-container">
-        <div className="lang-choice" onClick={onChangeLanguage}>RU / ENG</div>
+        <div className="lang-choice" onClick={onChangeLanguage}>
+          RU / ENG
+        </div>
         <ul>
           <li onClick={handleClickMenuItem}>
-            <a href="/">
-              {literalContent.main[language]?.toLowerCase()}
+            <a href="/">{literalContent.main[language]?.toLowerCase()}</a>
+          </li>
+          <li onClick={handleClickMenuItem}>
+            <a href="#projects">
+              {literalContent.portfolio[language]?.toLowerCase()}
             </a>
           </li>
           <li onClick={handleClickMenuItem}>
-            <a href="#projects">{literalContent.portfolio[language]?.toLowerCase()}</a>
-          </li>
-          <li onClick={handleClickMenuItem}>
-            <a href="#services">{literalContent.services[language]?.toLowerCase()}</a>
+            <a href="#services">
+              {literalContent.services[language]?.toLowerCase()}
+            </a>
           </li>
         </ul>
-        <button onClick={onOpenModal}>{literalContent.contactUs[language]?.toLowerCase()}</button>
+        <button onClick={onOpenModal}>
+          {literalContent.contactUs[language]?.toLowerCase()}
+        </button>
       </div>
     </div>
   );
