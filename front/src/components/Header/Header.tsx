@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { gsap } from "gsap";
 
 import liveLogoEyeGif from "../../assets/live-logo-eye.gif";
@@ -21,6 +21,7 @@ export const Header = (props: Props) => {
 
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleToggleMenu = () => {
     if (menuOpen) {
@@ -51,6 +52,15 @@ export const Header = (props: Props) => {
     handleToggleMenu();
   };
 
+  const handleScrollToAnchor = (elementId: string) => {
+    if (location.pathname?.includes("projects")) {
+      navigate({
+        pathname: "/",
+        search: `anchor=${elementId}`,
+      });
+    }
+  };
+
   return (
     <div className="header-container">
       <div className={`header ${menuOpen ? "menu-open" : ""}`}>
@@ -78,12 +88,20 @@ export const Header = (props: Props) => {
           <li onClick={handleClickMenuItem}>
             <a href="/">{literalContent.main[language]?.toLowerCase()}</a>
           </li>
-          <li onClick={handleClickMenuItem}>
+          <li
+            onClick={() => {
+              handleScrollToAnchor("projects");
+              handleClickMenuItem();
+            }}>
             <a href="#projects">
               {literalContent.portfolio[language]?.toLowerCase()}
             </a>
           </li>
-          <li onClick={handleClickMenuItem}>
+          <li
+            onClick={() => {
+              handleScrollToAnchor("services");
+              handleClickMenuItem();
+            }}>
             <a href="#services">
               {literalContent.services[language]?.toLowerCase()}
             </a>

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -20,6 +20,7 @@ type Props = {
   language: "ru" | "eng";
   containerStyles?: Record<string, string>;
   loading?: boolean;
+  onItemClick?: (projectId: string) => void;
 };
 
 export const FileGrid = (props: Props) => {
@@ -32,14 +33,25 @@ export const FileGrid = (props: Props) => {
     language,
     containerStyles = {},
     loading,
+    onItemClick,
   } = props;
 
-  const navigate = useNavigate();
+  const [loadingState, setLoadingState] = useState([]);
+  const [animationState, setAnimationState] = useState([]);
 
   useGSAP(() => {
+    if (!lineGroups?.length) return;
+
     const lines = document.querySelectorAll(".portfolio-line");
 
-    lines.forEach((line) => {
+    lines.forEach((line, index) => {
+      if (
+        loadingState?.[index]?.some((item) => Boolean(item)) ||
+        !loadingState?.[index]?.length ||
+        Boolean(animationState?.[index])
+      ) {
+        return null;
+      }
       const tiles = line.querySelectorAll(".tile");
 
       gsap.fromTo(
@@ -57,11 +69,26 @@ export const FileGrid = (props: Props) => {
             trigger: line,
             start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
             once: true,
+            onEnter: () => {
+              setAnimationState((prevState) => {
+                const newState = [...prevState];
+                newState[index] = true;
+                return newState;
+              });
+            },
           },
         },
       );
     });
-  }, [lineGroups]);
+  }, [lineGroups, loadingState]);
+
+  const onSetLineGroupLoadingState = (index, state) => {
+    setLoadingState((prevState) => {
+      const newState = [...prevState];
+      newState[index] = state;
+      return newState;
+    });
+  };
 
   if (!lineGroups?.length) {
     return null;
@@ -75,7 +102,11 @@ export const FileGrid = (props: Props) => {
             key={`portfolio-line-${index}`}
             index={index}
             lineGroup={lineGroup}
-            navigate={navigate}
+            onItemClick={onItemClick}
+            loadingState={loadingState?.[index]}
+            setLoadingState={(state) =>
+              onSetLineGroupLoadingState(index, state)
+            }
           />
         ))}
       </div>

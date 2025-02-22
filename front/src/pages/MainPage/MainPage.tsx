@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -20,6 +21,7 @@ import { appViewStore } from "../../stores/app.store";
 import { ServicesCarousel } from "./components";
 
 import "./style.scss";
+import { useSearchParams } from "react-router-dom";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
@@ -30,6 +32,10 @@ const LoadingComponent = () => (
 );
 
 export const MainPage = observer(() => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const anchorName = searchParams.get("anchor");
+
   const { language, videoList, totalProjectCount } = appViewStore;
 
   const { data: videosByPage, isLoading: isListVideoLoading } =
@@ -49,6 +55,16 @@ export const MainPage = observer(() => {
   const loading = isListBlocksLoading || imagesLoading;
 
   useEffect(() => {
+    if (anchorName) {
+      setTimeout(() => {
+        const element = document.querySelector(`#${anchorName}`);
+        element?.scrollIntoView({ behavior: "smooth" });
+        searchParams.delete("anchor");
+      }, 1000);
+    }
+  }, [anchorName]);
+
+  useEffect(() => {
     if (videosByPage.length) {
       appViewStore.addItemsToVideoList(videosByPage);
     }
@@ -62,7 +78,7 @@ export const MainPage = observer(() => {
   }, [videoList.size]);
 
   useGSAP(() => {
-    if (imagesLoading) return;
+    if (imagesLoading) return null;
 
     gsap.to("#bg-bone-image", {
       y: "-150%", // Перемещение фона вверх
@@ -163,6 +179,7 @@ export const MainPage = observer(() => {
           language={language}
           containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
           loading={isListVideoLoading}
+          onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
         />
         {isListBlocksLoading ? (
           <LoadingComponent />

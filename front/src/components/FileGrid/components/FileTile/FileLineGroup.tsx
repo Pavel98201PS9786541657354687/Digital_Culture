@@ -1,36 +1,31 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { PuffLoader } from "react-spinners";
 
 import { renderFileByType } from "../../../../utils";
 
 export const FileLineGroup = (props) => {
-  const { lineGroup = [], navigate } = props;
-
-  const [loadingState, setLoadingState] = useState([]);
-
-  useEffect(() => {
-    setLoadingState(Array(lineGroup.length).fill(false));
-  }, [lineGroup]);
+  const {
+    lineGroup = [],
+    onItemClick,
+    loadingState = [],
+    setLoadingState,
+  } = props;
 
   const isLineLoading = useMemo(
     () => loadingState?.some((item) => Boolean(item)),
     [loadingState],
   );
 
-  useEffect(() => {
-    setLoadingState(new Array(lineGroup.length).fill(false));
-  }, [lineGroup]);
-
   const handleFileStartLoad = (fileIndex) => {
-    setLoadingState((prevState) =>
-      prevState.map((item, index) => (index === fileIndex ? true : item)),
-    );
+    const newState = [...loadingState];
+    newState[fileIndex] = true;
+    setLoadingState(newState);
   };
 
   const handleFileLoad = (fileIndex) => {
-    setLoadingState((prevState) =>
-      prevState.map((item, index) => (index === fileIndex ? false : item)),
-    );
+    const newState = [...loadingState];
+    newState[fileIndex] = false;
+    setLoadingState(newState);
   };
 
   const viewer = useMemo(() => {
@@ -56,7 +51,9 @@ export const FileLineGroup = (props) => {
               title={`Кликни для просмотра проекта ${videoData?.title}`}
               key={`line-grid-${videoData.index}-${videoRowIndex}`}
               className={`tile span-${videoData?.colSpan}`}
-              onClick={() => navigate(`/projects/${videoData?.id}`)}>
+              style={onItemClick ? { cursor: "pointer" } : {}}
+              onClick={() => onItemClick && onItemClick(videoData?.id)}>
+              <div className="tile-cover"></div>
               {renderFileByType(
                 videoData?.fileName,
                 () => handleFileLoad(videoRowIndex),

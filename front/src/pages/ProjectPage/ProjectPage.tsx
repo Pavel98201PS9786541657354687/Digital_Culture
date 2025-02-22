@@ -20,45 +20,22 @@ export const ProjectPage = observer(() => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data: projectData, isLoading: isProjectDataLoading } =
     useGetProjectData();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lineGroups, setLineGroups] = useState([]);
-  const [filesLoadingState, setFilesLoadingState] = useState([]);
 
   useEffect(() => {
     if (projectData?.files?.length) {
-      setFilesLoadingState(new Array(projectData?.files?.length).fill(true));
-      preloadFiles(projectData?.files);
       const groups = getGridChunksByFileFormats(projectData?.files);
       setLineGroups(groups);
     }
   }, [projectData?.files]);
-
-  const handleFileLoad = (index) => {
-    setFilesLoadingState((prev) => {
-      const newStates = [...prev];
-      newStates[index] = false; // Устанавливаем состояние загрузки в false для загруженного видео
-      return newStates;
-    });
-  };
-
-  const preloadFiles = async (videos) => {
-    const videoPromises = videos.map((videoData, index) => {
-      return new Promise((resolve) => {
-        const video = document.createElement("video");
-        video.src = videoData?.fileName;
-        video.onloadeddata = () => {
-          handleFileLoad(index);
-          resolve();
-        };
-        video.load();
-      });
-    });
-
-    await Promise.all(videoPromises);
-  };
 
   const handleSubmit = () => {
     setIsModalOpen(false);
@@ -84,31 +61,37 @@ export const ProjectPage = observer(() => {
             handleSwitchLanguage={appViewStore.switchLanguage}
             onOpenModal={() => setIsModalOpen(true)}
           />
-          <div className="project-page--content">
-            <div className="breadcrumbs">
-              <div
-                className="breadcrumb"
-                style={{ textDecoration: "underline" }}
-                onClick={() => navigate("/")}>
-                {literalContent.main[language]}
-              </div>
-              <img src={arrowRight} width={8} alt="" />
-              <div className="breadcrumb">
-                {literalContent.projects[language]}
-              </div>
-              <img src={arrowRight} width={8} alt="" />
-              <div className="breadcrumb">{title}</div>
-            </div>
-            <div className="title">{title}</div>
-            <div className="description">{description}</div>
-            {loading ? (
+          {isProjectDataLoading ? (
+            <div className="loader-container">
               <PuffLoader />
-            ) : (
-              <div className="file-grid-container">
-                <FileGrid lineGroups={lineGroups} language={language} />
+            </div>
+          ) : (
+            <div className="project-page--content">
+              <div className="breadcrumbs">
+                <div
+                  className="breadcrumb"
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                  onClick={() => navigate("/")}>
+                  {literalContent.main[language]}
+                </div>
+                <img src={arrowRight} width={8} alt="" />
+                <div className="breadcrumb">
+                  {literalContent.projects[language]}
+                </div>
+                <img src={arrowRight} width={8} alt="" />
+                <div className="breadcrumb">{title}</div>
               </div>
-            )}
-          </div>
+              <div className="title">{title}</div>
+              <div className="description">{description}</div>
+              {loading ? (
+                <PuffLoader />
+              ) : (
+                <div className="file-grid-container">
+                  <FileGrid lineGroups={lineGroups} language={language} />
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="form-wrapper">
           <h2>{literalContent.letsDiscuss[language]}</h2>
