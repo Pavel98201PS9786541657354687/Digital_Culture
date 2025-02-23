@@ -9,7 +9,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { observer } from "mobx-react";
 
 import bonePng from "@/assets/bone.png";
-import liveEye from "@/assets/live-eye.gif";
+// import liveEye from "@/assets/live-eye.gif";
+import liveEye from "@/assets/live-eye.mp4";
 import { FileGrid, Form } from "@/components";
 import { literalContent } from "@/constants";
 
@@ -33,7 +34,7 @@ const LoadingComponent = () => (
 
 export const MainPage = observer(() => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const anchorName = searchParams.get("anchor");
 
   const { language, videoList, totalProjectCount } = appViewStore;
@@ -59,7 +60,7 @@ export const MainPage = observer(() => {
       setTimeout(() => {
         const element = document.querySelector(`#${anchorName}`);
         element?.scrollIntoView({ behavior: "smooth" });
-        searchParams.delete("anchor");
+        setSearchParams({});
       }, 1000);
     }
   }, [anchorName]);
@@ -137,7 +138,15 @@ export const MainPage = observer(() => {
         ref={imagesContainerRef}>
         <div id="eye-container">
           <div className="image-container">
-            <img id="eye-video" src={liveEye} alt="Eye video shot" />
+            <video
+              id="eye-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              src={liveEye}
+            />
+            {/*<img id="eye-video" src={liveEye} alt="Eye video shot" />*/}
           </div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
