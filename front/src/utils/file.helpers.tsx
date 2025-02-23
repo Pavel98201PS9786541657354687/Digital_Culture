@@ -29,6 +29,7 @@ export const renderFileByType = (path, onLoad, onLoadStart) => {
         autoPlay
         muted
         loop
+        playsInline
         onLoadStart={onLoadStart}
         onLoadedData={onLoad}>
         <source src={path} type="video/mp4" />
