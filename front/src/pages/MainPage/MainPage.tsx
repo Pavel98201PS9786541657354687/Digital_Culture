@@ -10,7 +10,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { observer } from "mobx-react";
 
 import bonePng from "@/assets/bone.png";
-// import liveEye from "@/assets/live-eye.gif";
 import liveEye from "@/assets/live-eye.mp4";
 import { FileGrid, Form } from "@/components";
 import { literalContent } from "@/constants";
@@ -52,8 +51,12 @@ export const MainPage = observer(() => {
     ref: imagesContainerRef,
     selector: "img",
   });
+  const [videoLoading] = useOnLoadMedia({
+    ref: imagesContainerRef,
+    selector: "video",
+  });
 
-  const loading = isListBlocksLoading || imagesLoading;
+  const loading = isListBlocksLoading || imagesLoading || videoLoading;
 
   useEffect(() => {
     if (anchorName) {
@@ -152,7 +155,6 @@ export const MainPage = observer(() => {
               playsInline
               src={liveEye}
             />
-            {/*<img id="eye-video" src={liveEye} alt="Eye video shot" />*/}
           </div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
