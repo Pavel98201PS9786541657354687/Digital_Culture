@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -22,7 +23,6 @@ import { appViewStore } from "../../stores/app.store";
 import { ServicesCarousel } from "./components";
 
 import "./style.scss";
-import { useSearchParams } from "react-router-dom";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
@@ -78,19 +78,25 @@ export const MainPage = observer(() => {
     }
   }, [videoList.size]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const speed = 0.5;
+      gsap.to("#bg-bone-image", {
+        y: -scrollY * speed,
+        ease: "none",
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useGSAP(() => {
     if (imagesLoading) return null;
-
-    gsap.to("#bg-bone-image", {
-      y: "-150%", // Перемещение фона вверх
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#bg-bone-image",
-        start: "top top",
-        end: "max",
-        scrub: 2, // Скорость анимации относительно скролла
-      },
-    });
 
     gsap.to("#eye-container", {
       y: "-250px", // Перемещение фона вверх
