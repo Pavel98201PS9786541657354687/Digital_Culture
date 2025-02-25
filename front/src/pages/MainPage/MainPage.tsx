@@ -51,10 +51,7 @@ export const MainPage = observer(() => {
     ref: imagesContainerRef,
     selector: "img",
   });
-  const [videoLoading] = useOnLoadMedia({
-    ref: imagesContainerRef,
-    selector: "video",
-  });
+  const [videoLoading, setVideoLoading] = useState(false);
 
   const loading = isListBlocksLoading || imagesLoading || videoLoading;
 
@@ -154,6 +151,8 @@ export const MainPage = observer(() => {
               loop
               playsInline
               src={liveEye}
+              onLoadStart={() => setVideoLoading(true)}
+              onCanPlayThrough={() => setVideoLoading(false)}
             />
           </div>
         </div>

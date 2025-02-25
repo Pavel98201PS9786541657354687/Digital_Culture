@@ -31,7 +31,7 @@ export const renderFileByType = (path, onLoad, onLoadStart) => {
         loop
         playsInline
         onLoadStart={onLoadStart}
-        onLoadedData={onLoad}>
+        onCanPlayThrough={onLoad}>
         <source src={path} type="video/mp4" />
         Не удалось воспроизвести видео
       </video>
