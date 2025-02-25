@@ -187,16 +187,18 @@ export const MainPage = observer(() => {
             {literalContent.orderAds[language]?.toUpperCase()}
           </button>
         </div>
-        <FileGrid
-          lineGroups={lineGroups}
-          videos={Array.from(videoList)}
-          increaseOffset={() => appViewStore.increaseOffset()}
-          total={totalProjectCount}
-          language={language}
-          containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
-          loading={isListVideoLoading}
-          onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
-        />
+        {!loading && (
+          <FileGrid
+            lineGroups={lineGroups}
+            videos={Array.from(videoList)}
+            increaseOffset={() => appViewStore.increaseOffset()}
+            total={totalProjectCount}
+            language={language}
+            containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
+            loading={isListVideoLoading}
+            onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
+          />
+        )}
         {isListBlocksLoading ? (
           <LoadingComponent />
         ) : (

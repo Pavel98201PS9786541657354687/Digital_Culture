@@ -70,6 +70,7 @@ export const FileGrid = (props: Props) => {
             start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
             once: true,
             onEnter: () => {
+              console.log("Media line entered and animated", index);
               setAnimationState((prevState) => {
                 const newState = [...prevState];
                 newState[index] = true;
