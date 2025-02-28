@@ -155,6 +155,7 @@ export const MainPage = observer(() => {
               onCanPlayThrough={() => setVideoLoading(false)}
             />
           </div>
+          <div className="blur"></div>
         </div>
         <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
         <Header
