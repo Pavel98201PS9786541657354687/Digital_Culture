@@ -59,9 +59,7 @@ export const ServicesCarousel = (props: Props) => {
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}>
-      <div
-        id="services-scroll-container"
-        style={{ width: `${blocks?.length * 100}%` }}>
+      <div id="services-scroll-container">
         {blocks.map((tileContent, index) => (
           <div key={index} id={`panel-${index + 1}`} className="panel">
             <div className="service-tile">
