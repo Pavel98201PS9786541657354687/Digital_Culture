@@ -42,8 +42,15 @@ export const MainPage = observer(() => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lineGroups, setLineGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const loading = isListVideoLoading || isListBlocksLoading;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (anchorName) {
