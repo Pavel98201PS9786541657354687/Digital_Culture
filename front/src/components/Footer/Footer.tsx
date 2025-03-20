@@ -1,10 +1,12 @@
-import "./style.scss";
-import telegramLogo from "../../assets/telegram-logo-fill.svg";
+import { useNavigate } from "react-router";
+
 import instagramLogo from "../../assets/instagram-logo-fill.svg";
 import liveLogoEyeGif from "../../assets/live-logo-eye.gif";
-import liveLogoLettersGif from "../../assets/live-logo-letters.gif";
-import { useNavigate } from "react-router";
+import liveLogoLettersGif from "../../assets/live-logo-letters-cut.gif";
+import telegramLogo from "../../assets/telegram-logo-fill.svg";
 import { literalContent } from "../../constants";
+
+import "./style.scss";
 
 type Props = {
   handleSwitchLanguage: () => void;
