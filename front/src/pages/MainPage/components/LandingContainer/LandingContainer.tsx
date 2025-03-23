@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
@@ -25,7 +25,7 @@ export const LandingContainer = (props: LandingContainerProps) => {
     selector: "img",
   });
 
-  useEffect(() => {
+  useGSAP(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const speed = 0.5;
@@ -61,7 +61,16 @@ export const LandingContainer = (props: LandingContainerProps) => {
     <div ref={imagesContainerRef}>
       <div id="eye-container">
         <div className="image-container">
-          <video id="eye-video" autoPlay muted loop playsInline src={liveEye} />
+          <video
+            id="eye-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            src={liveEye}
+            onLoadStart={() => appViewStore.setEyeVideoLoading(true)}
+            onCanPlayThrough={() => appViewStore.setEyeVideoLoading(false)}
+          />
         </div>
         <div className="blur"></div>
       </div>

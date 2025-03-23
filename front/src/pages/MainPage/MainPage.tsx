@@ -34,7 +34,8 @@ export const MainPage = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams();
   const anchorName = searchParams.get("anchor");
 
-  const { language, videoList, totalProjectCount } = appViewStore;
+  const { language, videoList, totalProjectCount, eyeVideoLoading } =
+    appViewStore;
 
   const { data: videosByPage, isLoading: isListVideoLoading } =
     useGetListVideo();
@@ -42,15 +43,8 @@ export const MainPage = observer(() => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lineGroups, setLineGroups] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const loading = isListVideoLoading || isListBlocksLoading || eyeVideoLoading;
 
   useEffect(() => {
     if (anchorName) {

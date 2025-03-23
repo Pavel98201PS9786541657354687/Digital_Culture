@@ -11,6 +11,7 @@ class AppViewStore {
   private readonly limit = 3;
   public offset = 0;
   public totalProjectCount = 0;
+  public eyeVideoLoading = false;
 
   public switchLanguage = () => {
     if (this.language === "ru") {
@@ -30,6 +31,10 @@ class AppViewStore {
 
   public setTotalProjectCount = (count: number) => {
     this.totalProjectCount = count;
+  };
+
+  public setEyeVideoLoading = (loading: boolean) => {
+    this.eyeVideoLoading = loading;
   };
 
   constructor() {
