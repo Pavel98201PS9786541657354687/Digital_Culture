@@ -1,8 +1,11 @@
 import { useRef, useState } from "react";
 
 import { literalContent } from "../../../../constants";
+import bonePng from "@/assets/bone.png";
 
 import "./style.scss";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 
 type Props = {
   blocks: any[];
@@ -21,6 +24,24 @@ export const ServicesCarousel = (props: Props) => {
   const [isDown, setIsDown] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+  /* Анимация мокапа кости (замедление относительно скролла) */
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#services",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    tl.to("#bg-bone-image", {
+      y: () =>
+        document.querySelector("#services").getBoundingClientRect().height,
+      ease: "none",
+    });
+  }, []);
 
   const handleMouseDown = (e) => {
     setIsDown(true);
@@ -51,30 +72,33 @@ export const ServicesCarousel = (props: Props) => {
   }
 
   return (
-    <div
-      id="services"
-      className="scroll-container"
-      ref={scrollContainerRef}
-      onMouseDown={handleMouseDown}
-      onMouseLeave={handleMouseLeave}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}>
-      <div id="services-scroll-container">
-        {blocks.map((tileContent, index) => (
-          <div key={index} id={`panel-${index + 1}`} className="panel">
-            <div className="service-tile">
-              <div className="service-tile--title">
-                {tileContent[titleAccessor]}:
+    <div id="services-container">
+      <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
+      <div
+        id="services"
+        className="scroll-container"
+        ref={scrollContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}>
+        <div id="services-scroll-container">
+          {blocks.map((tileContent, index) => (
+            <div key={index} id={`panel-${index + 1}`} className="panel">
+              <div className="service-tile">
+                <div className="service-tile--title">
+                  {tileContent[titleAccessor]}:
+                </div>
+                <div className="service-tile--description">
+                  {tileContent[descriptionAccessor]}
+                </div>
+                <button className="service-tile--action" onClick={openModal}>
+                  {literalContent.order[language]?.toUpperCase()}
+                </button>
               </div>
-              <div className="service-tile--description">
-                {tileContent[descriptionAccessor]}
-              </div>
-              <button className="service-tile--action" onClick={openModal}>
-                {literalContent.order[language]?.toUpperCase()}
-              </button>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

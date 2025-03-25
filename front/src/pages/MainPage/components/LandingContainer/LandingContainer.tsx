@@ -1,14 +1,13 @@
-import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
-import bonePng from "@/assets/bone.png";
 import liveEye from "@/assets/live-eye.mp4";
 
 import { Header } from "../../../../components";
 import { literalContent } from "../../../../constants";
-import { useOnLoadMedia } from "../../../../hooks";
 import { appViewStore } from "../../../../stores/app.store";
+
+import "./style.scss";
 
 type LandingContainerProps = {
   language: "eng" | "ru";
@@ -18,33 +17,7 @@ type LandingContainerProps = {
 export const LandingContainer = (props: LandingContainerProps) => {
   const { language, openFormModal } = props;
 
-  /* Отслеживание состояние загрузки изображений */
-  const imagesContainerRef = useRef<HTMLDivElement>(null);
-  const [imagesLoading] = useOnLoadMedia({
-    ref: imagesContainerRef,
-    selector: "img",
-  });
-
   useGSAP(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const speed = 0.5;
-      gsap.to("#bg-bone-image", {
-        y: -scrollY * speed,
-        ease: "none",
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useGSAP(() => {
-    if (imagesLoading) return null;
-
     gsap.to("#eye-container", {
       y: "-250px", // Перемещение фона вверх
       ease: "none",
@@ -52,13 +25,13 @@ export const LandingContainer = (props: LandingContainerProps) => {
         trigger: "#eye-container",
         start: 200,
         end: 1400,
-        scrub: 1, // Скорость анимации относительно скролла
+        scrub: true, // Скорость анимации относительно скролла
       },
     });
-  }, [imagesLoading]);
+  }, []);
 
   return (
-    <div ref={imagesContainerRef}>
+    <>
       <div id="eye-container">
         <div className="image-container">
           <video
@@ -74,7 +47,6 @@ export const LandingContainer = (props: LandingContainerProps) => {
         </div>
         <div className="blur"></div>
       </div>
-      <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
       <Header
         language={language}
         handleSwitchLanguage={appViewStore.switchLanguage}
@@ -103,6 +75,6 @@ export const LandingContainer = (props: LandingContainerProps) => {
           {literalContent.orderAds[language]?.toUpperCase()}
         </button>
       </div>
-    </div>
+    </>
   );
 };
