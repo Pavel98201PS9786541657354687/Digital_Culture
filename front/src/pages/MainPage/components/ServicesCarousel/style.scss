@@ -88,8 +88,16 @@
       }
     }
   }
+}
 
-  @media (min-width: 600px) {
+@media (min-width: 600px) {
+  #services-container {
+    #bg-bone-image {
+      left: -17%;
+      height: 130%;
+      top: -200px;
+    }
+
     #services {
       .panel {
         width: 600px;
@@ -129,7 +137,11 @@
 }
 
 @media (min-width: 600px) {
-  #bg-bone-image {
-    left: 10% !important;
+  #services-container {
+    #bg-bone-image {
+      left: calc(50% - 500px);
+      height: 130%;
+      top: -250px;
+    }
   }
 }
