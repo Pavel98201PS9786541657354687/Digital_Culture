@@ -6,15 +6,17 @@ import bonePng from "@/assets/bone.png";
 import "./style.scss";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { Loader } from "@/components";
 
 type Props = {
   blocks: any[];
   openModal: () => void;
   language: "ru" | "eng";
+  loading: boolean;
 };
 
 export const ServicesCarousel = (props: Props) => {
-  const { blocks = [], openModal, language } = props;
+  const { blocks = [], openModal, language, loading } = props;
 
   const titleAccessor = language === "ru" ? "title" : "title_en";
   const descriptionAccessor =
@@ -25,23 +27,43 @@ export const ServicesCarousel = (props: Props) => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  /* Анимация мокапа кости (замедление относительно скролла) */
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#services",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+  const boneElement = document.querySelector("#bg-bone-image");
+  const servicesContainer = document.querySelector("#services-container");
+  const projectsContainer = document.querySelector("#projects");
 
-    tl.to("#bg-bone-image", {
-      y: () =>
-        document.querySelector("#services").getBoundingClientRect().height,
-      ease: "none",
-    });
-  }, []);
+  /* Анимация мокапа кости (замедление относительно скролла) */
+  useGSAP(
+    () => {
+      if (!boneElement || !servicesContainer || !projectsContainer || loading)
+        return null;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: servicesContainer,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          onEnter: () => {
+            console.log("Services container entered");
+          },
+        },
+      });
+
+      tl.to(boneElement, {
+        y: () => servicesContainer.getBoundingClientRect().height,
+        ease: "none",
+      });
+    },
+    {
+      dependencies: [
+        boneElement,
+        servicesContainer,
+        loading,
+        projectsContainer,
+      ],
+      scope: "services-container",
+    },
+  );
 
   const handleMouseDown = (e) => {
     setIsDown(true);
@@ -66,6 +88,8 @@ export const ServicesCarousel = (props: Props) => {
     const walk = (x - startX) * 1; // Увеличьте коэффициент для большей скорости
     scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
+
+  if (loading) return <Loader />;
 
   if (!blocks?.length) {
     return null;
