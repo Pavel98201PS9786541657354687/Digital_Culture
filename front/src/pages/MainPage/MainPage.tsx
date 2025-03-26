@@ -23,12 +23,6 @@ import "./style.scss";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin, ScrollToPlugin, ScrollTrigger);
 
-const LoadingComponent = () => (
-  <div className="loader-container">
-    <PuffLoader />
-  </div>
-);
-
 export const MainPage = observer(() => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,7 +38,7 @@ export const MainPage = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [lineGroups, setLineGroups] = useState([]);
 
-  const loading = isListVideoLoading || isListBlocksLoading || eyeVideoLoading;
+  const loading = eyeVideoLoading;
 
   useEffect(() => {
     if (anchorName) {
@@ -114,16 +108,13 @@ export const MainPage = observer(() => {
           loading={isListVideoLoading}
           onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
         />
-        {isListBlocksLoading ? (
-          <LoadingComponent />
-        ) : (
-          <ServicesCarousel
-            blocks={blocks}
-            openModal={() => setIsModalOpen(true)}
-            lineGroups={lineGroups}
-            language={language}
-          />
-        )}
+        <ServicesCarousel
+          blocks={blocks}
+          openModal={() => setIsModalOpen(true)}
+          lineGroups={lineGroups}
+          language={language}
+          loading={isListBlocksLoading}
+        />
         <Footer
           language={language}
           handleSwitchLanguage={appViewStore.switchLanguage}

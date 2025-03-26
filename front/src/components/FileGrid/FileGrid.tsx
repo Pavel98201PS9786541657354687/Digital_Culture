@@ -67,7 +67,7 @@ export const FileGrid = (props: Props) => {
           stagger: 0.2, // Задержка между анимациями
           scrollTrigger: {
             trigger: line,
-            start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
+            start: "top center+=100", // Начинается, когда верхняя часть линии достигает середины+100px видимой области
             once: true,
             onEnter: () => {
               console.log("Media line entered and animated", index);
