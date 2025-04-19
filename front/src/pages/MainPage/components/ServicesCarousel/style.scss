@@ -1,98 +1,147 @@
-.full-screen {
-  display: block;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+#services-container {
+  position: relative;
+
+  #bg-bone-image {
+    position: absolute;
+    top: -400px;
+    left: -140px;
+    scale: 130%;
+  }
+
+  #services {
+    height: 100vh;
+    z-index: 999;
+    width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    cursor: grab;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &-scroll-container {
+      display: flex;
+      padding: 0;
+      width: fit-content;
+
+      .panel {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+        }
+
+        .anchor-panel,
+        .nav-panel {
+          text-transform: uppercase;
+          margin-right: 2rem;
+        }
+
+        .service-tile {
+          color: #ffffff;
+          width: 90%;
+          height: 370px;
+          border-radius: 64px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 48px 32px;
+          align-items: center;
+          text-align: center;
+
+          /* Эффект полупрозрачного матового стекла */
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(5px);
+          -webkit-backdrop-filter: blur(5px);
+
+          &--title {
+            font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+            font-size: 20px;
+          }
+
+          &--description {
+            font-family: "YandexSansDisplay-Thin", sans-serif;
+            font-size: 14px;
+          }
+
+          &--action {
+            font-family: "YandexSansDisplay-Thin", sans-serif;
+            font-size: 16px;
+            background-color: #3d3d3d;
+            padding: 8px 24px;
+            border: none;
+            color: #ffffff;
+            border-radius: 8px;
+            z-index: 100;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
 }
 
-#services {
-  max-width: 500px;
-  overflow: hidden;
-  z-index: 999;
-
+@media (min-width: 600px) {
   #services-container {
-    height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    padding: 0;
-    overflow-x: hidden;
+    #bg-bone-image {
+      left: -17%;
+      height: 130%;
+      top: -200px;
+    }
 
-    .panel {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      text-align: left;
-      align-items: center;
-      justify-content: center;
+    #services {
+      .panel {
+        width: 600px;
+        z-index: 500;
 
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-      }
+        &:first-child {
+          margin-left: calc(50vw - 300px);
+        }
 
-      .anchor-panel, .nav-panel {
-        text-transform: uppercase;
-        margin-right: 2rem;
+        &:last-child {
+          margin-right: 200px;
+        }
       }
 
       .service-tile {
-        color: #ffffff;
-        width: 90%;
-        height: 370px;
-        border-radius: 64px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 48px 32px;
-        align-items: center;
-        text-align: center;
-
-        /* Эффект полупрозрачного матового стекла */
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-
-        position: relative;
-
-        &::before {
-          content: '';
-          position: absolute;
-          border-radius: 64px;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-
-          filter: blur(10px);
-        }
+        width: 450px !important;
+        height: 450px !important;
+        margin: auto;
+        background: silver;
+        overflow: hidden; /* clearfix */
+        padding-inline: 72px !important;
 
         &--title {
-          font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
-          font-size: 20px;
+          font-size: 24px !important;
         }
 
         &--description {
-          font-family: "YandexSansDisplay-Thin", sans-serif;
-          font-size: 14px;
+          font-size: 18px !important;
         }
 
         &--action {
-          font-family: "YandexSansDisplay-Thin", sans-serif;
-          font-size: 16px;
-          background-color: #3d3d3d;
-          padding: 8px 24px;
-          border: none;
-          color: #ffffff;
-          border-radius: 8px;
-          z-index: 100;
+          font-size: 20px !important;
         }
       }
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  #services-container {
+    #bg-bone-image {
+      left: calc(50% - 500px);
+      height: 130%;
+      top: -250px;
     }
   }
 }

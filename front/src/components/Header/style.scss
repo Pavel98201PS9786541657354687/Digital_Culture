@@ -19,11 +19,17 @@
       width: fit-content;
       display: flex;
       align-items: flex-start;
+      height: 45px;
+      min-width: 120px;
+      cursor: pointer;
+
+      .logo-eye {
+        height: 37px;
+      }
 
       .logo-letters {
-        margin-top: -36px;
-        margin-left: -3px;
-        max-height: 200px;
+        margin-left: 1px;
+        height: 45px;
       }
     }
 
@@ -111,6 +117,7 @@
       font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
       font-size: 10px;
       margin-top: 48px;
+      cursor: pointer;
     }
 
     ul {

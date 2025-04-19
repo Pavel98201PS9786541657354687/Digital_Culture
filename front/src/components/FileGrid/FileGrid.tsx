@@ -1,12 +1,14 @@
+import { useState } from "react";
+import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import "./style.scss";
+
 import downArrow from "../../assets/down-arrow.png";
-import { useNavigate } from "react-router";
-import { renderFileByType } from "../../utils";
 import { literalContent } from "../../constants";
-import { useContext, useState } from "react";
-import { LanguageContext } from "../../App";
+
+import { FileLineGroup } from "./components";
+
+import "./style.scss";
 
 type Props = {
   videos?: any[];
@@ -15,41 +17,41 @@ type Props = {
   increaseOffset?: () => void;
   total?: number;
   canShowMore?: boolean;
-};
-
-const FileTile = ({ videoData, navigate }) => {
-  const [isVideoLoaded, setIsVideoLoaded] = useState(true);
-
-  const handleVideoLoad = () => {
-    console.log("loaded");
-    setIsVideoLoaded(true);
-  };
-
-  return (
-    <div
-      key={`line-grid-${videoData.index}-${videoData.videoRowIndex}`}
-      className={`tile span-${videoData?.colSpan}`}
-      onClick={() => navigate(`/projects/${videoData?.id}`)}
-    >
-      {isVideoLoaded ? (
-        renderFileByType(videoData?.fileName, handleVideoLoad)
-      ) : (
-        <div>Загрузка видео...</div> // Контент, который будет показан до загрузки видео
-      )}
-    </div>
-  );
+  language: "ru" | "eng";
+  containerStyles?: Record<string, string>;
+  loading?: boolean;
+  onItemClick?: (projectId: string) => void;
 };
 
 export const FileGrid = (props: Props) => {
-  const { videos = [], lineGroups, increaseOffset, total, canShowMore = true } = props;
+  const {
+    videos = [],
+    lineGroups,
+    increaseOffset,
+    total,
+    canShowMore = true,
+    language,
+    containerStyles = {},
+    loading,
+    onItemClick,
+  } = props;
 
-  const navigate = useNavigate();
-  const language = useContext(LanguageContext);
+  const [loadingState, setLoadingState] = useState([]);
+  const [animationState, setAnimationState] = useState([]);
 
   useGSAP(() => {
+    if (!lineGroups?.length) return;
+
     const lines = document.querySelectorAll(".portfolio-line");
 
-    lines.forEach((line) => {
+    lines.forEach((line, index) => {
+      if (
+        loadingState?.[index]?.some((item) => Boolean(item)) ||
+        !loadingState?.[index]?.length ||
+        Boolean(animationState?.[index])
+      ) {
+        return null;
+      }
       const tiles = line.querySelectorAll(".tile");
 
       gsap.fromTo(
@@ -65,13 +67,29 @@ export const FileGrid = (props: Props) => {
           stagger: 0.2, // Задержка между анимациями
           scrollTrigger: {
             trigger: line,
-            start: "top+=100 bottom", // Начинается, когда верхняя часть линии достигает нижней части видимой области
+            start: "top center+=100", // Начинается, когда верхняя часть линии достигает середины+100px видимой области
             once: true,
+            onEnter: () => {
+              console.log("Media line entered and animated", index);
+              setAnimationState((prevState) => {
+                const newState = [...prevState];
+                newState[index] = true;
+                return newState;
+              });
+            },
           },
         },
       );
     });
-  }, [lineGroups]);
+  }, [lineGroups, loadingState]);
+
+  const onSetLineGroupLoadingState = (index, state) => {
+    setLoadingState((prevState) => {
+      const newState = [...prevState];
+      newState[index] = state;
+      return newState;
+    });
+  };
 
   if (!lineGroups?.length) {
     return null;
@@ -79,30 +97,34 @@ export const FileGrid = (props: Props) => {
 
   return (
     <>
-      <div id="projects">
-        {lineGroups?.map((lineGroup, index) => {
-          return (
-            <div className="portfolio-line" key={`portfolio-line-${index}`}>
-              {lineGroup.map((videoData, videoRowIndex) => (
-                // <div
-                //   key={`line-grid-${index}-${videoRowIndex}`}
-                //   className={`tile span-${videoData?.colSpan}`}
-                //   onClick={() => navigate(`/projects/${videoData?.id}`)}>
-                //   {renderFileByType(videoData?.fileName)}
-                // </div>
-                <FileTile key={`line-grid-${index}-${videoRowIndex}`} videoData={videoData} navigate={navigate} />
-              ))}
-            </div>
-          );
-        })}
+      <div id="projects" style={containerStyles}>
+        {lineGroups?.map((lineGroup, index) => (
+          <FileLineGroup
+            key={`portfolio-line-${index}`}
+            index={index}
+            lineGroup={lineGroup}
+            onItemClick={onItemClick}
+            loadingState={loadingState?.[index]}
+            setLoadingState={(state) =>
+              onSetLineGroupLoadingState(index, state)
+            }
+          />
+        ))}
       </div>
-      {canShowMore && total > videos.length && (
-        <div className="show-more-button" onClick={increaseOffset}>
-          <div className="show-more-text">
-            {literalContent.watchMore[language]?.toUpperCase()}
-          </div>
-          <img src={downArrow} alt="Посмотреть ещё" />
+      {loading ? (
+        <div className="loader-container">
+          <PuffLoader />
         </div>
+      ) : (
+        canShowMore &&
+        total > videos.length && (
+          <div className="show-more-button" onClick={increaseOffset}>
+            <div className="show-more-text">
+              {literalContent.watchMore[language]?.toUpperCase()}
+            </div>
+            <img src={downArrow} alt="Посмотреть ещё" />
+          </div>
+        )
       )}
     </>
   );

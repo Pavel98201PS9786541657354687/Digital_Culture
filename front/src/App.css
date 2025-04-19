@@ -15,23 +15,22 @@ body {
     rgba(128, 129, 128, 1) 0%,
     rgba(128, 129, 128, 1) 0%
   );
-
-  #root {
-    /*background: #191a19;*/
-  }
 }
 
 @font-face {
   font-family: "Druk Wide Cy Web Bold Regular";
-  src: local("Druk Wide Cy Web Bold Regular"), url("@/assets/fonts/Druk Wide Cy Web Bold Regular.ttf")
-    format("truetype");
+  src:
+    local("Druk Wide Cy Web Bold Regular"),
+    url("@/assets/fonts/Druk Wide Cy Web Bold Regular.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: "YandexSansDisplay-Thin";
-  src: local("YandexSansDisplay-Thin"), url("@/assets/fonts/YandexSansDisplay-Thin.ttf") format("truetype");
+  src:
+    local("YandexSansDisplay-Thin"),
+    url("@/assets/fonts/YandexSansDisplay-Thin.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
