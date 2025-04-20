@@ -19,6 +19,8 @@ export default ({ mode }) => {
       alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
     },
     server: {
+      // host: "0.0.0.0", // Позволяет доступ с других устройств в сети
+      // port: 5173,
       proxy: {
         "/api": {
           target: "https://digitalkultura.ru",

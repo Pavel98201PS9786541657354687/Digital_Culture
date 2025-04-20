@@ -8,6 +8,7 @@ import { literalContent } from "../../../../constants";
 import { appViewStore } from "../../../../stores/app.store";
 
 import "./style.scss";
+import { useEffect } from "react";
 
 type LandingContainerProps = {
   language: "eng" | "ru";
@@ -19,15 +20,22 @@ export const LandingContainer = (props: LandingContainerProps) => {
 
   useGSAP(() => {
     gsap.to("#eye-container", {
-      y: "-250px", // Перемещение фона вверх
+      y: "-300px", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#eye-container",
-        start: 200,
+        start: 150,
         end: 1400,
         scrub: true, // Скорость анимации относительно скролла
       },
     });
+  }, []);
+
+  // Принудительно скрываем лоадер и показываем контент через фиксированное время
+  useEffect(() => {
+    setTimeout(() => {
+      appViewStore.setEyeVideoLoading(false);
+    }, 8000);
   }, []);
 
   return (

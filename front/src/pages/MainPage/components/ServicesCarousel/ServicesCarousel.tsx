@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
-
-import { literalContent } from "../../../../constants";
-import bonePng from "@/assets/bone.png";
-
-import "./style.scss";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { observer } from "mobx-react";
+
+import bonePng from "@/assets/bone.png";
 import { Loader } from "@/components";
+
+import { literalContent } from "../../../../constants";
+
+import "./style.scss";
 
 type Props = {
   blocks: any[];
@@ -15,8 +17,8 @@ type Props = {
   loading: boolean;
 };
 
-export const ServicesCarousel = (props: Props) => {
-  const { blocks = [], openModal, language, loading } = props;
+export const ServicesCarousel = observer((props: Props) => {
+  const { blocks = [], openModal, language, loading, lineGroups } = props;
 
   const titleAccessor = language === "ru" ? "title" : "title_en";
   const descriptionAccessor =
@@ -40,7 +42,7 @@ export const ServicesCarousel = (props: Props) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: servicesContainer,
-          start: "top bottom",
+          start: "top bottom+=500",
           end: "bottom top",
           scrub: true,
           onEnter: () => {
@@ -97,7 +99,12 @@ export const ServicesCarousel = (props: Props) => {
 
   return (
     <div id="services-container">
-      <img id="bg-bone-image" src={bonePng} alt="3D Bone Mockup" />
+      <img
+        id="bg-bone-image"
+        data-speed="0.6"
+        src={bonePng}
+        alt="3D Bone Mockup"
+      />
       <div
         id="services"
         className="scroll-container"
@@ -126,4 +133,4 @@ export const ServicesCarousel = (props: Props) => {
       </div>
     </div>
   );
-};
+});
