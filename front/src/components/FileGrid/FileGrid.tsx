@@ -2,9 +2,11 @@ import { useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { observer } from "mobx-react";
 
 import downArrow from "../../assets/down-arrow.png";
 import { literalContent } from "../../constants";
+import { appViewStore } from "../../stores/app.store";
 
 import { FileLineGroup } from "./components";
 
@@ -23,7 +25,7 @@ type Props = {
   onItemClick?: (projectId: string) => void;
 };
 
-export const FileGrid = (props: Props) => {
+export const FileGrid = observer((props: Props) => {
   const {
     videos = [],
     lineGroups,
@@ -36,6 +38,8 @@ export const FileGrid = (props: Props) => {
     onItemClick,
   } = props;
 
+  const { eyeVideoLoading } = appViewStore;
+
   const [loadingState, setLoadingState] = useState([]);
   const [animationState, setAnimationState] = useState([]);
 
@@ -45,7 +49,12 @@ export const FileGrid = (props: Props) => {
     const lines = document.querySelectorAll(".portfolio-line");
 
     lines.forEach((line, index) => {
+      const rect = line.getBoundingClientRect(); // Получаем размеры и позицию элемента
+      const middleOfScreen = window.innerHeight / 2; // Находим середину экрана
       if (
+        rect.top < middleOfScreen ||
+        loading ||
+        eyeVideoLoading ||
         loadingState?.[index]?.some((item) => Boolean(item)) ||
         !loadingState?.[index]?.length ||
         Boolean(animationState?.[index])
@@ -81,7 +90,7 @@ export const FileGrid = (props: Props) => {
         },
       );
     });
-  }, [lineGroups, loadingState]);
+  }, [lineGroups, loadingState, loading, eyeVideoLoading]);
 
   const onSetLineGroupLoadingState = (index, state) => {
     setLoadingState((prevState) => {
@@ -128,4 +137,4 @@ export const FileGrid = (props: Props) => {
       )}
     </>
   );
-};
+});
