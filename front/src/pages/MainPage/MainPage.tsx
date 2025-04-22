@@ -94,31 +94,33 @@ export const MainPage = observer(() => {
       <div
         className="container"
         style={loading ? { display: "none" } : undefined}>
-        <LandingContainer
-          language={language}
-          openFormModal={() => setIsModalOpen(true)}
-        />
-        <FileGrid
-          lineGroups={lineGroups}
-          videos={Array.from(videoList)}
-          increaseOffset={() => appViewStore.increaseOffset()}
-          total={totalProjectCount}
-          language={language}
-          containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
-          loading={isListVideoLoading}
-          onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
-        />
-        <ServicesCarousel
-          blocks={blocks}
-          openModal={() => setIsModalOpen(true)}
-          lineGroups={lineGroups}
-          language={language}
-          loading={isListBlocksLoading}
-        />
-        <Footer
-          language={language}
-          handleSwitchLanguage={appViewStore.switchLanguage}
-        />
+        <div className="content-container">
+          <LandingContainer
+            language={language}
+            openFormModal={() => setIsModalOpen(true)}
+          />
+          <FileGrid
+            lineGroups={lineGroups}
+            videos={Array.from(videoList)}
+            increaseOffset={() => appViewStore.increaseOffset()}
+            total={totalProjectCount}
+            language={language}
+            containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
+            loading={isListVideoLoading}
+            onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
+          />
+          <ServicesCarousel
+            blocks={blocks}
+            openModal={() => setIsModalOpen(true)}
+            lineGroups={lineGroups}
+            language={language}
+            loading={isListBlocksLoading}
+          />
+          <Footer
+            language={language}
+            handleSwitchLanguage={appViewStore.switchLanguage}
+          />
+        </div>
       </div>
       <Modal
         title={literalContent.weWillContactYou[language]}
