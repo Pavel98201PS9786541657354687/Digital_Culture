@@ -1,21 +1,25 @@
+$tileWidth: 15vw;
+
 #projects {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   margin-bottom: 30px;
   margin-inline: auto;
+  width: fit-content;
 
   .portfolio-line {
     display: grid;
     column-gap: 8px;
     grid-template-columns: repeat(3, 1fr);
+    width: fit-content;
+    max-width: 900px;
 
     .tile {
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 30vh;
       border-radius: 24px;
       overflow: hidden;
       position: relative;
@@ -78,3 +82,11 @@
     padding-inline: 15% !important;
   }
 }
+
+//@media (min-width: 500px) {
+//  #projects {
+//    .portfolio-line {
+//      grid-template-columns: repeat(auto-fill, $tileWidth);
+//    }
+//  }
+//}

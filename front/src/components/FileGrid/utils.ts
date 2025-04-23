@@ -33,7 +33,8 @@ export const getGridChunksByFileFormats = (array: Video[]) => {
   if (!array?.length) {
     return [];
   }
-  const items = array?.map((file, index) => ({
+
+  const items = array.map((file) => ({
     ...file,
     colSpan:
       mapColSpanByFormat[file?.formatVideo] ||
@@ -43,14 +44,28 @@ export const getGridChunksByFileFormats = (array: Video[]) => {
 
   const lineGroup = [];
 
+  // Получаем элемент блока #projects
+  const projectsBlockWidth = window.innerWidth - 400;
+  const columnWidth = 0.15; // ширина колонки в % от экрана
+
+  // Если элемент найден, получаем его ширину
+  // const totalColumns = Math.floor(
+  //   projectsBlockWidth / (window.innerWidth * columnWidth),
+  // );
+  const totalColumns = 3;
+
   let i = 0;
   while (i < items.length) {
     const chunk = [];
     let chunkSpan = 0;
-    while (chunkSpan < 3 && i < items.length) {
+
+    while (chunkSpan < totalColumns && i < items.length) {
       const currentItem = items[i];
 
-      if (currentItem?.colSpan && chunkSpan + currentItem.colSpan <= 3) {
+      if (
+        currentItem?.colSpan &&
+        chunkSpan + currentItem.colSpan <= totalColumns
+      ) {
         chunk.push(currentItem);
         chunkSpan += currentItem.colSpan;
         i++;
