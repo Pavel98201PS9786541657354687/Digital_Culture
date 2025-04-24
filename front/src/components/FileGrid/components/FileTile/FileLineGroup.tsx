@@ -1,14 +1,23 @@
-import { useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 import { PuffLoader } from "react-spinners";
 
 import { renderFileByType } from "../../../../utils";
 
-export const FileLineGroup = (props) => {
+type FileLineGroupProps = {
+  lineGroup?: any[];
+  onItemClick?: (projectId: string) => void;
+  loadingState?: any[];
+  setLoadingState?: (state: any[]) => void;
+  customStyles?: Record<string, CSSProperties>;
+};
+
+export const FileLineGroup = (props: FileLineGroupProps) => {
   const {
     lineGroup = [],
     onItemClick,
     loadingState = [],
     setLoadingState,
+    customStyles = {},
   } = props;
 
   const isLineLoading = useMemo(
@@ -48,10 +57,17 @@ export const FileLineGroup = (props) => {
           style={isLineLoading ? { display: "none" } : {}}>
           {lineGroup.map((videoData, videoRowIndex) => (
             <div
-              title={`Кликни для просмотра проекта ${videoData?.title}`}
+              title={
+                onItemClick
+                  ? `Кликни для просмотра проекта ${videoData?.title}`
+                  : ""
+              }
               key={`line-grid-${videoData.index}-${videoRowIndex}`}
               className={`tile span-${videoData?.colSpan}`}
-              style={onItemClick ? { cursor: "pointer" } : {}}
+              style={{
+                ...(onItemClick ? { cursor: "pointer" } : {}),
+                ...customStyles?.tile,
+              }}
               onClick={() => onItemClick && onItemClick(videoData?.id)}>
               <div className="tile-cover"></div>
               {renderFileByType(

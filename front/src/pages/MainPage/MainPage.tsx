@@ -105,7 +105,12 @@ export const MainPage = observer(() => {
             increaseOffset={() => appViewStore.increaseOffset()}
             total={totalProjectCount}
             language={language}
-            containerStyles={{ paddingTop: "100px", paddingInline: "16px" }}
+            customStyles={{
+              container: {
+                paddingTop: "100px",
+                paddingInline: "16px",
+              },
+            }}
             loading={isListVideoLoading}
             onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
           />

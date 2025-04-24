@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { PuffLoader } from "react-spinners";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
@@ -20,7 +20,7 @@ type Props = {
   total?: number;
   canShowMore?: boolean;
   language: "ru" | "eng";
-  containerStyles?: Record<string, string>;
+  customStyles?: Record<string, CSSProperties>;
   loading?: boolean;
   onItemClick?: (projectId: string) => void;
 };
@@ -33,7 +33,7 @@ export const FileGrid = observer((props: Props) => {
     total,
     canShowMore = true,
     language,
-    containerStyles = {},
+    customStyles = {},
     loading,
     onItemClick,
   } = props;
@@ -49,10 +49,11 @@ export const FileGrid = observer((props: Props) => {
     const lines = document.querySelectorAll(".portfolio-line");
 
     lines.forEach((line, index) => {
-      const rect = line.getBoundingClientRect(); // Получаем размеры и позицию элемента
-      const middleOfScreen = window.innerHeight / 2; // Находим середину экрана
+      // const rect = line.getBoundingClientRect(); // Получаем размеры и позицию элемента
+      // const middleOfScreen = window.innerHeight / 2; // Находим середину экрана
+
       if (
-        rect.top < middleOfScreen ||
+        // rect.top < middleOfScreen ||
         loading ||
         eyeVideoLoading ||
         loadingState?.[index]?.some((item) => Boolean(item)) ||
@@ -106,7 +107,7 @@ export const FileGrid = observer((props: Props) => {
 
   return (
     <>
-      <div id="projects" style={containerStyles}>
+      <div id="projects" style={customStyles?.container}>
         {lineGroups?.map((lineGroup, index) => (
           <FileLineGroup
             key={`portfolio-line-${index}`}
@@ -117,6 +118,7 @@ export const FileGrid = observer((props: Props) => {
             setLoadingState={(state) =>
               onSetLineGroupLoadingState(index, state)
             }
+            customStyles={customStyles}
           />
         ))}
       </div>
