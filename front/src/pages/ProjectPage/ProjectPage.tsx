@@ -87,7 +87,18 @@ export const ProjectPage = observer(() => {
                 <PuffLoader />
               ) : (
                 <div className="file-grid-container">
-                  <FileGrid lineGroups={lineGroups} language={language} />
+                  <FileGrid
+                    lineGroups={lineGroups}
+                    language={language}
+                    customStyles={{
+                      container: {
+                        paddingInline: 0,
+                      },
+                      tile: {
+                        maxHeight: "40vh",
+                      },
+                    }}
+                  />
                 </div>
               )}
             </div>

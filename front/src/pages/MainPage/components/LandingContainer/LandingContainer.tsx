@@ -20,7 +20,7 @@ export const LandingContainer = (props: LandingContainerProps) => {
 
   useGSAP(() => {
     gsap.to("#eye-container", {
-      y: "-300px", // Перемещение фона вверх
+      y: "-40vh", // Перемещение фона вверх
       ease: "none",
       scrollTrigger: {
         trigger: "#eye-container",

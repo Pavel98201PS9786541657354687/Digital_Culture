@@ -67,6 +67,24 @@ export const ServicesCarousel = observer((props: Props) => {
     },
   );
 
+  if (scrollContainerRef.current) {
+    scrollContainerRef.current.addEventListener("wheel", function (event) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+
+      // Проверяем, достигли ли мы левого или правого края
+      const atLeftEdge = scrollLeft === 0 && event.deltaY < 0;
+      const atRightEdge =
+        scrollLeft + clientWidth >= scrollWidth && event.deltaY > 0;
+
+      if (!atLeftEdge && !atRightEdge && event.deltaY !== 0) {
+        // Замена вертикальной прокрутки горизонтальной
+        scrollContainerRef.current.scrollLeft += 0.8 * event.deltaY;
+        event.preventDefault();
+      }
+    });
+  }
+
   const handleMouseDown = (e) => {
     setIsDown(true);
     scrollContainerRef.current.style.cursor = "grabbing";

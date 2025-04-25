@@ -1,21 +1,25 @@
+$tileWidth: 15vw;
+
 #projects {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   margin-bottom: 30px;
   margin-inline: auto;
+  width: fit-content;
 
   .portfolio-line {
     display: grid;
     column-gap: 8px;
     grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 900px;
 
     .tile {
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 30vh;
       border-radius: 24px;
       overflow: hidden;
       position: relative;
@@ -28,10 +32,15 @@
         z-index: 1000;
       }
 
-      video {
+      video,
+      img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+
+      &.span-1 {
+        grid-column: span 1;
       }
 
       &.span-2 {
@@ -69,12 +78,20 @@
 
 @media (min-width: 500px) and (max-width: 1000px) {
   #projects {
-    padding-inline: 10% !important;
+    padding-inline: 10%;
   }
 }
 
 @media (min-width: 1000px) {
   #projects {
-    padding-inline: 15% !important;
+    padding-inline: 15%;
   }
 }
+
+//@media (min-width: 500px) {
+//  #projects {
+//    .portfolio-line {
+//      grid-template-columns: repeat(auto-fill, $tileWidth);
+//    }
+//  }
+//}

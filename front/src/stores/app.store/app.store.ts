@@ -8,7 +8,7 @@ class AppViewStore {
   public language: "eng" | "ru" = "ru";
 
   public videoList = new Set();
-  private readonly limit = 3;
+  private readonly limit = 9;
   public offset = 0;
   public totalProjectCount = 0;
   public eyeVideoLoading = false;
