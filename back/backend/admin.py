@@ -18,9 +18,9 @@ class projectsFileInline(SortableStackedInline):
 
 @admin.register(moviesModel)
 class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
-    inlines = [
-        projectsFileInline,
-    ]
+    # inlines = [
+    #     projectsFileInline,
+    # ]
     class Meta:
         model = moviesModel
     list_display = ('weight','title', 'title_en', 'fileName', 
