@@ -13,12 +13,17 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.viewsets import ReadOnlyModelViewSet
 import traceback
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie, vary_on_headers
 
 # Метод для вывода видео файлов
 class getVideoListAPIView(generics.ListAPIView):
     queryset = models.moviesModel.objects.all()
     serializer_class = serializers.getVideoSerializer
-
+    
+    @method_decorator(cache_page(60 * 60 * 2))
+    @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         # Получаем стандартный ответ от родительского класса
         response = super().list(request, *args, **kwargs)
@@ -83,6 +88,8 @@ class blocksListAPIView(generics.ListAPIView):
     serializer_class = serializers.blocksSerializer
     queryset = models.blocks.objects.all()       
 
+    @method_decorator(cache_page(60 * 60 * 2))
+    @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         # Получаем стандартный ответ от родительского класса
         response = super().list(request, *args, **kwargs)
@@ -102,6 +109,8 @@ class projectsFilesListAPIView(generics.ListAPIView):
         project_id = self.kwargs['project_id']
         return models.moviesModel.objects.filter(id=project_id)
 
+    @method_decorator(cache_page(60 * 60 * 2))
+    @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         # Получаем стандартный ответ от родительского класса
         response = super().list(request, *args, **kwargs)
