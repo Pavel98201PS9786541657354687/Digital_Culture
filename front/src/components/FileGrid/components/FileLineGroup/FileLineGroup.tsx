@@ -1,7 +1,8 @@
 import { CSSProperties, useMemo } from "react";
 import { PuffLoader } from "react-spinners";
+import { observer } from "mobx-react";
 
-import { renderFileByType } from "../../../../utils";
+import { FileTile } from "../FileTile";
 
 type FileLineGroupProps = {
   lineGroup?: any[];
@@ -11,7 +12,7 @@ type FileLineGroupProps = {
   customStyles?: Record<string, CSSProperties>;
 };
 
-export const FileLineGroup = (props: FileLineGroupProps) => {
+export const FileLineGroup = observer((props: FileLineGroupProps) => {
   const {
     lineGroup = [],
     onItemClick,
@@ -56,26 +57,14 @@ export const FileLineGroup = (props: FileLineGroupProps) => {
           className="portfolio-line"
           style={isLineLoading ? { display: "none" } : {}}>
           {lineGroup.map((videoData, videoRowIndex) => (
-            <div
-              title={
-                onItemClick
-                  ? `Кликни для просмотра проекта ${videoData?.title}`
-                  : ""
-              }
-              key={`line-grid-${videoData.index}-${videoRowIndex}`}
-              className={`tile span-${videoData?.colSpan}`}
-              style={{
-                ...(onItemClick ? { cursor: "pointer" } : {}),
-                ...customStyles?.tile,
-              }}
-              onClick={() => onItemClick && onItemClick(videoData?.id)}>
-              <div className="tile-cover"></div>
-              {renderFileByType(
-                videoData?.fileName,
-                () => handleFileLoad(videoRowIndex),
-                () => handleFileStartLoad(videoRowIndex),
-              )}
-            </div>
+            <FileTile
+              onItemClick={onItemClick}
+              customStyles={customStyles?.tile}
+              handleFileLoad={handleFileLoad}
+              handleFileStartLoad={handleFileStartLoad}
+              videoData={videoData}
+              videoRowIndex={videoRowIndex}
+            />
           ))}
         </div>
       </>
@@ -83,4 +72,4 @@ export const FileLineGroup = (props: FileLineGroupProps) => {
   }, [isLineLoading, lineGroup]);
 
   return viewer;
-};
+});

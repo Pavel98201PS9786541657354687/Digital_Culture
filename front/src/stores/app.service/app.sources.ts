@@ -7,6 +7,9 @@ export const appSources = {
   getListVideo: (params) => {
     return apiHttpClient.get(apiPrefix + `getListVideo`, { params });
   },
+  getFile: (path) => {
+    return apiHttpClient.get(path);
+  },
   getProjectData: (id: string) => {
     return apiHttpClient.get(apiPrefix + `projectsFiles/${id}`);
   },

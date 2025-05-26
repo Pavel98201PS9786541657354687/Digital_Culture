@@ -37,6 +37,9 @@ export const Footer = (props: Props) => {
         <a href="tel:+79619650500" className="footer-content-phone">
           +7 (961) 965-05-00
         </a>
+        <div className="footer-content-phone" style={{ marginTop: 8 }}>
+          Петропавловск-Камчатский, Карла Маркса 31/2 офис 205
+        </div>
         <div className="footer-content-socials">
           <a href="https://www.instagram.com/digital.kultura" target="_blank">
             <div>

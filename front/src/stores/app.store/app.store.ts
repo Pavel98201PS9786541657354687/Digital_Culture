@@ -13,6 +13,8 @@ class AppViewStore {
   public totalProjectCount = 0;
   public eyeVideoLoading = false;
 
+  public cachedGridFiles = {};
+
   public switchLanguage = () => {
     if (this.language === "ru") {
       this.language = "eng";
@@ -37,6 +39,13 @@ class AppViewStore {
     this.eyeVideoLoading = loading;
   };
 
+  public setFileCache = (key, value) => {
+    if (!this.cachedGridFiles[key]) {
+      this.cachedGridFiles[key] = {};
+    }
+    this.cachedGridFiles[key] = value;
+  };
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -46,6 +55,10 @@ class AppViewStore {
       limit: this.limit,
       offset: this.offset,
     });
+  }
+
+  public getFile(path: string) {
+    return this.appService.getFile(path);
   }
 
   public getProjectData(id: string) {

@@ -30,6 +30,12 @@ class AppService {
     );
   }
 
+  getFile(path) {
+    return this.cache.createQuery([this.serviceBaseKey, "file", path], () =>
+      this.sources.getFile(path),
+    );
+  }
+
   async postApplication(data: any) {
     return await this.cache
       .createMutation((data) => this.sources.postApplication(data))
