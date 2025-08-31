@@ -23,11 +23,13 @@ export default ({ mode }) => {
       // port: 5173,
       proxy: {
         "/api": {
-          target: "https://digitalkultura.ru",
+          // target: "https://digitalkultura.ru",
+          target: "http://46.229.212.235:8001",
           changeOrigin: true,
         },
         "/media": {
           target: "https://digitalkultura.ru",
+          // target: "http://46.229.212.235:8001",
           secure: true,
           changeOrigin: true,
           rewrite: (path) => path.replace(`/^/media/`, "/media"),

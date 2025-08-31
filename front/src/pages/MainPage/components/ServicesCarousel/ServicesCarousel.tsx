@@ -9,6 +9,7 @@ import { Loader } from "@/components";
 import { literalContent } from "../../../../constants";
 
 import "./style.scss";
+import { SwipeHint } from "../../../../components";
 
 type Props = {
   blocks: any[];
@@ -84,33 +85,36 @@ export const ServicesCarousel = observer((props: Props) => {
   }
 
   return (
-    <div id="services-container">
-      <img
-        id="bg-bone-image"
-        data-speed="0.6"
-        src={bonePng}
-        alt="3D Bone Mockup"
-      />
-      <div
-        id="services-scroll-container"
-        ref={sliderRef}
-        className="keen-slider">
-        {blocks.map((tileContent, index) => (
-          <div key={index} className="keen-slider__slide panel">
-            <div className="service-tile">
-              <div className="service-tile--title">
-                {tileContent[titleAccessor]}:
+    <div>
+      <div id="services-container">
+        <img
+          id="bg-bone-image"
+          data-speed="0.6"
+          src={bonePng}
+          alt="3D Bone Mockup"
+        />
+        <div
+          id="services-scroll-container"
+          ref={sliderRef}
+          className="keen-slider">
+          {blocks.map((tileContent, index) => (
+            <div key={index} className="keen-slider__slide panel">
+              <div className="service-tile">
+                <div className="service-tile--title">
+                  {tileContent[titleAccessor]}:
+                </div>
+                <div className="service-tile--description">
+                  {tileContent[descriptionAccessor]}
+                </div>
+                <button className="service-tile--action" onClick={openModal}>
+                  {literalContent.order[language]?.toUpperCase()}
+                </button>
               </div>
-              <div className="service-tile--description">
-                {tileContent[descriptionAccessor]}
-              </div>
-              <button className="service-tile--action" onClick={openModal}>
-                {literalContent.order[language]?.toUpperCase()}
-              </button>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+      <SwipeHint />
     </div>
   );
 });

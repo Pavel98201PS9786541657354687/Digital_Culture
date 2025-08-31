@@ -99,4 +99,8 @@ export const literalContent = {
     ru: "Поле не должно быть пустым",
     eng: "Field should not be empty",
   },
+  swipeToSeeMore: {
+    ru: "Листай, чтобы увидеть больше",
+    eng: "Swipe to see more",
+  },
 };
