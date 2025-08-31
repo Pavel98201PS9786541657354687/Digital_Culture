@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
+import { useKeenSlider } from "keen-slider/react";
 import { observer } from "mobx-react";
 
 import bonePng from "@/assets/bone.png";
@@ -18,16 +18,11 @@ type Props = {
 };
 
 export const ServicesCarousel = observer((props: Props) => {
-  const { blocks = [], openModal, language, loading, lineGroups } = props;
+  const { blocks = [], openModal, language, loading } = props;
 
   const titleAccessor = language === "ru" ? "title" : "title_en";
   const descriptionAccessor =
     language === "ru" ? "description" : "description_en";
-
-  const scrollContainerRef = useRef(null);
-  const [isDown, setIsDown] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
   const boneElement = document.querySelector("#bg-bone-image");
   const servicesContainer = document.querySelector("#services-container");
@@ -67,47 +62,20 @@ export const ServicesCarousel = observer((props: Props) => {
     },
   );
 
-  if (scrollContainerRef.current) {
-    scrollContainerRef.current.addEventListener("wheel", function (event) {
-      const { scrollLeft, scrollWidth, clientWidth } =
-        scrollContainerRef.current;
-
-      // Проверяем, достигли ли мы левого или правого края
-      const atLeftEdge = scrollLeft === 0 && event.deltaY < 0;
-      const atRightEdge =
-        scrollLeft + clientWidth >= scrollWidth && event.deltaY > 0;
-
-      if (!atLeftEdge && !atRightEdge && event.deltaY !== 0) {
-        // Замена вертикальной прокрутки горизонтальной
-        scrollContainerRef.current.scrollLeft += 0.8 * event.deltaY;
-        event.preventDefault();
-      }
-    });
-  }
-
-  const handleMouseDown = (e) => {
-    setIsDown(true);
-    scrollContainerRef.current.style.cursor = "grabbing";
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDown(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDown(false);
-    scrollContainerRef.current.style.cursor = "grab";
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 1; // Увеличьте коэффициент для большей скорости
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
+    mode: "free",
+    slides: {
+      perView: "auto",
+      origin: "center",
+    },
+    breakpoints: {
+      600: {
+        slides: {
+          perView: 1,
+        },
+      },
+    },
+  });
 
   if (loading) return <Loader />;
 
@@ -124,30 +92,24 @@ export const ServicesCarousel = observer((props: Props) => {
         alt="3D Bone Mockup"
       />
       <div
-        id="services"
-        className="scroll-container"
-        ref={scrollContainerRef}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}>
-        <div id="services-scroll-container">
-          {blocks.map((tileContent, index) => (
-            <div key={index} id={`panel-${index + 1}`} className="panel">
-              <div className="service-tile">
-                <div className="service-tile--title">
-                  {tileContent[titleAccessor]}:
-                </div>
-                <div className="service-tile--description">
-                  {tileContent[descriptionAccessor]}
-                </div>
-                <button className="service-tile--action" onClick={openModal}>
-                  {literalContent.order[language]?.toUpperCase()}
-                </button>
+        id="services-scroll-container"
+        ref={sliderRef}
+        className="keen-slider">
+        {blocks.map((tileContent, index) => (
+          <div key={index} className="keen-slider__slide panel">
+            <div className="service-tile">
+              <div className="service-tile--title">
+                {tileContent[titleAccessor]}:
               </div>
+              <div className="service-tile--description">
+                {tileContent[descriptionAccessor]}
+              </div>
+              <button className="service-tile--action" onClick={openModal}>
+                {literalContent.order[language]?.toUpperCase()}
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

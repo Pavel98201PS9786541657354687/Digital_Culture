@@ -17,6 +17,7 @@ import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 import { useGetListBlocks, useGetListVideo } from "../../hooks";
 import { appViewStore } from "../../stores/app.store";
 
+import { servicesMockData } from "./components/ServicesCarousel/mock";
 import { LandingContainer, ServicesCarousel } from "./components";
 
 import "./style.scss";
@@ -115,7 +116,7 @@ export const MainPage = observer(() => {
             onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
           />
           <ServicesCarousel
-            blocks={blocks}
+            blocks={servicesMockData}
             openModal={() => setIsModalOpen(true)}
             lineGroups={lineGroups}
             language={language}

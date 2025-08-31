@@ -9,82 +9,73 @@
     scale: 130%;
   }
 
-  #services {
+  #services-scroll-container {
+    display: flex;
+    padding: 0;
+    //width: fit-content;
     height: 100vh;
-    z-index: 888;
     width: 100vw;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
     cursor: grab;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    &-scroll-container {
+    .panel {
+      height: 100vh;
       display: flex;
-      padding: 0;
-      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      padding-inline: 20px;
 
-      .panel {
-        width: 100vw;
-        height: 100vh;
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .anchor-panel,
+      .nav-panel {
+        text-transform: uppercase;
+        margin-right: 2rem;
+      }
+
+      .service-tile {
+        color: #ffffff;
+        width: 90vw;
+        height: 370px;
+        border-radius: 64px;
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 48px 32px;
         align-items: center;
-        justify-content: center;
+        text-align: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
 
-        img {
-          max-width: 100%;
-          height: auto;
-          display: block;
+        /* Эффект полупрозрачного матового стекла */
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(5px);
+
+        &--title {
+          font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
+          font-size: 20px;
         }
 
-        .anchor-panel,
-        .nav-panel {
-          text-transform: uppercase;
-          margin-right: 2rem;
+        &--description {
+          font-family: "YandexSansDisplay-Thin", sans-serif;
+          font-size: 14px;
         }
 
-        .service-tile {
+        &--action {
+          font-family: "YandexSansDisplay-Thin", sans-serif;
+          font-size: 16px;
+          background-color: #3d3d3d;
+          padding: 8px 24px;
+          border: none;
           color: #ffffff;
-          width: 90%;
-          height: 370px;
-          border-radius: 64px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 48px 32px;
-          align-items: center;
-          text-align: center;
-
-          /* Эффект полупрозрачного матового стекла */
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(5px);
-
-          &--title {
-            font-family: "Druk Wide Cy Web Bold Regular", sans-serif;
-            font-size: 20px;
-          }
-
-          &--description {
-            font-family: "YandexSansDisplay-Thin", sans-serif;
-            font-size: 14px;
-          }
-
-          &--action {
-            font-family: "YandexSansDisplay-Thin", sans-serif;
-            font-size: 16px;
-            background-color: #3d3d3d;
-            padding: 8px 24px;
-            border: none;
-            color: #ffffff;
-            border-radius: 8px;
-            z-index: 100;
-            cursor: pointer;
-          }
+          border-radius: 8px;
+          z-index: 100;
+          cursor: pointer;
         }
       }
     }
@@ -103,20 +94,18 @@
       top: -250px;
     }
 
-    #services {
+    #services-scroll-container {
       height: 450px;
-      scroll-behavior: smooth;
-      padding: 0 calc(50vw - 300px);
 
       .panel {
         width: 600px;
         height: fit-content;
+        padding-inline: 75px;
       }
 
       .service-tile {
         width: 450px !important;
         height: 450px !important;
-        margin: auto;
         background: silver;
         overflow: hidden; /* clearfix */
         padding-inline: 72px !important;
