@@ -116,9 +116,8 @@ export const MainPage = observer(() => {
             onItemClick={(projectId) => navigate(`/projects/${projectId}`)}
           />
           <ServicesCarousel
-            blocks={servicesMockData}
+            blocks={blocks}
             openModal={() => setIsModalOpen(true)}
-            lineGroups={lineGroups}
             language={language}
             loading={isListBlocksLoading}
           />
