@@ -17,7 +17,6 @@ import { getGridChunksByFileFormats } from "../../components/FileGrid/utils";
 import { useGetListBlocks, useGetListVideo } from "../../hooks";
 import { appViewStore } from "../../stores/app.store";
 
-import { servicesMockData } from "./components/ServicesCarousel/mock";
 import { LandingContainer, ServicesCarousel } from "./components";
 
 import "./style.scss";
@@ -67,7 +66,7 @@ export const MainPage = observer(() => {
   useEffect(() => {
     const anchors = document.querySelectorAll('a[href*="#"]');
 
-    for (let anchor of anchors) {
+    for (const anchor of anchors) {
       anchor.addEventListener("click", function (e) {
         e.preventDefault();
 

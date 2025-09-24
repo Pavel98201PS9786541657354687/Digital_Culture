@@ -99,10 +99,10 @@ export const Header = (props: Props) => {
           </li>
           <li
             onClick={() => {
-              handleScrollToAnchor("services");
+              handleScrollToAnchor("services-container");
               handleClickMenuItem();
             }}>
-            <a href="#services">
+            <a href="#services-container">
               {literalContent.services[language]?.toLowerCase()}
             </a>
           </li>
