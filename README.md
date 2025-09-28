@@ -6,6 +6,6 @@
 - cd back  
 - python manage.py runserver
 
-# Запуска Frontend
+# Запуск Frontend
 - cd front
 - npm run preview -- --host 0.0.0.0 --port 4173
